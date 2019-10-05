@@ -1,0 +1,23 @@
+{
+  "name": "where-mi",
+  "version": "1.0.0",
+  "description": "Progetto tech web 18/19",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enricomors/where-mi.git"
+  },
+  "author": "Enrico Morselli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enricomors/where-mi/issues"
+  },
+  "homepage": "https://github.com/enricomors/where-mi#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
