@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Where M I Editor</title>
+
+    <!-- Dependencies for videos -->
+    <script src="/browser-workarounds.js"></script>
+
+    <!-- CSS -->
+    <link href="/editor.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.min.css">
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  
+    <script src="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.js"></script>
+    <script src="https://unpkg.com/wnumb@1.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.css">
+  
+  
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Fonts and Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+    <!-- Google APIs -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <!-- Leaflet e Leaflet routing  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <!-- Open Location Code -->
+    <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
+    <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
+</head>
+
+<body>
+     <!-- Navbar -->
+     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">Where Am I?</a>
+            <button></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto text-uppercase">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="/">home</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="browser.html">browser</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Pulsante di accesso tramite Google-->
+    <br>
+    <br>
+    <br>  
+    <section>
+        <div class="container">
+      
+          <div class="row d-xl-flex justify-content-xl-center">
+              <div class="col text-center d-xl-flex justify-content-xl-center" style="margin-bottom: 2%;"><button onclick="handleAuthClick()" class="fa fa-google" type="button">Accedi</button></div>
+          </div>
+        </div>
+      
+          <!-- Create a new clip section -->
+          <div class="intro">
+            <p class="text-center">Seleziona un marker e crea una nuova clip<br></p>
+          </div>
+      
+          <!-- Create a new Map -->
+          <div class="row">
+            <div id="map-section" class="container-fluid padding fill">
+              <div id="map"></div>
+            </div>
+        </div>
+
+
+          <!-- Form to compile metadata for clips -->
+             <!-- FIRST ROW FOR NAME  -->
+       <div class="row" style="margin-top: 2%;">
+        <div class="col-sm-6">
+          <div class="form-group"  style="margin-bottom: 3%;"><label for="Name">Name&nbsp;</label>
+            <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
+            <small id="nameHelpBlock" class="form-text text-muted">
+              Name or brief description of the point of interest selected
+            </small>
+          </div>
+        </div>
+      </div>
+         <!-- SECOND ROW FOR DESCRIPTION -->
+      <div class="row" >
+       <div class="col-xl-12 offset-xl-0">
+        <div class="form-group"><label for="description">Description<br></label>
+          <textarea id="description" rows="3" class="border rounded border-white shadow form-control-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
+          <small id="descriptionHelpBlock" class="form-text text-muted">
+            Description of the point of interest selected
+          </small>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- THIRD ROW FOR PURPOSE AND LANGUAGE -->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group"><label class="portfolio-hover" for="purpose">Purpose</label>
+
+          <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
+
+          <select id="purpose" class="border-white shadow custom-select custom-select-lg"  aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
+            <option v-for="option in options" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+          <small id="purposeHelpBlock" class="form-text text-muted">
+            Purpose of the clip
+          </small>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="form-group"><label for="language">Language&nbsp;</label>
+          <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
+            <option v-for="option in options" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+          <small id="languageHelpBlock" class="form-text text-muted">
+            Human language of the clip
+          </small>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- FOURTH ROW FOR PUBLIC CATEGORY -->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group"><label for="public">Interested public&nbsp;</label>
+          <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
+            <option v-for="option in options" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+          <small id="publicHelpBlock" class="form-text text-muted">
+            Audience of the clip
+          </small>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group"><label for="category">Category&nbsp;</label>
+          <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
+            <option v-for="option in options" v-bind:value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+          <small id="cateogyHelpBlock" class="form-text text-muted">
+            Content of the clip
+          </small>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- FIFTH ROW FOR LEVEL -->
+    <div class="row">
+      <div class="col-sm-6">
+        <select id="detailLevel" class="border-white shadow custom-select custom-select-lg"  aria-describedby="detailHelpBlock" v-model="selected"><optgroup label="Select Detail level">
+          <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+    <!-- SIXT ROW FOR CLIPS... -->
+    <div class="row"> 
+      <div id="buttonSelection"  class="col-xl-2 offset-xl-5 text-center" style="margin-top: 2%;">
+
+        <!-- RECORDING -->
+        <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
+        
+        <!-- STOP -->
+        <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
+
+      </div> 
+    </div> 
+   
+
+  </div> 
+</div>
+</section>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
