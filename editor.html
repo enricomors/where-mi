@@ -10,7 +10,7 @@
     <script src="/browser-workarounds.js"></script>
 
     <!-- CSS -->
-    <link href="/editor.css" rel="stylesheet">
+    <link href="css/editor.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.min.css">
   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -45,6 +45,13 @@
     <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     <!-- Leaflet e Leaflet routing  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>    
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
     <!-- Open Location Code -->
@@ -223,7 +230,14 @@
 
 
 
+<!-- Javascript dependencies -->
+<script src="static/javascript/editor.js"></script>
+<script src="static/LoginGoogle.js"></script>
+<script src="static/replace.js"></script>
+<script src="/WebAudioRecorder.min.js"></script>
+<script src="static/vue_options.js"></script>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 
