@@ -19,7 +19,6 @@ const app = express();
  */
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/static/images', express.static(path.join(__dirname, 'static/images')));
-
 /** */
 app.use(bodyParser.json({ limit: '500mb' }));
 
