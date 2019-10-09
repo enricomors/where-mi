@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Where M I - Browser</title>
 
+    <!-- Our JS scripts -->
+    <script type="text/javascript" src="static/browser.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -20,15 +28,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Google APIs -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <!-- Leaflet e Leaflet routing  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
     <!-- Open Location Code -->
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
     
 </head>
+
+<!-- Body of the page -->
+
 <body>
+
     <!-- Navbar -->
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark">
         <div class="container">
@@ -46,15 +69,18 @@
             </div>
         </div>
     </nav>
+
     <!-- Leaflet Map -->
     <div id="map" style="width: 100%;">
         <!-- Player per i video su YouTube -->
         <div id="video"></div>
     </div>
+
     <!-- Pulsante che scorre nella sezione delle clip -->
     <div style="text-align: center">
         <a href="#clipSection" role="button" style="width: 100%" class="btn btn-primary align-items-xl-center btn-xl fa fa-chevron-down"></a>
     </div>
+
     <!-- Sezione filtri clip -->
     <section id="clipsection">
         <div style="margin-right: 5%; margin-left: 5%;">

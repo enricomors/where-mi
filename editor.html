@@ -7,24 +7,23 @@
     <title>Where M I Editor</title>
 
     <!-- Dependencies for videos -->
-    <script src="/browser-workarounds.js"></script>
+    <!--<script src="/browser-workarounds.js"></script>-->
 
     <!-- CSS -->
     <link href="css/editor.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.min.css">
-  
+
+    <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-  
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <script src="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.js"></script>
     <script src="https://unpkg.com/wnumb@1.1.0"></script>
     <link rel="stylesheet" href="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.css">
-  
-  
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -47,16 +46,16 @@
     <!-- Leaflet e Leaflet routing machine  -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin=""/>    
+    crossorigin=""/>
      <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
     integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
     crossorigin=""></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" 
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="">
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" 
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
     crossorigin=""></script>
     <!-- Open Location Code -->
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
@@ -73,7 +72,7 @@
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
-                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button> 
+                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button>
                 </ul>
             </div>
         </div>
@@ -81,7 +80,7 @@
     <br>
     <br>
         <section>
-           
+
           <!-- Create a new Map -->
           <div class="row">
             <div id="map-section" class="container-fluid padding fill">
@@ -180,7 +179,7 @@
         </div>
       </div>
     </div>
-    
+
 
 
     <!--Livello -->
@@ -196,18 +195,18 @@
 
 
     <!-- SIXT ROW FOR CLIPS... -->
-    <div class="row"> 
+    <div class="row">
       <div id="buttonSelection"  class="col-xl-2 offset-xl-5 text-center" style="margin-top: 2%;">
 
         <!-- RECORDING -->
         <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
-        
+
         <!-- STOP -->
         <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
 
-      </div> 
-    </div> 
-   </div> 
+      </div>
+    </div>
+   </div>
   </div>
 </section>
 
@@ -230,4 +229,3 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
-
