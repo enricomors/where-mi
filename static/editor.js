@@ -1,31 +1,30 @@
 //Definizione delle costanti : 
-const leaflet_access_token = 'pk.eyJ1Ijoic2l0ZTE4MTkyOSIsImEiOiJjanl2bmJxd2swcmpuM2JscjF3cDJueWN4In0.y-oDtJtQv3JnBGpgOkhYFg';
+const leaflet_access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
 const default_coords = [44.4940258,11.340965];
 const ENCONDING_TYPE = "mp3"
 
 //DEFINIZIONE VARIABILI GLOBALI: 
 //Mappa
 var map;
-//Icona per marker 
+//Icone per marker 
 var audioIcon = L.icon({
   iconUrl: 'static/images/audio_icon.png',
-  iconSize: [25, 25],
+  iconSize: [30, 30],
   iconAnchor: [15, 35],
   popupAnchor: [1, -30],
-});
+}); //Icona per nuove clip
  var myPositionIcon = L.icon({
-  iconUrl: 'static/images/mini_me-png',
-  iconSize: [25,25],
+  iconUrl: 'static/images/mini_me.png',
+  iconSize: [30,30],
   iconAnchor: [15,35],
   popupAnchor: [1,-30],
-  });
+  }); //Icona per la mia posizione
 
 var newPoint = L.marker();
 var selectedPoint; 
 var player; 
 
-//////////////////////////////////////////////////////////////////////////
-
+//Call back per form e clips
 $( document ).ready(function() {
 
   // Inizializzazione mappa con coordinate di default
@@ -37,16 +36,11 @@ $( document ).ready(function() {
   recordClip();
 
   // record video
-  //recordVideo();
+  recordVideo();
 
-/*
-  gapi.load("client:auth2", function() {
-    gapi.auth2.init({client_id: "374634433123-44v977h2u92555m0jtntuuru17kh8qhn.apps.googleusercontent.com"});
-  });
-  */
 });
 
-// Se sono presenti dei video, vengono mostrati dei markers
+// Se sono presenti video vengono mostrati dei markers
 function showMarkers() {
   gapi.client.setApiKey("AIzaSyCfAGcL91p3JSJIbohytN94hsRgnyz-jJs");
   // seach videos

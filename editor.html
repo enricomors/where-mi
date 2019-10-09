@@ -7,21 +7,19 @@
     <title>Where M I Editor</title>
 
     <!-- Dependencies for videos -->
-    <!--<script src="/browser-workarounds.js"></script>-->
+    <script src="/browser-workarounds.js"></script>
 
     <!-- CSS -->
     <link href="css/editor.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.min.css">
   
-    <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-
-    <!-- Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   
-    <!-- ?? -->
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  
     <script src="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.js"></script>
     <script src="https://unpkg.com/wnumb@1.1.0"></script>
     <link rel="stylesheet" href="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.css">
@@ -48,140 +46,120 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-
-    <!-- Leaflet e Leaflet routing  -->
+    <!-- Leaflet e Leaflet routing machine  -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin=""/>    
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
+    crossorigin=""/> 
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="">
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
-
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
     <!-- Open Location Code -->
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
 </head>
 
 <body>
-     <!-- Navbar -->
-     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark">
-        <div class="container">
-            <a href="/" class="navbar-brand">Where Am I?</a>
-            <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
-                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="nav navbar-nav ml-auto text-uppercase">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="/">home</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="browser.html">browser</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Pulsante di accesso tramite Google-->
-    <br>
-    <br>
-    <br>  
-    <section>
-        <div class="container">
-      
-          <div class="row d-xl-flex justify-content-xl-center">
-              <div class="col text-center d-xl-flex justify-content-xl-center" style="margin-bottom: 2%;"><button onclick="handleAuthClick()" class="fa fa-google" type="button">Accedi</button></div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
+    <div class="container"><a class="navbar-brand" href="/" style="font-family: Montserrat, sans-serif;margin-right: 0%;">Where M I?</a>
+      <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="nav navbar-nav ml-auto text-uppercase">
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
+              <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button> 
+            </ul>
           </div>
-        </div>
-      
-          <!-- Create a new clip section -->
-          <div class="intro">
-            <p class="text-center">Seleziona un marker e crea una nuova clip<br></p>
-          </div>
-      
-          <!-- Create a new Map -->
-          <div class="row">
-            <div id="map-section" class="container-fluid padding fill">
-              <div id="map"></div>
-            </div>
-        </div>
-
-
-          <!-- Form to compile metadata for clips -->
-             <!-- FIRST ROW FOR NAME  -->
-       <div class="row" style="margin-top: 2%;">
-        <div class="col-sm-6">
-          <div class="form-group"  style="margin-bottom: 3%;"><label for="Name">Name&nbsp;</label>
-            <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
-            <small id="nameHelpBlock" class="form-text text-muted">
-              Name or brief description of the point of interest selected
-            </small>
-          </div>
+      </div>
+  </nav>
+    <section>  
+      <!-- Create a new Map -->
+      <div class="row">
+        <div id="map-section" class="container-fluid padding fill">
+          <div id="map"></div>
         </div>
       </div>
-         <!-- SECOND ROW FOR DESCRIPTION -->
-      <div class="row" >
-       <div class="col-xl-12 offset-xl-0">
-        <div class="form-group"><label for="description">Description<br></label>
+      <!-- METADATA for clips -->
+      <form>
+          <!-- Name -->
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="Name">Nome&nbsp;</label>
+                <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
+                <small id="nameHelpBlock" class="form-text text-muted">
+                  Inserisci il nome del punto di interesse
+                </small>
+              </div>
+            </div>
+          </div>
+         <!-- Description -->
+         <div class="row">
+            <div class="col-sm-6">
+        <div class="form-group">
+          <label for="description">Descrizione<br></label>
           <textarea id="description" rows="3" class="border rounded border-white shadow form-control-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
           <small id="descriptionHelpBlock" class="form-text text-muted">
-            Description of the point of interest selected
+            Descrizione del punto di interesse selezionato
           </small>
         </div>
       </div>
     </div>
-
-
-    <!-- THIRD ROW FOR PURPOSE AND LANGUAGE -->
+    <!-- Scopo -->
     <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group"><label class="portfolio-hover" for="purpose">Purpose</label>
-
+        <div class="col-sm-6">
+        <div class="form-group">
+          <label class="portfolio-hover" for="purpose">Scopo</label>
           <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
-
           <select id="purpose" class="border-white shadow custom-select custom-select-lg"  aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
             <option v-for="option in options" v-bind:value="option.value">
               {{ option.text }}
             </option>
           </select>
           <small id="purposeHelpBlock" class="form-text text-muted">
-            Purpose of the clip
+            Scopo della clip
           </small>
         </div>
       </div>
-
-      <div class="col-sm-6">
-        <div class="form-group"><label for="language">Language&nbsp;</label>
+    </div>
+      <!-- Lingua -->
+      <div class="row">
+          <div class="col-sm-6">
+        <div class="form-group"><label for="language">Lingua&nbsp;</label>
           <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
             <option v-for="option in options" v-bind:value="option.value">
               {{ option.text }}
             </option>
           </select>
           <small id="languageHelpBlock" class="form-text text-muted">
-            Human language of the clip
+            Linguaggio utilizzato nella clip
           </small>
         </div>
       </div>
     </div>
 
-
-    <!-- FOURTH ROW FOR PUBLIC CATEGORY -->
+    <!-- Categoria -->
     <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group"><label for="public">Interested public&nbsp;</label>
+        <div class="col-sm-6">
+        <div class="form-group">
+          <label for="public">Pubblico&nbsp;</label>
           <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
             <option v-for="option in options" v-bind:value="option.value">
               {{ option.text }}
             </option>
           </select>
           <small id="publicHelpBlock" class="form-text text-muted">
-            Audience of the clip
+               Pubblico adatto alla clip
           </small>
         </div>
       </div>
-      <div class="col-sm-6">
+    </div>
+      <!-- Categoria -->
+      <div class="row">
+          <div class="col-sm-6">
         <div class="form-group"><label for="category">Category&nbsp;</label>
           <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
             <option v-for="option in options" v-bind:value="option.value">
@@ -189,14 +167,15 @@
             </option>
           </select>
           <small id="cateogyHelpBlock" class="form-text text-muted">
-            Content of the clip
+            Categoria della clip
           </small>
         </div>
       </div>
     </div>
+    
 
 
-    <!-- FIFTH ROW FOR LEVEL -->
+    <!--Livello -->
     <div class="row">
       <div class="col-sm-6">
         <select id="detailLevel" class="border-white shadow custom-select custom-select-lg"  aria-describedby="detailHelpBlock" v-model="selected"><optgroup label="Select Detail level">
@@ -220,10 +199,8 @@
 
       </div> 
     </div> 
-   
-
-  </div> 
-</div>
+   </div> 
+  </div>
 </section>
 
 </div>
@@ -236,16 +213,14 @@
 
 
 
-<!-- Javascript dependencies -->
-<script src="static/javascript/editor.js"></script>
-<script src="static/LoginGoogle.js"></script>
-<script src="static/replace.js"></script>
-<script src="/WebAudioRecorder.min.js"></script>
-<script src="static/vue_options.js"></script>
+    <!-- Javascript dependencies -->
+    <script src="static/editor.js"></script>
+    <script src="static/LoginGoogle.js"></script>
+    <script src="static/replace.js"></script>
+    <script src="/WebAudioRecorder.min.js"></script>
+    <script src="static/vue_options.js"></script>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
+
 
