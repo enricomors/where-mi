@@ -18,7 +18,7 @@ const app = express();
  * serve tutti i file nella cartella 'static', e permette di accedervi attraverso il path '/static'
  */
 app.use('/static', express.static(path.join(__dirname, 'static')));
-app.use('/static/images', express.static(path.join(__dirname, 'static/images')));
+
 /** */
 app.use(bodyParser.json({ limit: '500mb' }));
 
