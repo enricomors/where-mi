@@ -24,6 +24,16 @@ var newPoint = L.marker();
 var selectedPoint; 
 var player; 
 
+const CLIENT_ID = "374634433123-44v977h2u92555m0jtntuuru17kh8qhn.apps.googleusercontent.com";
+
+const DISCOVERY_DOCS = [
+'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
+];
+const SCOPES = 'https://www.googleapis.com/auth/youtube'
+/**
+ * 
+ * 
+ */
 //Call back per form e clips
 $( document ).ready(function() {
 
@@ -40,6 +50,67 @@ $( document ).ready(function() {
 
 });
 
+/**
+ * SEZIONE PER IL LOGIN
+ */
+
+  // Login function
+  function handleAuthClick() {
+    gapi.auth2.getAuthInstance().signIn();
+    console.log(gapi.auth2.getAuthInstance().signIn());
+  }
+
+  function handleClientLoad() {
+    gapi.load('client:auth2', initClient);
+  };
+
+  function initClient(callback) {
+    gapi.client.init({
+      discoveryDocs: DISCOVERY_DOCS,
+      clientId: CLIENT_ID,
+      cookiepolicy: 'single_host_origin',
+      scope: SCOPES
+    }).then(() => {
+      // Listen for sign in state changes
+      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+      console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
+      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+      // Handle initial sign in state
+      //updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+      //disabilitaBottoni(gapi.auth2.getAuthInstance().isSignedIn.get());
+    })
+    .catch(err => console.log(JSON.stringify(err)));
+  }
+
+  function updateSigninStatus(status) {
+    if (status) {
+      console.log('in');
+    } else {
+      alert("Devi prima effettuare il log in.");
+     //$("#logout").remove();
+     //location.reload();
+   }
+ };
+ 
+  // logout function
+  function signOut() {
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        console.log("out");
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+        auth2.disconnect();
+        alert("Disconnesso.");
+        console.log("Disconnesso.")
+
+        $('#data').hide();
+        $('#recordingSection').hide();
+      };
+  }
+
+
+/**
+ * SEZIONE METODI DELLA MAPPA
+ */
 // Se sono presenti video vengono mostrati dei markers
 function showMarkers() {
   gapi.client.setApiKey("AIzaSyCfAGcL91p3JSJIbohytN94hsRgnyz-jJs");
