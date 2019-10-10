@@ -24,14 +24,12 @@
     <script src="https://unpkg.com/wnumb@1.1.0"></script>
     <link rel="stylesheet" href="https://unpkg.com/nouislider@10.0.0/distribute/nouislider.min.css">
   
+  
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- Bootstrap: Agency Theme -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/css/agency.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/js/agency.min.js"></script>
 
     <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
@@ -60,45 +58,50 @@
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
-    <div class="container"><a class="navbar-brand" href="/" style="font-family: Montserrat, sans-serif;margin-right: 0%;">Where M I?</a>
-      <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
-        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="nav navbar-nav ml-auto text-uppercase">
-              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
-              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
-              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
-              <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button> 
-            </ul>
-          </div>
-      </div>
-  </nav>
-    <section>  
-      <!-- Create a new Map -->
-      <div class="row">
+     <!-- Navbar -->
+     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="/" style="font-family: Montserrat, sans-serif;margin-right: 0%;">Where M I?</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto text-uppercase">
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
+                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button> 
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    
+    <!-- Create a new Map -->
+    <div class="row">
         <div id="map-section" class="container-fluid padding fill">
           <div id="map"></div>
         </div>
       </div>
+  
+    <section>
+    
       <!-- METADATA for clips -->
       <form>
           <!-- Name -->
           <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="Name">Nome&nbsp;</label>
-                <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
-                <small id="nameHelpBlock" class="form-text text-muted">
-                  Inserisci il nome del punto di interesse
-                </small>
-              </div>
-            </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+            <label for="Name">Nome&nbsp;</label>
+            <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
+            <small id="nameHelpBlock" class="form-text text-muted">
+              Inserisci il nome del punto di interesse
+            </small>
           </div>
-         <!-- Description -->
-         <div class="row">
-            <div class="col-sm-6">
+        </div>
+      </div>
+      <!-- Description -->
+      <div class="row">
+        <div class="col-sm-6">
         <div class="form-group">
           <label for="description">Descrizione<br></label>
           <textarea id="description" rows="3" class="border rounded border-white shadow form-control-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
@@ -110,7 +113,7 @@
     </div>
     <!-- Scopo -->
     <div class="row">
-        <div class="col-sm-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label class="portfolio-hover" for="purpose">Scopo</label>
           <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
@@ -125,9 +128,9 @@
         </div>
       </div>
     </div>
-      <!-- Lingua -->
-      <div class="row">
-          <div class="col-sm-6">
+    <!-- Lingua -->
+    <div class="row">
+      <div class="col-sm-6">
         <div class="form-group"><label for="language">Lingua&nbsp;</label>
           <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
             <option v-for="option in options" v-bind:value="option.value">
@@ -140,10 +143,10 @@
         </div>
       </div>
     </div>
-
+    
     <!-- Categoria -->
     <div class="row">
-        <div class="col-sm-6">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="public">Pubblico&nbsp;</label>
           <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
@@ -153,13 +156,13 @@
           </select>
           <small id="publicHelpBlock" class="form-text text-muted">
                Pubblico adatto alla clip
-          </small>
+              </small>
         </div>
       </div>
     </div>
-      <!-- Categoria -->
-      <div class="row">
-          <div class="col-sm-6">
+    <!-- Categoria -->
+    <div class="row">
+      <div class="col-sm-6">
         <div class="form-group"><label for="category">Category&nbsp;</label>
           <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
             <option v-for="option in options" v-bind:value="option.value">
@@ -173,8 +176,8 @@
       </div>
     </div>
     
-
-
+    
+    
     <!--Livello -->
     <div class="row">
       <div class="col-sm-6">
@@ -185,16 +188,15 @@
         </select>
       </div>
     </div>
-
-
+    
     <!-- SIXT ROW FOR CLIPS... -->
     <div class="row"> 
       <div id="buttonSelection"  class="col-xl-2 offset-xl-5 text-center" style="margin-top: 2%;">
-
-        <!-- RECORDING -->
-        <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
-        
-        <!-- STOP -->
+          
+          <!-- RECORDING -->
+          <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
+          
+          <!-- STOP -->
         <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
 
       </div> 
