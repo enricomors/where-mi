@@ -7,6 +7,10 @@ html, body {
   color: #222;
 }
 
+.navbar {
+  padding: .8rem;
+}
+
 .navbar-nav li {
   padding-right: 1.3rem;
 }
@@ -22,11 +26,5 @@ html, body {
 
 #map {
   height: 94vh;
+  width: 100%;
 }
-
-/*
-.ul:last-child{
-  overflow: scroll;
-  overflow-y: scroll;
-
-}*/
