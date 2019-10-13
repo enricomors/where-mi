@@ -7,10 +7,6 @@ html, body {
   color: #222;
 }
 
-.navbar {
-  padding: .8rem;
-}
-
 .navbar-nav li {
   padding-right: 1.3rem;
 }

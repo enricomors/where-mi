@@ -1,62 +1,78 @@
-/** La costante port indica la porta su cui il server deve restare in ascolto (8000 perché richiesta da Gocker) */
-const port = 8000;
+var express = require('express');
+var app = express();
 
-/** Modulo express */
-const express = require('express');
+var cloudinary = require('cloudinary').v2;  //integrazione clip audio (cloudinary.com)
+ //integrazione clip audio (cloudinary.com)
 
-/** Modulo body parser, effettua parsing del body delle richieste */
-const bodyParser = require('body-parser');
+//Setup per metodo POST
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb', extended: true})); // support json encoded bodies
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true})); // support encoded bodies
 
-/** Modulo path, fornisce utilities per lavorare con percorsi di file e cartelle */
-const path = require('path');
 
-/** Chiama la funzione "express()" per creare una nuova applicazione Express, assegnata alla variabile "app" */
-const app = express();
+app.use(express.static( __dirname + "/static" ));
 
-/** app.use carica una funzione da utilizzare come middleware
- * express.static() prende un path in input e ritorna un middleware che fornisce accesso a tutti i file in quel path
- * serve tutti i file nella cartella 'static', e permette di accedervi attraverso il path '/static'
- */
-app.use('/static', express.static(path.join(__dirname, 'static')));
+// DOVE CERCARE I FILE STATICI
 
-/** */
-app.use(bodyParser.json({ limit: '500mb' }));
-
-/** */
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
-
-/** */
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Methods", 
-        "POST, PUT, OPTIONS, DELETE, GET");
-	res.header(
-        "Access-Control-Allow-Headers", 
-        "Orgin, X-Requested-With, Content-Type, Accept");
-	// passa al prossimo middleware
-	next();
+ 
+app.get('/', (req, res)=>{
+    res.sendFile('index.html', {root: __dirname});
 });
 
-/**
- * app.get() permette di gestire le richieste GET in entrata. Vengono intercettate tutte le richieste e ridirezionate in base all'URL
- */
-app.get('/*', (req,res) => {
-    if (req.path == '/') {
-        res.sendFile(path.join(__dirname, 'index.html'));
-    }
-    else if (req.path == '/browser.html' || req.path == '/browser') {
-      res.sendFile(path.join(__dirname, 'browser.html'));
-    }
-    else if (req.path == '/editor.html' || req.path == '/editor' ) {
-      res.sendFile(path.join(__dirname, 'editor.html')); 
-    } else {
-      res.sendFile(path.join(__dirname, 'index.html'));
-    }
+app.get('/browser.html', (req, res)=>{
+    res.sendFile( 'Browser.html','browser.html', {root: __dirname});
 });
 
-/** Resta in ascolto per richieste sulla porta 8000 */
-app.listen(port, () => {
-    console.log(`Running on port ${port}`);
-})
+app.get('/editor.html', (req, res)=>{
+    res.sendFile( 'Editor.html','editor.html', {root: __dirname});
+});
 
+
+// START SERVER
+app.listen(8000, function () {
+  console.log('Sto ascoltando sulla porta 8000!\n\n\n');
+});
+
+cloudinary.config({
+  cloud_name: 'tecweb19',
+  api_key: '169481168225682',
+  api_secret: 'o7d9GsJ0A-jWNUogb4vPSnpT6EA'
+});
+
+
+// API Upload to cloudinary (POST /api/audioclip)
+app.post('/api/audioclip', function(req, res) {
+  var rawClip = req.body.clip;
+  var durata = req.body.durata;
+  var orario = req.body.orario;
+  var data = req.body.data;
+  var titolo = req.body.titolo;
+  var metadati = req.body.metadati;
+  var posizione = req.body.posizione;
+
+  console.log(orario);
+
+  //upload su server cloudinary
+  cloudinary.uploader.upload(rawClip, {
+    resource_type: "video",
+    upload_preset: "toMp4",
+    tags: [metadati],
+    public_id: titolo + ":8FPHFC5J+7W",
+    context: {
+      alt: metadati,
+      caption: titolo
+    }
+  },
+  function(error, result) {
+    console.log(result, error);
+    if(!error){
+      res.send ({
+        ack:"200 OK",
+        url: result.secure_url,
+        titolo: result.public_id
+      });
+    }else{
+      res.send ("error upload to cloud server");
+    }
+  });
+});
