@@ -215,8 +215,26 @@
     <script type="text/javascript" src="static/javascript/browser.js"></script>
     <script type="text/javascript" src="static/javascript/vue_options.js"></script>
 
+    <script src="https://apis.google.com/js/client.js?onload=init" gapi_processed="true"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <!-- Custom scripts for this template -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/js/agency.min.js"></script>
 
+    <script>
+        var player;
+        // Crea un video player (riproduce solo audio)
+        function onYouTubeFrameAPIReady() {
+            player = new YT.Player('video', {
+                width: 1,
+                height: 1,
+                origin: 'https://site181911.tw.cs.unibo.it',
+                playerVars: {
+                    playsinline: '1',
+                    listType: 'playlist'
+                }
+            });
+        }
+    </script>
 </body>
 </html>

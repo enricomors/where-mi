@@ -1,5 +1,3 @@
-import { generateKeyPair } from "crypto";
-
 /** Mapbox token */
 const leaflet_access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
 /** Coordinate di default */
@@ -148,6 +146,85 @@ function showCards() {
                 marker.bindPopup(popup).addTo(map);
                 // click listener per il marker
                 marker.on('click', routing);
+                // carica player API per il video player
+                var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/player_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                // aggiunge le card delle clip nella sezione #clips
+                $('#clips').append(
+                    `<!-- Start: Animation Cards -->
+                    <article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
+                    <div class="card cards-shadown cards-hover" style="height: 35rem;">
+
+                    <!-- CARD HEADER-->
+                    <div class="card-header text-left" style="background-color: #fed136;width: 100%;height: 100%;"><span class="space"><a id="${idVideo}map" href="#map"><i class="fa fa-map" id="download-icon"></i></a></span>
+                    <div class="cardheader-text">
+                    <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
+                    <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
+                    </div>
+                    </div>
+
+                    <!-- CARD BODY-->
+                    <div class="card-body" style="color:black;">
+                    <ul class="list-group text-left">
+                    <li class="list-group-item"><span><i><b>Language:&nbsp</b></i> ${language}</span></li>
+                    <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
+                    <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${description}</span></li>
+                    </ul>
+                    </div>
+
+                    <!-- CARD FOOTER-->
+                    <div class="card-footer text-center">
+                    <button class="previous btn">
+                    <i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
+                    </button>
+                    <button id="${idVideo}" class="btn">
+                    <i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
+                    </button>
+                    <button class="pause btn">
+                    <i class="fa fa-pause-circle" style="font-size: 30px;"></i>
+                    </button>
+                    <button class="next btn">
+                    <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
+                    </button>
+                    </div>
+                    </div>
+                    <!-- End: Animation Cards -->
+
+                    <script>
+                    $("#${idVideo}map").click(function(){
+                        $.each(map._layers, function(i, item){
+                            if(this.options.myCustomId == "${idVideo}map"){
+                                this.openPopup();
+                                map.flyTo(this._latlng)
+                            }
+                        });
+                    });
+
+                    $("#${idVideo}").click(function(){ 
+                        player.loadVideoById(this.id);
+                    });
+
+                    $(".pause").click(function(){
+                        player.pauseVideo();
+                    });
+
+                    $(".previous").click(function() {
+                        console.log("previous");
+                        player.previousVideo();
+                        player.playVideo();
+                    });
+
+                    $(".next").click(function() {
+                        console.log("next");
+                        player.nextVideo();
+                        player.playVideo();
+                    });
+                    </script>
+                    </article>`
+                );
             });
         });
     });
@@ -159,8 +236,17 @@ function routing() {
     
 }
 
+function filer() {
+    
+}
+
+function filerClips() {
+    
+}
+
 
 /**
+ * FORMATO RISPOSTA di gapi.client.youtube.search.list
  * {
   "kind": "youtube#searchResult",
   "etag": etag,
