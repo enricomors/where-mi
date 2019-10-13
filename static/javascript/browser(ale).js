@@ -1,3 +1,4 @@
+// versione dello script browser.js di Ale
 var map = L.map('map').fitWorld();
 
 var markerPosizioneAttuale;
