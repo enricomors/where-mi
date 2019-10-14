@@ -41,7 +41,7 @@ $(document).ready(() => {
 /** Inizializza la mappa leaflet */
 function mapInit(coords) {
     /** Crea nuova mappa Setta le coordinate di default e il livello di zoom */
-    map = L.map('map').map.setView(coords, 14);
+    map = L.map('map').setView(coords, 14);
     /** Setta il tileLayer */
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
  		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery Â© <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -58,12 +58,10 @@ function updateMap(coords) {
     if (currPosition) {
         currPosition.remove();
     }
-    lat = coords.latitude;
-    lng = coords.longitude;
     /** Setta la mappa sulle nuove coordinate */
-    map.setView([lat, lng], 14);
+    map.setView(coords, 14);
     /** Marker della posizone corrente */
-    currPosition = L.marker([lat, lng], { draggable: 'true' });
+    currPosition = L.marker(coords, { draggable: 'true' });
     currPosition.setIcon(redIcon);
     /** Crea il popup per il marker */
     currPosition.bindPopup(
@@ -73,6 +71,7 @@ function updateMap(coords) {
         </div>`).openPopup();
     /** Aggiunge il marker alla mappa */
     currPosition.addTo(map);
+    /** Setta callback per evento di click */
     currPosition.on('click', onMarkerClick);
 };
 
@@ -89,7 +88,7 @@ function onMarkerClick(marker) {
 /** Ottiene la posizione attuale */
 function getLocation() {
     navigator.geolocation.getCurrentPosition(
-        pos => updateMap(pos.coords)
+        pos => updateMap([pos.coords.latitude, pos.coords.longitude])
     );
 };
 
