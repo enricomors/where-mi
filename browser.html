@@ -8,6 +8,9 @@
     <title>Where M I - Browser</title>
 
     <!-- ADD EXTERNAL RESOURCES -->
+
+    <!-- Script JS per settare API di YouTube -->
+    <script src="/static/javascript/auth.js"></script>
     
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
@@ -53,11 +56,13 @@
     integrity="sha512-YUgyCwPXzSCFuYgNIsumhktAolzwxETPBwc+xAgJOW7B3/1r1EKf0WYpmNo+6a/9C/EAF9RxYnMynEmd+77fTA=="
     crossorigin=""></script>
 
-    <!-- Google APIs -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- Google APIs (without "async defer") -->
+    <script src="https://apis.google.com/js/platform.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init"></script>
+    <!-- Richiama onClientLoad di auth.js -->
+    <script src="https://apis.google.com/js/client.js?onload=onClientLoad"></script>
 
     <!-- Open Location Code -->
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
@@ -235,10 +240,10 @@
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="/static/javascript/Geocoder.js"></script>
     <script src="/static/javascript/config.js"></script>
-    <script src="static/javascript/browser-ale.js"></script>
+    <script src="static/javascript/browser.js"></script>
     <script src="static/javascript/vue_options.js"></script>
 
-    <script src="https://apis.google.com/js/client.js?onload=init" gapi_processed="true"></script>
+    <!-- youtube iframe api -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Custom scripts for this template -->

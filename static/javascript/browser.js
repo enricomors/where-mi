@@ -1,273 +1,257 @@
-/** Mapbox token */
-const leaflet_access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-/** Coordinate di default */
-const default_coords = [44.4940258,11.340965];
+// versione dello script browser.js di Ale
 
-/** Icone per i marker */
-var blueIcon = L.icon({
-    iconUrl: '/blue-icon.png',
-	iconSize: [25, 40],
-	iconAnchor: [12, 40],
-	popupAnchor: [1, -35],
-});
-var redIcon = L.icon({
-    iconUrl: '/red-icon.png',
-	iconSize: [25, 40],
-	iconAnchor: [12, 40],
-	popupAnchor: [1, -35],
-});
+const access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
 
-/** Mostra nuovo marker sulla mappa */
-var newPoint = L.marker();
+var markerPosizioneAttuale;
+var circlePosizioneAttuale;
+var markerSearch;
+var circleSearch;
 
-var currPosition;
-var selectedPoint;
-var tappa;
-var myPosition;
+var markerDraggable;
+var circleDraggable;
+var currentPosition;
+
 var routingControl = null;
 
 /** Clip di youtube */
 var idYT = [];
 var datiVideo = {};
 
-/** Quando il DOM è pronto ad eseguire il codice js */
-$(document).ready(() => {
-    // Inizializza la mappa
-    mapInit(default_coords);
-    // mostra le card per le clip
-    showCards();
+/** Marker verde */
+var greenIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
 });
 
-/** Inizializza la mappa leaflet */
-function mapInit(coords) {
-    /** Crea nuova mappa Setta le coordinate di default e il livello di zoom */
-    map = L.map('map').setView(coords, 14);
-    /** Setta il tileLayer */
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
- 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery Â© <a href="https://www.mapbox.com/">Mapbox</a>',
- 		maxZoom: 22,
- 		id: 'mapbox.streets',
- 		accessToken: leaflet_access_token
-    }).addTo(map);
-    /** Richiesta location */
-    getLocation();
-};
+/** Inizializza la mappa Leaflet */
+var map = L.map('map').fitWorld();
 
-/** Aggiorna la mappa con le coordinate ricevute dal browser */
-function updateMap(coords) {
-    if (currPosition) {
-        currPosition.remove();
-    }
-    /** Setta la mappa sulle nuove coordinate */
-    map.setView(coords, 14);
-    /** Marker della posizone corrente */
-    currPosition = L.marker(coords, { draggable: 'true' });
-    currPosition.setIcon(redIcon);
-    /** Crea il popup per il marker */
-    currPosition.bindPopup(
-        `<div style="text-align: center;">
+/** Tile layer per la mappa */
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: access_token
+}).addTo(map);
+
+/** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
+navigator.geolocation.getCurrentPosition(displayLocation);
+
+/** Mostra sulla mappa la posizione ricevuta dal browser */
+function displayLocation(position) {
+   // console.log('position', position);
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    // aggiorna la posizione corrente
+    currentPosition = [lat, lng];
+    // apre la mappa sulla posizione ricevuta dal browser
+    map.setView([lat, lng], 18);
+    // crea marker per la posizione attuale con popup
+    markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+    markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
 		<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-		<hr align="center">If location is incorrect, drag the marker</a>
+        <hr align="center">If location is incorrect, drag the marker
+        <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
+        class="btn btn-success">Search clips</button>
         </div>`).openPopup();
-    /** Aggiunge il marker alla mappa */
-    currPosition.addTo(map);
-    /** Setta callback per evento di click */
-    currPosition.on('click', onMarkerClick);
-};
-
-/** Gestisce l'evento di click su marker esistente */
-function onMarkerClick(marker) {
-    newPoint.remove();
-    if (selectedPoint) {
-        selectedPoint.setIcon(blueIcon);
-    }
-    selectedPoint = marker.target;
-    selectedPoint.setIcon(redIcon);
+    markerPosizioneAttuale.addTo(map);
 }
 
-/** Ottiene la posizione attuale */
-function getLocation() {
-    navigator.geolocation.getCurrentPosition(
-        pos => updateMap([pos.coords.latitude, pos.coords.longitude])
-    );
-};
+function loadYTVideos() {
+    /** Ricerca i video di YouTube in base all'API key */
+    var req = gapi.client.youtube.search.list({
+        part: 'snippet',
+        type: 'video',
+        q: '8FPHF9Q5+J4',
+        maxResults: 50,
+        order: 'title'
+    });
+    // esegue la richiesta
+    req.execute((resp) => {
+        console.log(resp);
+        // scorre le risorse contenute nella risposta
+        resp.result.items.forEach((item) => {
+            // estrae i dati del video
+            let name = item.snippet.title.split(":")[0];
+            let metaDati = item.snippet.description.split("#")[0];
+            let description = item.snippet.description.split("#")[1];
+            let idVideo = item.id.videoId;
+            // inserisce id del video in idYT
+            idYT.push(idVideo);
+            // estrare i uno per uno i metadati dalla stringa
+            let olc = metaDati.split(":")[0];
+            let purpose = metaDati.split(":")[1];
+            let language = metaDati.split(":")[2];
+            let category = metaDati.split(":")[3];
+            let audience = metaDati.split(":")[4];
+            let detail = metaDati.split(":")[5];
+            // ricava le coordinate della clip dall'olc
+            let coords = OpenLocationCode.decode(olc);
+            let dati = {
+                "purpose": purpose,
+                "language": language,
+                "category": category,
+                "audience": audience,
+                "detail": detail
+            };
+            datiVideo[idVideo] = dati;
+            // crea popup per il marker della clip 
+            let popup = 
+            `<div id="${idVideo}popup" style="text-align: center;">
+            <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
+            <hr align="center">
+            <a id="${idVideo}link" class="btn" style="color: #fed136;" href="#${idVideo}card">Vai alla clip!</a>
+            </div>`;
+            // crea marker nelle posizioni delle clips
+            var marker = L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
+                .bindPopup(popup).addTo(map).on('click', routing);
+            // carica player API per il video player
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/player_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            // aggiunge le card delle clip nella sezione #clips
+            $('#clips').append(
+                `<!-- Start: Clip Cards -->
+                <article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
+                <div class="card cards-shadown cards-hover" style="height: 35rem;">
 
-function showCards() {
+                <!-- CARD HEADER-->
+                <div class="card-header text-left" style="background-color: #fed136;width: 100%;height: 100%;"><span class="space"><a id="${idVideo}map" href="#map"><i class="fa fa-map" id="download-icon"></i></a></span>
+                <div class="cardheader-text">
+                <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
+                <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
+                </div>
+                </div>
 
-    gapi.client.load('youtube', 'v3', () => {
-        // richiesta ricerca clip
-        var req = gapi.client.youtube.search.list({
-            part: 'snippet',
-            type: 'video',
-            q: '8FPHF9Q5+J4',
-            maxResults: 50,
-            order: 'title'
-        });
-        // esegue la richiesta
-        req.execute((resp) => {
-            console.log(resp);
-            // scorre le risorse contenute nella risposta
-            resp.result.items.forEach((item) => {
-                // estrae i dati del video
-                let name = item.snippet.title.split(":")[0];
-                let metaDati = item.snippet.description.split("#")[0];
-                let description = item.snippet.description.split("#")[1];
-                let idVideo = item.id.videoId;
-                // inserisce id del video in idYT
-                idYT.push(idVideo);
-                // estrare i uno per uno i metadati dalla stringa
-                let olc = metaDati.split(":")[0];
-                let purpose = metadati.split(":")[1];
-            	let language = metadati.split(":")[2];
-                let category = metadati.split(":")[3];
-                let audience = metadati.split(":")[4];
-                let detail = metadati.split(":")[5];
-                // ricava le coordinate della clip dall'olc
-                let coords = OpenLocationCode.decode(olc);
-                let dati = {
-                    "purpose": purpose,
-                    "language": language,
-                    "category": category,
-                    "audience": audience,
-                    "detail": detail
-                };
-                datiVideo[idVideo] = dati;
-                // crea popup per il marker della clip 
-                let popup = 
-                `<div id="${idVideo}popup" style="text-align: center;">
-                <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
-                <hr align="center">
-                <a id="${idVideo}link" class="btn" style="color: #fed136;" href="#${idVideo}card">Vai alla clip!</a>
-                </div>`;
-                // crea marker nelle posizioni delle clips
-                var marker = L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" });
-                // aggiunge il marker alla mappa
-                marker.bindPopup(popup).addTo(map);
-                // click listener per il marker
-                marker.on('click', routing);
-                // carica player API per il video player
-                var tag = document.createElement('script');
-                tag.src = "https://www.youtube.com/player_api";
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                // aggiunge le card delle clip nella sezione #clips
-                $('#clips').append(
-                    `<!-- Start: Animation Cards -->
-                    <article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
-                    <div class="card cards-shadown cards-hover" style="height: 35rem;">
+                <!-- CARD BODY-->
+                <div class="card-body" style="color:black;">
+                <ul class="list-group text-left">
+                <li class="list-group-item"><span><i><b>Language:&nbsp</b></i> ${language}</span></li>
+                <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
+                <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
+                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${description}</span></li>
+                </ul>
+                </div>
 
-                    <!-- CARD HEADER-->
-                    <div class="card-header text-left" style="background-color: #fed136;width: 100%;height: 100%;"><span class="space"><a id="${idVideo}map" href="#map"><i class="fa fa-map" id="download-icon"></i></a></span>
-                    <div class="cardheader-text">
-                    <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
-                    <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
-                    </div>
-                    </div>
+                <!-- CARD FOOTER-->
+                <div class="card-footer text-center">
+                <button class="previous btn">
+                <i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
+                </button>
+                <button id="${idVideo}" class="btn">
+                <i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
+                </button>
+                <button class="pause btn">
+                <i class="fa fa-pause-circle" style="font-size: 30px;"></i>
+                </button>
+                <button class="next btn">
+                <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
+                </button>
+                </div>
+                </div>
+                <!-- End: Animation Cards -->
 
-                    <!-- CARD BODY-->
-                    <div class="card-body" style="color:black;">
-                    <ul class="list-group text-left">
-                    <li class="list-group-item"><span><i><b>Language:&nbsp</b></i> ${language}</span></li>
-                    <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
-                    <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${description}</span></li>
-                    </ul>
-                    </div>
-
-                    <!-- CARD FOOTER-->
-                    <div class="card-footer text-center">
-                    <button class="previous btn">
-                    <i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
-                    </button>
-                    <button id="${idVideo}" class="btn">
-                    <i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
-                    </button>
-                    <button class="pause btn">
-                    <i class="fa fa-pause-circle" style="font-size: 30px;"></i>
-                    </button>
-                    <button class="next btn">
-                    <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
-                    </button>
-                    </div>
-                    </div>
-                    <!-- End: Animation Cards -->
-
-                    <script>
-                    $("#${idVideo}map").click(function(){
-                        $.each(map._layers, function(i, item){
-                            if(this.options.myCustomId == "${idVideo}map"){
-                                this.openPopup();
-                                map.flyTo(this._latlng)
-                            }
-                        });
+                <script>
+                $("#${idVideo}map").click(function(){
+                    $.each(map._layers, function(i, item){
+                        if(this.options.myCustomId == "${idVideo}map"){
+                            this.openPopup();
+                            map.flyTo(this._latlng)
+                        }
                     });
+                });
 
-                    $("#${idVideo}").click(function(){ 
-                        player.loadVideoById(this.id);
-                    });
+                $("#${idVideo}").click(function(){ 
+                    player.loadVideoById(this.id);
+                });
 
-                    $(".pause").click(function(){
-                        player.pauseVideo();
-                    });
+                $(".pause").click(function(){
+                    player.pauseVideo();
+                });
 
-                    $(".previous").click(function() {
-                        console.log("previous");
-                        player.previousVideo();
-                        player.playVideo();
-                    });
+                $(".previous").click(function() {
+                    console.log("previous");
+                    player.previousVideo();
+                    player.playVideo();
+                });
 
-                    $(".next").click(function() {
-                        console.log("next");
-                        player.nextVideo();
-                        player.playVideo();
-                    });
-                    </script>
-                    </article>`
-                );
-            });
+                $(".next").click(function() {
+                    console.log("next");
+                    player.nextVideo();
+                    player.playVideo();
+                });
+                </script>
+                </article>`
+            );
         });
     });
+};
+
+/** Funzionalità di Routing */
+function routing() {
+    // se presente, rimuove la casella di controllo del routing dalla mappa
+    if (routingControl != null) {
+        map.removeControl(routingControl);
+        routingControl = null;
+    }
+    // restitusce le coordinate del marker cliccato
+    coordDest = this.getLatLng();
+    // opzioni per il router leaflet: indicazioni a piedi, lingua italiana
+    let options = { profile: 'mapbox/walking', language: 'it' };
+    // inizializza nuovo routing control
+    routingControl = L.Routing.control({
+        waypoints: [currentPosition, coordDest],
+        showAlternatives: 'false',
+        router: new L.Routing.mapbox(access_token, options)
+    }).addTo(map);
     
 };
 
-/** Funzione di navigazione */
-function routing() {
+function filter() {
     
-}
+};
 
-function filer() {
+function filterClips() {
     
+};
+
+// set the popup information: latlng and address
+function addPopup(marker) {
+    // OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
+    var jsonQuery = "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + marker.getLatLng().lat + "&lon=" + marker.getLatLng().lng + "&zoom=18&addressdetails=1";
+
+    $.getJSON(jsonQuery).done( function (result_data) {
+        console.log(result_data);
+
+        var road;
+
+        if(result_data.address.road) {
+            road = result_data.address.road;
+        }
+        else if (result_data.address.pedestrian) {
+            road = result_data.address.pedestrian;
+        }
+        else {
+            road = "No defined";
+        }
+        var olc= OpenLocationCode.encode(marker.getLatLng().lat, marker.getLatLng().lng, 10);
+
+        var popup_text = "<b>Olc:</b> "+ olc  +
+            "</br><b>Road:</b> " + road + ", " + result_data.address.house_number +
+            "</br><b>City:</b> " + result_data.address.city +
+            "</br><b>Postal Code:</b> " + result_data.address.postcode;
+
+        marker.bindPopup(popup_text).openPopup();
+
+        map.removeLayer(markerPosizioneAttuale);
+        map.removeLayer(circlePosizioneAttuale);
+        if(markerSearch) {
+            map.removeLayer(markerSearch);
+            map.removeLayer(circleSearch);
+        }
+    });
 }
-
-function filerClips() {
-    
-}
-
-
-/**
- * FORMATO RISPOSTA di gapi.client.youtube.search.list
- * {
-  "kind": "youtube#searchResult",
-  "etag": etag,
-  "id": {
-    "kind": string,
-    "videoId": string,
-    "channelId": string,
-    "playlistId": string
-  },
-  "snippet": {
-    "publishedAt": datetime,
-    "channelId": string,
-    "title": string,
-    "description": string,
-    "thumbnails": {
-      (key): {
-        "url": string,
-        "width": unsigned integer,
-        "height": unsigned integer
-      }
-    },
-    "channelTitle": string,
-    "liveBroadcastContent": string
-  }
- */
