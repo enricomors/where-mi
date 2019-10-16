@@ -10,6 +10,7 @@ var circleSearch;
 var markerDraggable;
 var circleDraggable;
 var currentPosition;
+var currentOlc;
 
 var routingControl = null;
 
@@ -47,6 +48,8 @@ function displayLocation(position) {
     var lng = position.coords.longitude;
     // aggiorna la posizione corrente
     currentPosition = [lat, lng];
+    // ottiene l'OLC della posizione corrente
+    currentOlc = OpenLocationCode.encode(lat, lng);
     // apre la mappa sulla posizione ricevuta dal browser
     map.setView([lat, lng], 18);
     // crea marker per la posizione attuale con popup
@@ -61,11 +64,14 @@ function displayLocation(position) {
 }
 
 function loadYTVideos() {
+    // Crea query string x YouTube con i primi 6 caratteri dell'OLC
+    var queryString = currentOlc.substring(0, 5);
+    console.log(queryString);
     /** Ricerca i video di YouTube in base all'API key */
     var req = gapi.client.youtube.search.list({
         part: 'snippet',
         type: 'video',
-        q: '8FPHF9Q5+J4',
+        q: queryString,
         maxResults: 50,
         order: 'title'
     });
