@@ -29,7 +29,7 @@ var greenIcon = new L.Icon({
 });
 
 /** Inizializza la mappa Leaflet */
-var map = L.map('map').fitWorld();
+var map = L.map('map').setView([ 44.493671, 11.343035], 15);
 
 /** Tile layer per la mappa */
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -59,7 +59,7 @@ function displayLocation(position) {
     map.setView([lat, lng], 18);
     // crea marker per la posizione attuale con popup
     markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-   
+
     markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
 		<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
         <hr align="center">If location is incorrect, drag the marker
@@ -67,8 +67,28 @@ function displayLocation(position) {
         class="btn btn-success">Search clips</button>
         </div>`).openPopup();
     markerPosizioneAttuale.addTo(map);
-    
+
 }
+
+//* funzione per modificare la posizione attuale */
+//* rodondanza codice*/
+function onMapClick(e) {
+  if (markerPosizioneAttuale) {
+   map.removeLayer(markerPosizioneAttuale);
+ }
+  markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'true'});
+  markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
+  <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
+      <hr align="center">If location is incorrect, drag the marker
+      <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
+      class="btn btn-success">Search clips</button>
+      </div>`).openPopup();
+  markerPosizioneAttuale.addTo(map);
+	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
+  console.log(currentOlc);
+	}
+
+	map.on('click', onMapClick);
 
 function loadYTVideos() {
     // Crea query string x YouTube con i primi 6 caratteri dell'OLC
@@ -112,8 +132,8 @@ function loadYTVideos() {
                 "detail": detail
             };
             datiVideo[idVideo] = dati;
-            // crea popup per il marker della clip 
-            let popup = 
+            // crea popup per il marker della clip
+            let popup =
             `<div id="${idVideo}popup" style="text-align: center;">
             <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
             <hr align="center">
@@ -174,7 +194,7 @@ function loadYTVideos() {
                     });
                 });
 
-                $("#${idVideo}").click(function(){ 
+                $("#${idVideo}").click(function(){
                     player.loadVideoById(this.id);
                 });
 
@@ -217,15 +237,15 @@ function routing() {
         showAlternatives: 'false',
         router: new L.Routing.mapbox(access_token, options)
     }).addTo(map);
-    
+
 };
 
 function filter() {
-    
+
 };
 
 function filterClips() {
-    
+
 };
 
 // set the popup information: latlng and address
