@@ -17,8 +17,7 @@ footer.page-footer {
 #map {
   margin: 80px 30px;
   height: 88vh;
-
-
+  
 }
 
 @media only screen and (max-width: 768px) {
@@ -32,8 +31,7 @@ footer.page-footer {
   }
 }
 
-
-/* style for direction mapp */
+/* style for direction map */
 .results {
   background-color: white;
   opacity: 0.8;

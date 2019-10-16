@@ -79,17 +79,3 @@ var select_detail = new Vue({
 	}
 })
 
-
-var select_plalist = new Vue({
-	el: '#playlist',
-	data: {
-		selected: '1',
-		options: [
-		{ text: '1', value: '1' },
-		{ text: '2', value: '2' },
-		{ text: '3', value: '3' },
-		{ text: '4', value: '4' },
-		{ text: '5', value: '5' }
-		]
-	}
-})

@@ -79,6 +79,7 @@ function loadYTVideos() {
             let metaDati = item.snippet.description.split("#")[0];
             let description = item.snippet.description.split("#")[1];
             let idVideo = item.id.videoId;
+            console.log(idVideo);
             // inserisce id del video in idYT
             idYT.push(idVideo);
             // estrare i uno per uno i metadati dalla stringa
@@ -108,11 +109,6 @@ function loadYTVideos() {
             // crea marker nelle posizioni delle clips
             var marker = L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                 .bindPopup(popup).addTo(map).on('click', routing);
-            // carica player API per il video player
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/player_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             // aggiunge le card delle clip nella sezione #clips
             $('#clips').append(
                 `<!-- Start: Clip Cards -->
