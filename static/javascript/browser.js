@@ -40,9 +40,14 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 /** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
 navigator.geolocation.getCurrentPosition(displayLocation);
-
+//Controllo su posizione non trovata
+//TODO:aggiungere popup per inserire manualmente la posizione
+if(!navigator.geolocation){
+    alert("Inserisci posizione manualmente");
+}
 /** Mostra sulla mappa la posizione ricevuta dal browser */
 function displayLocation(position) {
+
    // console.log('position', position);
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
@@ -54,6 +59,7 @@ function displayLocation(position) {
     map.setView([lat, lng], 18);
     // crea marker per la posizione attuale con popup
     markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+   
     markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
 		<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
         <hr align="center">If location is incorrect, drag the marker
@@ -61,6 +67,7 @@ function displayLocation(position) {
         class="btn btn-success">Search clips</button>
         </div>`).openPopup();
     markerPosizioneAttuale.addTo(map);
+    
 }
 
 function loadYTVideos() {
