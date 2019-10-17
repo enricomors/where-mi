@@ -1,54 +1,39 @@
-//Definizione delle costanti : 
-const leaflet_access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-const default_coords = [44.4940258,11.340965];
-const ENCONDING_TYPE = "mp3"
 
-//DEFINIZIONE VARIABILI GLOBALI: 
-//Mappa
-var map;
-//Icone per marker 
-var audioIcon = L.icon({
-  iconUrl: 'static/images/audio_icon.png',
-  iconSize: [30, 30],
-  iconAnchor: [15, 35],
-  popupAnchor: [1, -30],
-}); //Icona per nuove clip
- var myPositionIcon = L.icon({
-  iconUrl: 'static/images/mini_me.png',
-  iconSize: [30,30],
-  iconAnchor: [15,35],
-  popupAnchor: [1,-30],
-  }); //Icona per la mia posizione
+const access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
 
-var newPoint = L.marker();
-var selectedPoint; 
-var player; 
+var markerPosizioneAttuale;
+var circlePosizioneAttuale;
+var markerSearch;
+var circleSearch;
 
-const CLIENT_ID = "374634433123-44v977h2u92555m0jtntuuru17kh8qhn.apps.googleusercontent.com";
+var markerDraggable;
+var circleDraggable;
+var currentPosition;
+var currentOlc;
 
-const DISCOVERY_DOCS = [
-'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
-];
-const SCOPES = 'https://www.googleapis.com/auth/youtube'
-/**
- * 
- * 
- */
-//Call back per form e clips
-$( document ).ready(function() {
-
-  // Inizializzazione mappa con coordinate di default
-  mapInit(default_coords);
-
-  showForm();
-
-  // record clip
-  recordClip();
-
-  // record video
-  recordVideo();
-
+/** Marker verde */
+var greenIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
+
+/** Inizializza la mappa Leaflet */
+var map = L.map('map').setView([ 44.493671, 11.343035], 15);
+
+/** Tile layer per la mappa */
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: access_token
+}).addTo(map);
+
+navigator.geolocation.getCurrentPosition(displayLocation);
+
+
 
 /**
  * SEZIONE PER IL LOGIN
@@ -163,6 +148,61 @@ function showMarkers() {
       });
 };
 
+/** Mostra sulla mappa la posizione ricevuta dal browser */
+function displayLocation(position) {
+  // console.log('position', position);
+   var lat = position.coords.latitude;
+   var lng = position.coords.longitude;
+   // apre la mappa sulla posizione ricevuta dal browser
+   map.setView([lat, lng], 18);
+   // crea marker per la posizione attuale con popup
+   markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+   markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
+   <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
+   <hr align="center">If location is incorrect, drag the marker</a>
+       </div>`).openPopup();
+   markerPosizioneAttuale.addTo(map);
+}
+
+// set the popup information: latlng and address
+function addPopup (marker) {
+  // OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
+  var jsonQuery = "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + marker.getLatLng().lat + "&lon=" + marker.getLatLng().lng + "&zoom=18&addressdetails=1";
+
+  $.getJSON(jsonQuery).done( function (result_data) {
+      console.log(result_data);
+
+      var road;
+
+      if(result_data.address.road) {
+          road = result_data.address.road;
+      }
+      else if (result_data.address.pedestrian) {
+          road = result_data.address.pedestrian;
+      }
+      else {
+          road = "No defined";
+      }
+      var olc= OpenLocationCode.encode(marker.getLatLng().lat, marker.getLatLng().lng, 10);
+
+      var popup_text = "<b>Olc:</b> "+ olc  +
+          "</br><b>Road:</b> " + road + ", " + result_data.address.house_number +
+          "</br><b>City:</b> " + result_data.address.city +
+          "</br><b>Postal Code:</b> " + result_data.address.postcode;
+
+      marker.bindPopup(popup_text).openPopup();
+
+      map.removeLayer(markerPosizioneAttuale);
+      map.removeLayer(circlePosizioneAttuale);
+      if(markerSearch) {
+          map.removeLayer(markerSearch);
+          map.removeLayer(circleSearch);
+      }
+
+  });
+
+}
+/*
 // Handler click event on map
 function onMapClick(e) {
 
@@ -276,6 +316,7 @@ function mapInit(coord) {
     // Event setup
     map.on('click', onMapClick);
   }
+*/
 
 // record clip 
 function recordClip() {
