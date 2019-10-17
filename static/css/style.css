@@ -1,0 +1,7 @@
+ul.nav a.nav-link:hover {
+    color: #04af73 !important; 
+}
+
+ul.nav a.nav-link.active {
+    color: #04af73 !important;
+}

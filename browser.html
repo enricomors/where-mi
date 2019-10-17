@@ -28,6 +28,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="static/css/browser.css" type="text/css">
+    <link rel="stylesheet" href="static/css/style.css">
 
     <!-- Routing conrol-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
@@ -61,6 +62,7 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     <script src="https://apis.google.com/js/platform.js?onload=init"></script>
+
     <!-- Richiama onClientLoad di auth.js -->
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad"></script>
 
@@ -81,7 +83,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
         <div class="container">
-            <a href="/" class="navbar-brand js-scroll-trigger">Where Am I?</a>
+            <a href="/" class="navbar-brand text-success js-scroll-trigger">Where Am I?</a>
             <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -218,10 +220,10 @@
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
                         <li class="list-inline-item">
-                            <a href="#">Privacy Policy</a>
+                            <a class="text-success" href="#">Privacy Policy</a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#">Terms of Use</a>
+                            <a class="text-success" href="#">Terms of Use</a>
                         </li>
                     </ul>
                 </div>

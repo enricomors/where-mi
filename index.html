@@ -19,9 +19,7 @@
 
         <!-- Custom CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/css/agency.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="static/css/index.css">
-
-
+        <link rel="stylesheet" href="static/css/style.css">
 
     </head>
 
@@ -30,7 +28,7 @@
     <!-- Navbar -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="/">Where M I</a>
+                <a class="navbar-brand text-success js-scroll-trigger" href="/">Where M I</a>
                 <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
@@ -67,7 +65,7 @@
                 <div class="intro-text">
                     <div class="intro-lead-in"><span>Welcome to Where M I</span></div>
                     <div class="intro-heading"><span>The 21st century guide</span></div>
-                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Our Services</a>
+                    <a class="btn btn-success btn-xl text-uppercase js-scroll-trigger" href="#services">Our Services</a>
                 </div>
             </div>
             <!-- Photo credits -->
@@ -78,45 +76,49 @@
                             <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
                         </svg>
                     </span>
-                    <span style="display:inline-block;padding:2px 3px">Photo by: Clem Onojeghuo</span>
+                    <span style="display:inline-block;padding:2px 3px">Photo by Antonio Grosz on Unsplash</span>
                 </a>
 
         </header>
+
         <!-- TODO: trovare immagine di sfondo -->
 
-        <!-- Services Section -->
+        <!-- #Services -->
         <section class="page-section" id="services">
-            <div class="container">
-              <h2 class="text-center mt-0">Our Services</h2>
-              <hr class="divider my-4">
-              <div class="row mx-auto">
-
-                <div class="col-lg-3 col-md-6 text-center">
-                  <div class="mt-5 text-center">
-                    <i class="fas fa-4x fa-directions text-primary mb-4"></i>
-                    <a href="browser.html" class="h4 mb-2" >Browser</a>
-                    <p class="text-muted mb-0">Find the best intersting location of the city where you're located.</p>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                  <div class="mt-5">
-                    <i class="fas fa-4x fa-link text-primary mb-4"></i>
-                    <a href="editor.html" class="h4 mb-2" >Editor</a>
-                    <p class="text-muted mb-0">Make you know new informations about the city you choose.</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </section>
-
-
-        <!-- About Section (info su wheremi) -->
-        <section id="about">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <h2>About</h2>
+                        <h2 class="text-uppercase section-heading">Services</h2>
+                        <h3 class="text-muted section-subheading">Our services</h3>
+                    </div>
+                </div>
+                <div class="row text-center" style="margin-left: 0%; margin-right: 0px;">
+                    <div class="col-md-6">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-map-marker-alt text-success"></i>
+                        </span>
+                        <h4 class="section-heading">Browser</h4>
+                        <p class="text-center text-muted">Find the best intersting location of the city where you're located.</p>
+                        <a href="/browser.html" role="button" class="btn btn-success btn-xl text-uppercase js-scroll-trigger">try it now!</a>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-microphone-alt text-success"></i>
+                        </span>
+                        <h4 class="section-heading">Editor</h4>
+                        <p class="text-center text-muted">Make you know new informations about the city you choose</p>
+                        <a href="/editor.html" role="button" class="btn btn-success btn-xl text-uppercase js-scroll-trigger">try it now!</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section (info su wheremi) -->
+        <section class="page-section" id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h2 class="text-uppercase section-heading">About</h2>
                         <h3 class="text-muted section-subheading">Where M I story</h3>
                     </div>
                 </div>
@@ -133,15 +135,15 @@
 
         <!-- Team Section -->
         <section class="page-section" id="team">
-                <div class="container">
-                  <div class="row justify-content-center">
+            <div class="container">
+                <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
                         <h2 class="section-heading">Team</h2>
                         <h3 class="section-subheading text-muted">The people behind WhereMI</h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xl-3">
                         <div class="team-member">
                             <img src="static/images/enrico.jpg" alt="" class="mx-auto rounded-circle">
                             <h4>Enrico Morselli</h4>
@@ -165,7 +167,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xl-3">
                         <div class="team-member">
                             <img src="static/images/marco.jpg" alt="#" class="mx-auto rounded-circle">
                             <h4>Marco Aspromonte</h4>
@@ -189,7 +191,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xl-3">
                         <div class="team-member">
                             <img src="static/images/alessandro.jpg" alt="#" class="mx-auto rounded-circle">
                             <h4>Alessandro Memoli</h4>
@@ -213,7 +215,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-4 col-xl-3">
                         <div class="team-member">
                             <img src="static/images/tom.jpg" alt="#" class="mx-auto rounded-circle">
                             <h4>Thomas Lodi</h4>
@@ -242,28 +244,28 @@
         </section>
 
          <!-- Contact Section -->
-  <section class="page-section" id="contact">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h2 class="mt-0 text-warning">Let's Get In Touch!</h2>
-          <hr class="divider my-4">
-          <p class="text-muted mb-5">If you need help, contact us!</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
-          <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
-          <div><a class="text-warning">327957895462</a></div>
-        </div>
-        <div class="col-lg-4 mr-auto text-center">
-          <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
-          <!-- Make sure to change the email address in anchor text AND the link below! -->
-          <a class="d-block" href="mailto:contact@yourwebsite.com">wheremi@help.com</a>
-        </div>
-      </div>
-    </div>
-  </section>
+        <section class="page-section" id="contact">
+            <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                <h2 class="mt-0 text-success">Let's Get In Touch!</h2>
+                <hr class="divider my-4">
+                <p class="text-muted mb-5">If you need help, contact us!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+                <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+                <div><a class="text-success">327957895462</a></div>
+                </div>
+                <div class="col-lg-4 mr-auto text-center">
+                <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
+                <!-- Make sure to change the email address in anchor text AND the link below! -->
+                <a class="d-block text-success" href="mailto:contact@yourwebsite.com">wheremi@help.com</a>
+                </div>
+            </div>
+            </div>
+        </section>
 
         <!-- Footer -->
         <footer class="footer" style="background-color: #495057;">
@@ -294,10 +296,10 @@
                     <div class="col-md-4">
                         <ul class="list-inline quicklinks">
                             <li class="list-inline-item">
-                                <a href="#">Privacy Policy</a>
+                                <a class="text-success" href="#">Privacy Policy</a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#">Terms of Use</a>
+                                <a class="text-success" href="#">Terms of Use</a>
                             </li>
                         </ul>
                     </div>
