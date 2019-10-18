@@ -1,6 +1,10 @@
 
 const access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-
+const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com'
+const DISCOVERY_DOCS = [
+  'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
+];
+const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
 var markerPosizioneAttuale;
 var circlePosizioneAttuale;
 var markerSearch;
@@ -32,6 +36,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 navigator.geolocation.getCurrentPosition(displayLocation);
+
 
 
 
@@ -76,7 +81,7 @@ navigator.geolocation.getCurrentPosition(displayLocation);
      //location.reload();
    }
  };
- 
+
   // logout function
   function signOut() {
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
@@ -108,7 +113,7 @@ function showMarkers() {
       q: "8FPHF9Q5+J4",
       maxResults: 50,
       order: "title"
-    }); 
+    });
         // execute the request
         request.execute(function(response) {
           console.log(response); //just for debug purpose
@@ -119,7 +124,7 @@ function showMarkers() {
             videosIDString = videosIDString + currentVideo.idV + ",";
           });
 
-          // rimuovo la virgola finale 
+          // rimuovo la virgola finale
           videosIDString = videosIDString.substring(0, videosIDString.length - 1);
 
             // ottengo i video in base agli id
@@ -140,7 +145,7 @@ function showMarkers() {
                 .bindPopup(title)
                 .addTo(map);
 
-                // Event setup 
+                // Event setup
                 m.on('click', onMarkerClick);
               });
             });
@@ -226,13 +231,13 @@ function onMapClick(e) {
 
 };
 
-// Handler click event on existing marker 
+// Handler click event on existing marker
 function onMarkerClick(marker) {
   newPoint.remove();
-  
+
   if(selectedPoint)
     selectedPoint.setIcon(marker.target.getIcon());
-  
+
   selectedPoint = marker.target;
   selectedPoint.setIcon(defaultIcon);
 
@@ -255,7 +260,7 @@ function updateMap(coord) {
     // Adding marker to the map
     marker.addTo(map);
 
-    // Event setup 
+    // Event setup
     marker.on('click', onMarkerClick);
 
   };
@@ -264,7 +269,7 @@ function updateMap(coord) {
 function showForm() {
   if (selectedPoint) {
     $('#data').show();
-    $('#detailLevel').hide(); 
+    $('#detailLevel').hide();
   }
   else {
     $('#data').hide();
@@ -274,10 +279,10 @@ function showForm() {
 
 // only if why purpose is selected the detail level is shown
 function showDetailLevel() {
-  if ($('#purpose').val()=="why") 
+  if ($('#purpose').val()=="why")
     $('#detailLevel').show();
-  else 
-    $('#detailLevel').hide(); 
+  else
+    $('#detailLevel').hide();
 }
 
 // gps location
@@ -318,7 +323,7 @@ function mapInit(coord) {
   }
 */
 
-// record clip 
+// record clip
 function recordClip() {
   var gumStream;            //stream from getUserMedia()
   var recorder;             //WebAudioRecorder object
@@ -326,10 +331,10 @@ function recordClip() {
   var encodingType;           //holds selected encoding for resulting audio (file)
   var encodeAfterRecord = true;       // when to encode
 
-  // shim for AudioContext when it's not avb. 
+  // shim for AudioContext when it's not avb.
   var AudioContext = window.AudioContext || window.webkitAudioContext;
     var audioContext; //new audio context to help us record
-    
+
     $('#record').click((start)=>{
 
       if($("#name").val().trim().length == 0) {
@@ -339,7 +344,7 @@ function recordClip() {
 
       var constraints = { audio: true, video:true }
 
-      // standard promise based getUserMedia() 
+      // standard promise based getUserMedia()
       navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
         audioContext = new AudioContext(); //create an audio context after getUserMedia is called
         gumStream = stream; //assign to gumStream for later use
@@ -358,7 +363,7 @@ function recordClip() {
                 }
               });
 
-        recorder.onComplete = function(recorder, blob) { 
+        recorder.onComplete = function(recorder, blob) {
           console.log("Encoding complete");
           createDownloadLink(blob,recorder.encoding);
 
@@ -390,7 +395,7 @@ function recordClip() {
             // show stop button
             //$("#buttonSelection").append('<button id = "stopButton" class="btn btn-danger btn-block btn-sm text-center"">Stop</button>');
             //$('#recordButton').hide();
-            // $("#buttonSelection").append(`<button  id="stopButton" class="btn btn-danger btn-block btn-lg text-center 
+            // $("#buttonSelection").append(`<button  id="stopButton" class="btn btn-danger btn-block btn-lg text-center
             //  text-sm-center d-xl-flex align-items-center justify-content-xl-center align-items-xl-center">Stop
             //  </button>`);
 
@@ -408,11 +413,11 @@ function recordClip() {
                 console.log('Recording stopped');
 
               });
-            
+
           }).catch(function(error) {
             console.log(error);
           });
-        }); 
+        });
   }
 
 // function printMetadata() {
@@ -493,7 +498,7 @@ function createDownloadLink(blob,encoding) {
         var sec = Math.floor(vid.duration%60)+1;
         var min = Math.floor(vid.duration/60);
         if(sec<10) sec = "0"+sec;
-        var time = min + "." + sec; 
+        var time = min + "." + sec;
 
         noUiSlider.create(range, {
           start: [0,time],
@@ -522,11 +527,11 @@ function createDownloadLink(blob,encoding) {
 
 }
 
-function setVolume() { 
+function setVolume() {
   $('#audioClip').prop("volume", $('#volumeClip').val());
-} 
+}
 
-function onSave() { 
+function onSave() {
 
   //save volume changes
   let smallUrl = $('#audioClip').attr('src').split('/');
@@ -538,9 +543,9 @@ function onSave() {
 
   range.noUiSlider.destroy();
 
-} 
+}
 
-function onCancel() { 
+function onCancel() {
 
   //reset volume changes
   $("#volumeClip").val('');
@@ -548,7 +553,7 @@ function onCancel() {
   //reset start/end changes
   range.noUiSlider.destroy();
 
-} 
+}
 
 
 // Handler for the button 'Send Clip'
@@ -574,7 +579,7 @@ function createMetadata() {
   // name of the new point
   var name = $("#name").val();
 
-  // Define metadata 
+  // Define metadata
   var metadata = {
     kind: 'youtube#video',
     snippet: {
@@ -597,7 +602,7 @@ function createMetadata() {
 //  uploadVideo(video, metadata, function(data) {
 //  //customizzare l'alert
 //  alert("Clip guida caricata con successo");
-//     //riaggiorna la pagina 
+//     //riaggiorna la pagina
 //     location.reload();
 // });
 
@@ -675,7 +680,7 @@ function editClip() {
   // });
 }
 
-//var player; 
+//var player;
 
 /*
 function recordVideo() {
@@ -724,9 +729,9 @@ function recordVideo() {
 */
 
 // function whichPage() {
-//  if (gapi.auth2.getAuthInstance().isSignedIn.get()) 
+//  if (gapi.auth2.getAuthInstance().isSignedIn.get())
 //    window.location.replace("editor.html")
-//  else 
+//  else
 //    window.location.replace("log.html")
 // }
 
@@ -743,7 +748,7 @@ function recordVideo() {
 
 //  // Request access to the media devices
 //  navigator.mediaDevices.getUserMedia({
-//    audio: true, 
+//    audio: true,
 //    video: true
 //  }).then(function(stream) {
 //  // Display a live preview on the video element of the page
@@ -804,13 +809,13 @@ function recordVideo() {
 
 
 
-// function to upload a video, 
+// function to upload a video,
 // param:
 
 // uploadVideo(video, metadata, function(data) {
 //  //customizzare l'alert
 //  alert("Clip guida caricata con successo");
-//     //riaggiorna la pagina 
+//     //riaggiorna la pagina
 //     location.reload();
 // });
 // }
