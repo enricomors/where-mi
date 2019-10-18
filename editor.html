@@ -7,13 +7,13 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Where M I Editor</title>
 
-  
+
   <!-- Routing conrol-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-  
+
   <!-- Load Leaflet from CDN -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -23,7 +23,7 @@
   crossorigin=""></script>
 
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Fonts e icone -->
@@ -37,8 +37,12 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/css/agency.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="static/css/browser.css" type="text/css">
+  <link rel="stylesheet" href="static/css/editor.css" type="text/css">
   <link rel="stylesheet" href="static/css/style.css">
+
+  <!-- vue_options -->
+
+  <script src="vue_options.js"></script>
 
   <!-- Routing conrol-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
@@ -62,7 +66,7 @@
   <!-- Load Esri Leaflet Geocoder from CDN -->
   <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.1/dist/esri-leaflet-geocoder.css"
   integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
-  crossorigin=""> 
+  crossorigin="">
   <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.1/dist/esri-leaflet-geocoder.js"
   integrity="sha512-YUgyCwPXzSCFuYgNIsumhktAolzwxETPBwc+xAgJOW7B3/1r1EKf0WYpmNo+6a/9C/EAF9RxYnMynEmd+77fTA=="
   crossorigin=""></script>
@@ -76,7 +80,7 @@
   <!-- Open Location Code -->
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
-  
+
   <!-- Vue -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
@@ -92,63 +96,66 @@
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
-                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button> 
+                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button>
                 </ul>
             </div>
         </div>
     </nav>
-  
-<section>
-  
-    
+
+
+
+
   <!-- Inizio Intestazione -->
     <div class="intro">
       <h2 class="text-center">Crea una nuova clip<br></h2>
       <p class="text-center">Seleziona un marker e completa i seguenti campi per creare una nuova clip<br></p>
     </div>
   <!-- Fine Intestazione -->
-    
+
   <!-- Inizio Mappa -->
-    <div class="row">
-        <div id="map-section" class="container-fluid padding fill">
-          <div id="map"></div>
-        </div>
-    </div>
+
+  <div id="map"></div>
+    
+
   <!-- Fine Mappa -->
-  
+
   <!-- METADATA for clips -->
+    <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
+   <div style="margin-right: 5%; margin-left: 5%;">
     <form>
       <!-- Name -->
         <div class="row">
           <div class="col-sm-6">
               <div class="form-group">
                 <label for="Name">Nome&nbsp;</label>
-                <input id="name" class="border rounded border-white shadow form-control-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
+                <input id="name" class="border-white shadow custom-select custom-select-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
                 <small id="nameHelpBlock" class="form-text text-muted">
                  Inserisci il nome del punto di interesse
                 </small>
               </div>
             </div>
-        </div>
+
       <!-- Description -->
-        <div class="row">
-          <div class="col-sm-6">
+
+          <div class="col">
             <div class="form-group">
               <label for="description">Descrizione<br></label>
-              <textarea id="description" rows="3" class="border rounded border-white shadow form-control-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
+              <textarea id="description" rows="3" class="border-white shadow custom-select custom-select-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
               <small id="descriptionHelpBlock" class="form-text text-muted">
                 Descrizione del punto di interesse selezionato
               </small>
             </div>
           </div>
         </div>
+      </br>
+
       <!-- Scopo -->
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col">
             <div class="form-group">
               <label class="portfolio-hover" for="purpose">Scopo</label>
               <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
-              <select id="purpose" class="border-white shadow custom-select custom-select-lg"  aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
+              <select id="purpose" class="border-white shadow custom-select custom-select-lg" aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
               <option v-for="option in options" v-bind:value="option.value">
               {{ option.text }}
               </option>
@@ -158,10 +165,10 @@
               </small>
             </div>
           </div>
-        </div>
+
       <!-- Lingua -->
-        <div class="row">
-          <div class="col-sm-6">
+
+          <div class="col">
             <div class="form-group"><label for="language">Lingua&nbsp;</label>
               <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
               <option v-for="option in options" v-bind:value="option.value">
@@ -173,11 +180,11 @@
               </small>
             </div>
           </div>
-        </div>
-    
+
+
       <!-- Categoria -->
-        <div class="row">
-          <div class="col-sm-6">
+
+          <div class="col">
             <div class="form-group">
               <label for="public">Pubblico&nbsp;</label>
               <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
@@ -193,7 +200,7 @@
         </div>
       <!-- Categoria -->
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col">
             <div class="form-group"><label for="category">Category&nbsp;</label>
               <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
               <option v-for="option in options" v-bind:value="option.value">
@@ -205,36 +212,41 @@
               </small>
             </div>
           </div>
-        </div>
-    
+
+
       <!--Livello -->
-        <div class="row">
-          <div class="col-sm-6">
+
+          <div class="col">
+            <div class="form-group"><label for="category">Level&nbsp;</label>
             <select id="detailLevel" class="border-white shadow custom-select custom-select-lg"  aria-describedby="detailHelpBlock" v-model="selected"><optgroup label="Select Detail level">
             <option v-for="option in options" v-bind:value="option.value">
             {{ option.text }}
             </option>
             </select>
+            <small id="cateogyHelpBlock" class="form-text text-muted">
+            Livello della clip
+            </small>
+          </div>
           </div>
         </div>
-    
+
       <!-- SIXT ROW FOR CLIPS... -->
-        <div class="row"> 
+        <div class="row">
           <div id="buttonSelection"  class="col-xl-2 offset-xl-5 text-center" style="margin-top: 2%;">
           <!-- RECORDING -->
             <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
             <!-- STOP -->
             <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
-          </div> 
-        </div> 
-    
+          </div>
+        </div>
+    </div>
     </div> <!-- End: div data -->
 </div>
+
 </section>
 
 <!-- </form> -->
-  </div>
-</div>
+
 <!-- End: Metadata -->
 
 
@@ -277,14 +289,14 @@
         </div>
     </div>
 </footer>
-  
+
 
    <!-- Our JS scripts -->
    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
    <script src="/static/javascript/Geocoder.js"></script>
    <script src="/static/javascript/config.js"></script>
    <script src="/static/javascript/editor.js"></script>
-  
+
 
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
