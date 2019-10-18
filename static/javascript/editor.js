@@ -156,66 +156,74 @@ function addPopup(marker) {
   var jsonQuery = "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + marker.getLatLng().lat + "&lon=" + marker.getLatLng().lng + "&zoom=18&addressdetails=1";
 
   $.getJSON(jsonQuery).done( function (result_data) {
-      console.log(result_data);
+    console.log(result_data);
 
-      var road;
+    var road;
 
-      if(result_data.address.road) {
-          road = result_data.address.road;
-      }
-      else if (result_data.address.pedestrian) {
-          road = result_data.address.pedestrian;
-      }
-      else {
-          road = "No defined";
-      }
-      var olc= OpenLocationCode.encode(marker.getLatLng().lat, marker.getLatLng().lng, 10);
+    if(result_data.address.road) {
+        road = result_data.address.road;
+    }
+    else if (result_data.address.pedestrian) {
+      road = result_data.address.pedestrian;
+    }
+    else {
+      road = "No defined";
+    }
+    var olc= OpenLocationCode.encode(marker.getLatLng().lat, marker.getLatLng().lng, 10);
 
-      var popup_text = "<b>Olc:</b> "+ olc  +
-          "</br><b>Road:</b> " + road + ", " + result_data.address.house_number +
-          "</br><b>City:</b> " + result_data.address.city +
-          "</br><b>Postal Code:</b> " + result_data.address.postcode;
+    var popup_text = "<b>Olc:</b> "+ olc  +
+      "</br><b>Road:</b> " + road + ", " + result_data.address.house_number +
+      "</br><b>City:</b> " + result_data.address.city +
+      "</br><b>Postal Code:</b> " + result_data.address.postcode;
 
-      marker.bindPopup(popup_text).openPopup();
+    marker.bindPopup(popup_text).openPopup();
 
-      map.removeLayer(markerPosizioneAttuale);
-      map.removeLayer(circlePosizioneAttuale);
-      if(markerSearch) {
-          map.removeLayer(markerSearch);
-          map.removeLayer(circleSearch);
-      }
-
+    map.removeLayer(markerPosizioneAttuale);
+    map.removeLayer(circlePosizioneAttuale);
+    if(markerSearch) {
+      map.removeLayer(markerSearch);
+      map.removeLayer(circleSearch);
+    }
   });
-
-}
+};
 
 // record clip
 function recordClip() {
-  var gumStream;            //stream from getUserMedia()
-  var recorder;             //WebAudioRecorder object
-  var input;              //MediaStreamAudioSourceNode  we'll be recording
-  var encodingType;           //holds selected encoding for resulting audio (file)
-  var encodeAfterRecord = true;       // when to encode
+  //stream from getUserMedia()
+  var mediaStream; 
+  //WebAudioRecorder object
+  var recorder;
+  //MediaStreamAudioSourceNode  we'll be recording
+  var input;      
+  //holds selected encoding for resulting audio (file)
+  var encodingType;     
+  // when to encode
+  var encodeAfterRecord = true;       
 
-  // shim for AudioContext when it's not avb.
+  // shim for AudioContext when it's not available
   var AudioContext = window.AudioContext || window.webkitAudioContext;
-    var audioContext; //new audio context to help us record
+  //new audio context to help us record
+  var audioContext;
 
-    $('#record').click((start)=>{
+  $('#record').click((start) => {
 
-      if($("#name").val().trim().length == 0) {
-        alert('Inserire titolo audio');
-        return;
-      }
+    if($("#name").val().trim().length == 0) {
+      alert('Inserire titolo audio');
+      return;
+    }
+    // opzioni per il registratore
+    var recordOptions = { audio: true, video: true }
 
-      var constraints = { audio: true, video:true }
-
-      // standard promise based getUserMedia()
-      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-        audioContext = new AudioContext(); //create an audio context after getUserMedia is called
-        gumStream = stream; //assign to gumStream for later use
-        input = audioContext.createMediaStreamSource(stream); //use the stream
-        encodingType = ENCONDING_TYPE; //set the encoding
+    // standard promise based getUserMedia()
+    navigator.mediaDevices.getUserMedia(recordOptions).then(function(stream) {
+      //create an audio context after getUserMedia is called
+      audioContext = new AudioContext();
+      //assign to mediaStream for later use
+      mediaStream = stream; 
+      //use the stream
+      input = audioContext.createMediaStreamSource(stream);
+      //set the encoding
+      encodingType = ENCONDING_TYPE;
 
         recorder = new WebAudioRecorder(input, {
           workerDir: "/static/WebAudioRecorder/",
