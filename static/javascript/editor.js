@@ -1,10 +1,15 @@
-
-const access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com'
+/** Token per l'accesso alle API di Mapbox (indicazioni) */
+const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
+/** Coordinate di Default per la mappa */
+const DEFAULT_COORDS = [44.493671, 11.343035];
+/** Client ID per le API di Google */
+const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
 ];
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+/** Scopes per l'accesso all'API di YouTube */
+const SCOPES = 'https://www.googleapis.com/auth/youtube';
+
 var markerPosizioneAttuale;
 var circlePosizioneAttuale;
 var markerSearch;
@@ -26,131 +31,101 @@ var greenIcon = new L.Icon({
 });
 
 /** Inizializza la mappa Leaflet */
-var map = L.map('map').setView([ 44.493671, 11.343035], 15);
+var map = L.map('map').setView(DEFAULT_COORDS, 15);
 
 /** Tile layer per la mappa */
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: access_token
+  maxZoom: 18,
+  id: 'mapbox.streets',
+  accessToken: MAPBOX_TOKEN
 }).addTo(map);
 
+/** Ottiene la posizione corrente dal browser */
 navigator.geolocation.getCurrentPosition(displayLocation);
 
+function handleAuthClick() {
+  gapi.auth2.getAuthInstance().signIn();
+  console.log(gapi.auth2.getAuthInstance().signIn());
+}
 
+function handleClientLoad() {
+  gapi.load('client:auth2', initClient);
+};
 
+function initClient(callback) {
+  gapi.client.init({
+    discoveryDocs: DISCOVERY_DOCS,
+    clientId: CLIENT_ID,
+    cookiepolicy: 'single_host_origin',
+    scope: SCOPES
+  }).then(() => {
+    // Listen for sign in state changes
+    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+    console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
+    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+  }).catch(err => console.log(JSON.stringify(err)));
+}
 
-/**
- * SEZIONE PER IL LOGIN
- */
-
-  // Login function
-  function handleAuthClick() {
-    gapi.auth2.getAuthInstance().signIn();
-    console.log(gapi.auth2.getAuthInstance().signIn());
+function updateSigninStatus(status) {
+  if (status) {
+    console.log('in');
+  } else {
+    alert("Devi prima effettuare il log in.");
   }
+};
 
-  function handleClientLoad() {
-    gapi.load('client:auth2', initClient);
+// logout function
+function signOut() {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    console.log("out");
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut();
+    auth2.disconnect();
+    alert("Disconnesso.");
+    console.log("Disconnesso.")
+    $('#data').hide();
+    $('#recordingSection').hide();
   };
-
-  function initClient(callback) {
-    gapi.client.init({
-      discoveryDocs: DISCOVERY_DOCS,
-      clientId: CLIENT_ID,
-      cookiepolicy: 'single_host_origin',
-      scope: SCOPES
-    }).then(() => {
-      // Listen for sign in state changes
-      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-      console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      // Handle initial sign in state
-      //updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      //disabilitaBottoni(gapi.auth2.getAuthInstance().isSignedIn.get());
-    })
-    .catch(err => console.log(JSON.stringify(err)));
-  }
-
-  function updateSigninStatus(status) {
-    if (status) {
-      console.log('in');
-    } else {
-      alert("Devi prima effettuare il log in.");
-     //$("#logout").remove();
-     //location.reload();
-   }
- };
-
-  // logout function
-  function signOut() {
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        console.log("out");
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut();
-        auth2.disconnect();
-        alert("Disconnesso.");
-        console.log("Disconnesso.")
-
-        $('#data').hide();
-        $('#recordingSection').hide();
-      };
-  }
-
+}
 
 /**
  * SEZIONE METODI DELLA MAPPA
  */
 // Se sono presenti video vengono mostrati dei markers
-function showMarkers() {
+function loadYTVideos() {
   gapi.client.setApiKey("AIzaSyCfAGcL91p3JSJIbohytN94hsRgnyz-jJs");
-  // seach videos
+  // Crea query string x YouTube
+  var queryString = currentOlc.substring(0, 8);
+  console.log(queryString);
+  // ricerca video 
   gapi.client.load("youtube", "v3", function() {
     console.log("YT Api ready");
-    var request = gapi.client.youtube.search.list({
+    var req = gapi.client.youtube.search.list({
       part: "snippet",
       type: "video",
-      q: "8FPHF9Q5+J4",
-      maxResults: 50,
-      order: "title"
+      q: queryString,
+      maxResults: 50
     });
-        // execute the request
-        request.execute(function(response) {
-          console.log(response); //just for debug purpose
-          var videosIDString = ''; // for all videos ids
-          response.result.items.forEach(function(item) {
-            var currentVideo = new Object();
-            currentVideo.idV = item.id.videoId;
-            videosIDString = videosIDString + currentVideo.idV + ",";
-          });
-
-          // rimuovo la virgola finale
-          videosIDString = videosIDString.substring(0, videosIDString.length - 1);
-
-            // ottengo i video in base agli id
-            var videoIDRequest = gapi.client.youtube.videos.list({
-              id: videosIDString,
-              part: 'id,snippet,recordingDetails',
-              order: "title"
-            });
-            videoIDRequest.execute(function(response) {
-              console.log(response); //just for debug purpose
-              response.items.forEach(function(item) {
-                let title = item.snippet.title.split(":")[0];
-                let olc = item.snippet.description.split("#")[0].split(":")[0];
-                //let olc = item.snippet.description.split(":")[0];
-                let coords = OpenLocationCode.decode(olc);
-
-                var m = new L.marker([coords.latitudeCenter, coords.longitudeCenter])
-                .bindPopup(title)
-                .addTo(map);
-
-                // Event setup
-                m.on('click', onMarkerClick);
-              });
-            });
-          });
+    // execute the request
+    req.execute(function(response) {
+      console.log(response); //just for debug purpose
+      var videosIDString = ''; // for all videos ids
+      response.result.items.forEach(function(item) {
+        var currentVideo = new Object();
+        currentVideo.idV = item.id.videoId;
+        let title = item.snippet.title;
+        let olc = item.snippet.description.split('#')[0].split(":")[0];
+        // calcola le coordinate relative all'olc del video
+        let coords = OpenLocationCode.decode(olc);
+        // aggiunge nuovo marker alla mappa alle coordinate del video
+        var m = new L.marker([coords.latitudeCenter, coords.longitudeCenter])
+          .bindPopup(title)
+          .addTo(map);
+        // Setta callback per evento di click su marker
+        m.on('click', onMarkerClick);
       });
+    });
+  });
 };
 
 /** Mostra sulla mappa la posizione ricevuta dal browser */
@@ -158,6 +133,10 @@ function displayLocation(position) {
   // console.log('position', position);
    var lat = position.coords.latitude;
    var lng = position.coords.longitude;
+   // aggiorna la posizione corrente
+   currentPosition = [lat, lng];
+   // ottiene l'OLC della posizione corrente
+   currentOlc = OpenLocationCode.encode(lat, lng);
    // apre la mappa sulla posizione ricevuta dal browser
    map.setView([lat, lng], 18);
    // crea marker per la posizione attuale con popup
@@ -165,12 +144,14 @@ function displayLocation(position) {
    markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
    <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
    <hr align="center">If location is incorrect, drag the marker</a>
-       </div>`).openPopup();
+   <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
+    class="btn btn-success">Search clips</button>
+   </div>`).openPopup();
    markerPosizioneAttuale.addTo(map);
 }
 
 // set the popup information: latlng and address
-function addPopup (marker) {
+function addPopup(marker) {
   // OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
   var jsonQuery = "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + marker.getLatLng().lat + "&lon=" + marker.getLatLng().lng + "&zoom=18&addressdetails=1";
 
@@ -207,121 +188,6 @@ function addPopup (marker) {
   });
 
 }
-/*
-// Handler click event on map
-function onMapClick(e) {
-
-  if(selectedPoint)
-    selectedPoint.setIcon(myPositionIcon);
-
-  newPoint
-  .setIcon(audioIcon)
-  .setLatLng(e.latlng)
-  .bindPopup('Record the first clip').openPopup()
-  .addTo(map)
-
-  selectedPoint = newPoint;
-
-  // name field update
-  $("#name").val('');
-  $("#name").attr({"readonly": false});
-
-  //show form
-  showForm();
-
-};
-
-// Handler click event on existing marker
-function onMarkerClick(marker) {
-  newPoint.remove();
-
-  if(selectedPoint)
-    selectedPoint.setIcon(marker.target.getIcon());
-
-  selectedPoint = marker.target;
-  selectedPoint.setIcon(defaultIcon);
-
-  // name field update
-  $("#name").attr({"readonly": false});
-  $("#name").val(selectedPoint.getPopup().getContent());
-
-  //show form
-  showForm();
-}
-
-// Map update
-function updateMap(coord) {
-  map.setView(coord,14);
-  // Set marker current position
-  var marker = L.marker(coord);
-  marker.setIcon(myPositionIcon);
-  // Adding popup to the marker
-  marker.bindPopup('You are here').openPopup();
-    // Adding marker to the map
-    marker.addTo(map);
-
-    // Event setup
-    marker.on('click', onMarkerClick);
-
-  };
-
-// show/hide form fields
-function showForm() {
-  if (selectedPoint) {
-    $('#data').show();
-    $('#detailLevel').hide();
-  }
-  else {
-    $('#data').hide();
-    $('#recordingSection').hide();
-  }
-}
-
-// only if why purpose is selected the detail level is shown
-function showDetailLevel() {
-  if ($('#purpose').val()=="why")
-    $('#detailLevel').show();
-  else
-    $('#detailLevel').hide();
-}
-
-// gps location
-function gpsLocation() {
-  // If geoloc is enabled
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-          // If user allows geoloc
-          pos => updateMap([pos.coords.latitude, pos.coords.longitude]),
-          // User refuses geoloc
-          () => updateMap(default_coords),
-          {enableHighAccuracy: true});
-  }
-  else  updateMap(default_coords);
-}
-
-// Init map
-function mapInit(coord) {
-
-  map = L.map('map').setView(coord, 14);
-
-    // Setup tile layer
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 22,
-      id: 'mapbox.streets',
-      accessToken: leaflet_access_token
-    }).addTo(map);
-
-    // Gps request
-    gpsLocation();
-
-    // Show markers
-    showMarkers();
-
-    // Event setup
-    map.on('click', onMapClick);
-  }
-*/
 
 // record clip
 function recordClip() {
@@ -598,15 +464,6 @@ function createMetadata() {
   console.log(metadata.snippet.description);
 
   return metadata;
-
-//  uploadVideo(video, metadata, function(data) {
-//  //customizzare l'alert
-//  alert("Clip guida caricata con successo");
-//     //riaggiorna la pagina
-//     location.reload();
-// });
-
-
 }
 
 function uploadVideo(video, metadata) {
@@ -645,21 +502,6 @@ function uploadVideo(video, metadata) {
   });
 
   console.log('ciao');
-
-  // console.log(video);
-  // console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-
-  // $.ajax({
-  //  url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
-  //  + encodeURIComponent(auth) + '&part=snippet,status',
-  //  data: form,
-  //  cache: false,
-  //  contentType: false,
-  //  processData: false,
-  //  method: 'POST',
-  //  success: () => alert('upload effettuato con successo'),
-  //  error: (err)=> alert(err)
-  // });
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -669,153 +511,4 @@ function editClip() {
   var startTime = $('audio').get(0).currentTime;
   console.log(cur_time);
   var stopTime = $('audio').get(0).currentTime;
-
-        //$('[name="limited_sound"]').attr('data-start_time', cur_time);
-        //$('[name="select_start_time"]').text((cur_time/100).toFixed(2));
-  //});
-  // $('[name="end_time"]').click(function(){
-  //       var cur_time = $('[name="sound"]').get(0).currentTime.toFixed(2);
-  //       $('[name="limited_sound"]').attr('data-end_time', cur_time);
-  //       $('[name="select_end_time"]').text((cur_time/100).toFixed(2));
-  // });
 }
-
-//var player;
-
-/*
-function recordVideo() {
-  var options = {
-    controls: true,
-    width: 320,
-    height: 240,
-    fluid: false,
-    plugins: {
-      record: {
-        audio: true,
-        video: true,
-        debug: true
-      }
-    }
-  };
-  // apply some workarounds for opera browser
-  applyVideoWorkaround();
-
-  player = videojs('myVideo', options, function() {
-    // print version information at startup
-    videojs.log('Using video.js ' + videojs.VERSION +
-      ' with videojs-record ' + videojs.getPluginVersion('record') +
-      ' and recordrtc ' + RecordRTC.version);
-  });
-
-  // error handling
-  player.on('deviceError', function() {
-    console.log('device error:', player.deviceErrorCode);
-  });
-
-  player.on('error', function(element, error) {
-    console.error(error);
-  });
-  // user clicked the record button and started recording
-  player.on('startRecord', function() {
-    console.log('started recording!');
-  });
-  // user completed recording and stream is available
-  player.on('finishRecord', function() {
-    // the blob object contains the recorded data that
-    // can be downloaded by the user, stored on server etc.
-    console.log('finished recording: ', player.recordedData);
-  });
-}
-*/
-
-// function whichPage() {
-//  if (gapi.auth2.getAuthInstance().isSignedIn.get())
-//    window.location.replace("editor.html")
-//  else
-//    window.location.replace("log.html")
-// }
-
-
-
-//     // Store a reference of the preview video element and a global reference to the recorder instance
-//     var video = document.getElementById('my-preview');
-//     var recorder;
-
-//  // When the user clicks on start video recording
-//  document.getElementById('btn-start-recording').addEventListener("click", function(){
-//  // Disable start recording button
-//  this.disabled = true;
-
-//  // Request access to the media devices
-//  navigator.mediaDevices.getUserMedia({
-//    audio: true,
-//    video: true
-//  }).then(function(stream) {
-//  // Display a live preview on the video element of the page
-//  setSrcObject(stream, video);
-
-//  // Start to display the preview on the video element
-//  // and mute the video to disable the echo issue !
-//  video.play();
-//  video.muted = true;
-
-//  // Initialize the recorder
-//  recorder = new RecordRTCPromisesHandler(stream, {
-//    mimeType: 'video/webm',
-//    bitsPerSecond: 128000
-//  });
-
-//  // Start recording the video
-//  recorder.startRecording().then(function() {
-//    console.info('Recording video ...');
-//  }).catch(function(error) {
-//    console.error('Cannot start video recording: ', error);
-//  });
-
-//  // release stream on stopRecording
-//  recorder.stream = stream;
-
-//  // Enable stop recording button
-//  document.getElementById('btn-stop-recording').disabled = false;
-// }).catch(function(error) {
-//  console.error("Cannot access media devices: ", error);
-// });
-// }, false);
-
-//  // When the user clicks on Stop video recording
-//  document.getElementById('btn-stop-recording').addEventListener("click", function(){
-//    this.disabled = true;
-
-//    recorder.stopRecording().then(function() {
-//      console.info('stopRecording success');
-
-//  // Retrieve recorded video as blob and display in the preview element
-//  var blob = recorder.getBlob();
-//  video.src = URL.createObjectURL(blob);
-//  video.play();
-
-//  // Unmute video on preview
-//  video.muted = false;
-
-//  // Stop the device streaming
-//  recorder.stream.stop();
-
-//  // Enable record button again !
-//  document.getElementById('btn-start-recording').disabled = false;
-// }).catch(function(error) {
-//  console.error('stopRecording failure', error);
-// });
-// }, false);
-
-
-
-// function to upload a video,
-// param:
-
-// uploadVideo(video, metadata, function(data) {
-//  //customizzare l'alert
-//  alert("Clip guida caricata con successo");
-//     //riaggiorna la pagina
-//     location.reload();
-// });
-// }

@@ -1,6 +1,7 @@
-// versione dello script browser.js di Ale
-
-const access_token = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
+/** Token per l'accesso alle API di Mapbox (Indicazioni) */
+const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
+/** Coordinate di Default per la mappa */
+const DEFAULT_COORDS = [44.493671, 11.343035];
 
 var markerPosizioneAttuale;
 var circlePosizioneAttuale;
@@ -29,13 +30,13 @@ var greenIcon = new L.Icon({
 });
 
 /** Inizializza la mappa Leaflet */
-var map = L.map('map').setView([ 44.493671, 11.343035], 15);
+var map = L.map('map').setView(DEFAULT_COORDS, 15);
 
 /** Tile layer per la mappa */
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     maxZoom: 18,
     id: 'mapbox.streets',
-    accessToken: access_token
+    accessToken: MAPBOX_TOKEN
 }).addTo(map);
 
 /** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
@@ -67,7 +68,6 @@ function displayLocation(position) {
         class="btn btn-success">Search clips</button>
         </div>`).openPopup();
     markerPosizioneAttuale.addTo(map);
-
 }
 
 //* funzione per modificare la posizione attuale */
@@ -107,7 +107,7 @@ function loadYTVideos() {
         // scorre le risorse contenute nella risposta
         resp.result.items.forEach((item) => {
             // estrae i dati del video
-            let name = item.snippet.title.split(":")[0];
+            let name = item.snippet.title;
             let metaDati = item.snippet.description.split("#")[0];
             let description = item.snippet.description.split("#")[1];
             let idVideo = item.id.videoId;
