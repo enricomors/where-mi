@@ -239,12 +239,33 @@ function routing() {
 
 };
 
+/** Filtra le clip di YouTube da visualizzare */
 function filter() {
-
+    idYT.forEach((item) => {
+        if (!$('#filterTrigger').is(':checked') && (datiVideo[item].purpose != $('#purpose').val()
+            || datiVideo[item].language != $('#language').val()
+            || datiVideo[item].audience != $('#audience').val()
+            || datiVideo[item].category != $('#category').val()
+            || datiVideo[item].detail != $('#detailLevel').val()
+        )) {
+            $('#'+item+'card').hide();   
+        } else {
+            $('#'+item+'card').show();
+        }
+    });
 };
 
+/** Abilita/Disabilita i filtri delle clip */
 function filterClips() {
-
+    if ($('#filterTrigger').is(':checked')) {
+        // disabilita gli elementi select
+        $('.custom-select').prop('disabled', true);
+        $('#filterTitle').text('Enable filters');
+    } else {
+        $('.custom-select').prop('disabled', false);
+        $('#filterTitle').text('Disable filters');
+    }
+    filter();
 };
 
 // set the popup information: latlng and address

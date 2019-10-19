@@ -39,12 +39,6 @@
   <link rel="stylesheet" href="static/css/editor.css" type="text/css">
   <link rel="stylesheet" href="static/css/style.css">
 
-  <!-- Vue -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-  <!-- vue_options -->
-  <script src="static/javascript/vue_options.js"></script>
-
   <!-- Routing conrol-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
@@ -82,15 +76,14 @@
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
 
-  <!-- Vue -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
 </head>
 
 <body>
        <!-- Navbar -->
      <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
-        <div class="container"><a class="navbar-brand text-success" href="/" style="font-family: Montserrat, sans-serif;margin-right: 0%;">Where M I?</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
+        <div class="container">
+          <a class="navbar-brand text-success" href="/">Where M I?</a>
+          <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav ml-auto text-uppercase">
@@ -103,9 +96,6 @@
         </div>
     </nav>
 
-
-
-
   <!-- Inizio Intestazione -->
     <div class="intro">
       <h2 class="text-center">Crea una nuova clip<br></h2>
@@ -113,11 +103,12 @@
     </div>
   <!-- Fine Intestazione -->
 
-  <!-- Inizio Mappa -->
-
-  <div id="map"></div>
-
-
+  <!-- Mappa -->
+  <div class="container-fluid">
+      <div id="map">
+          <div id="video"></div>
+      </div>
+  </div>
   <!-- Fine Mappa -->
 
   <!-- METADATA for clips -->

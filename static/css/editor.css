@@ -1,9 +1,8 @@
-
-
-
-
 .navbar {
   background-color: #34456a;
+  /* sovrascrive le regole di agency.min.css */
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
 .navbar-nav li {

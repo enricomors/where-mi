@@ -69,9 +69,6 @@
     <!-- Open Location Code -->
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
     <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
-    
-    <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
  
 </head>
 
@@ -99,8 +96,10 @@
     </nav>
 
     <!-- Mappa -->
-    <div id="map">
-        <div id="video"></div>
+    <div class="container-fluid">
+        <div id="map">
+            <div id="video"></div>
+        </div>
     </div>
 
     <!-- Sezione filtri clip -->
@@ -119,12 +118,13 @@
                 <div class="col">
                     <div class="form-group">
                         <label style="color: #495057;">Language</label>
-                        <!-- Utilizza le librerie Vue.js -->
-                        <select name="languageList" id="language" disabled="true" onchange="filter()" v-model="selected" class="border-white shadow custom-select custom-select-lg">
+                        <select name="languageList" id="language" disabled="true" onchange="filter()" class="border-white shadow custom-select custom-select-lg">
                             <optgroup label="Select Language">
-                            <option v-for="option in options" v-bind:value="option.value">
-                                {{ option.text }}
-                            </option>
+                            <option value="ita" selected>Italiano</option>
+                            <option value="eng">Inglese</option>
+                            <option value="deu">Tedesco</option>
+                            <option value="fra">Francese</option>
+                            <option value="esp">Spagnolo</option>
                         </select>
                     </div>
                 </div>
@@ -132,12 +132,13 @@
                 <div class="col">
                     <div class="form-group">
                         <label style="color: #495057;">Audience</label>
-                        <!-- Utilizza le librerie Vue.js -->
-                        <select name="audienceList" id="audience" disabled="true" onchange="filter()" v-model="selected" class="border-white shadow custom-select custom-select-lg">
+                        <select name="audienceList" id="audience" disabled="true" onchange="filter()" class="border-white shadow custom-select custom-select-lg">
                             <optgroup label="Select Audience">
-                            <option v-for="option in options" v-bind:value="option.value">
-                                {{ option.text }}
-                            </option>
+                            <option value="gen" selected>Generico</option>
+                            <option value="pre">Pre-scolare</option>
+                            <option value="elm">Elementari</option>
+                            <option value="mid">Scuola media</option>
+                            <option value="scl">Specializzato</option>
                         </select>
                     </div>
                 </div>
@@ -145,12 +146,11 @@
                 <div class="col">
                     <div class="form-group">
                         <label style="color: #495057;">Purpose</label>
-                        <!-- Utilizza le librerie Vue.js -->
-                        <select name="purposeList" id="purpose" disabled="true" onchange="filter()" v-model="selected" class="border-white shadow custom-select custom-select-lg">
+                        <select name="purposeList" id="purpose" disabled="true" onchange="filter()" class="border-white shadow custom-select custom-select-lg">
                             <optgroup label="Select Language">
-                            <option v-for="option in options" v-bind:value="option.value">
-                                {{ option.text }}
-                            </option>
+                            <option value="what">What</option>
+                            <option value="how">How</option>
+                            <option value="Why">why</option>
                         </select>
                     </div>
                 </div> 
@@ -160,24 +160,37 @@
                 <div class="col-xl-4 offset-xl-2">
                     <div class="form-group">
                         <label style="color: #495057;">Content</label>
-                        <!-- Utilizza le librerie Vue.js -->
-                        <select name="contentist" id="content" disabled="true" onchange="filter()" v-model="selected" class="border-white shadow custom-select custom-select-lg">
+                        <select name="contentist" id="content" disabled="true" onchange="filter()" class="border-white shadow custom-select custom-select-lg">
                             <optgroup label="Select Content">
-                            <option v-for="option in options" v-bind:value="option.value">
-                                {{ option.text }}
-                            </option>
+                            <option value="none">Nessuna</option>
+                            <option value="nat">Natura</option>
+                            <option value="art">Arte</option>
+                            <option value="his">Storia</option>
+                            <option value="flk">Folklore</option>
+                            <option value="mod">Cultura Moderna</option>
+                            <option value="rel">Religione</option>
+                            <option value="cui">Cucina e drink</option>
+                            <option value="spo">Sport</option>
+                            <option value="mus">Musica</option>
+                            <option value="mov">Film</option>
+                            <option value="fas">Moda</option>
+                            <option value="shp">Shopping</option>
+                            <option value="tec">Tecnologia</option>
+                            <option value="pop">Cultura pop e gossip</option>
+                            <option value="prs">Esperienze personali</option>
+                            <option value="oth">Altro</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="form-group">
                         <label style="color: #495057;">Detail level</label>
-                        <!-- Utilizza le librerie Vue.js -->
-                        <select name="detailList" id="detailLevel" disabled="true" onchange="filter()" v-model="selected" class="border-white shadow custom-select custom-select-lg">
+                        <select name="detailList" id="detailLevel" disabled="true" onchange="filter()" class="border-white shadow custom-select custom-select-lg">
                             <optgroup label="Select Detail level">
-                            <option v-for="option in options" v-bind:value="option.value">
-                                {{ option.text }}
-                            </option>
+                            <option value="1" selected>Essenziale(1)</option>
+                            <option value="2">Breve(2)</option>
+                            <option value="3">Approfondito(3)</option>
+                            <option value="4">Mettiti Comodo(4)</option>
                         </select>
                     </div>
                 </div>
@@ -231,18 +244,16 @@
     </footer>
 
     <!-- Plugin JavaSctipt -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
     <!-- Our JS scripts -->
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="/static/javascript/Geocoder.js"></script>
     <script src="/static/javascript/config.js"></script>
     <script src="static/javascript/browser.js"></script>
-    <script src="static/javascript/vue_options.js"></script>
 
     <!-- youtube iframe api -->
     <script src="https://www.youtube.com/iframe_api"></script>
