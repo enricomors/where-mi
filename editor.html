@@ -76,6 +76,14 @@
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.js"></script>
   <script src="https://cdn.jsdelivr.net/openlocationcode/latest/openlocationcode.min.js"></script>
 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
+
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -113,126 +121,108 @@
 
   <!-- METADATA for clips -->
     <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
-   <div style="margin-right: 5%; margin-left: 5%;">
-    <form>
-      <!-- Name -->
-        <div class="row">
-          <div class="col-sm-6">
-              <div class="form-group">
-                <label for="Name">Nome&nbsp;</label>
-                <input id="name" class="border-white shadow custom-select custom-select-lg" type="text" style="width: 100%;" aria-describedby="nameHelpBlock" required>
-                <small id="nameHelpBlock" class="form-text text-muted">
-                 Inserisci il nome del punto di interesse
-                </small>
-              </div>
-            </div>
+      <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
+         <div class="form-group col-md-2">
+           <label for="titolo">Nome</label>
+           <input type="text" class="form-control" id="titolo" placeholder="inserisci nome attrazione">
+         </div>
 
-      <!-- Description -->
 
-          <div class="col">
-            <div class="form-group">
-              <label for="description">Descrizione<br></label>
-              <textarea id="description" rows="3" class="border-white shadow custom-select custom-select-lg" style="width: 100%; height: 5%" aria-describedby="descriptionHelpBlock"></textarea>
-              <small id="descriptionHelpBlock" class="form-text text-muted">
-                Descrizione del punto di interesse selezionato
-              </small>
-            </div>
+
+         <div class="form-group col-md-2">
+           <label for="content">Content</label>
+           <select class="form-control" id="content">
+             <option>none(default)</option>
+             <option>nat</option>
+             <option>art</option>
+             <option>his</option>
+             <option>mod</option>
+             <option>rel</option>
+             <option>cui</option>
+             <option>spo</option>
+             <option>mus</option>
+             <option>mov</option>
+             <option>fas</option>
+             <option>shop</option>
+             <option>tec</option>
+             <option>pop</option>
+             <option>prs</option>
+             <option>oth</option>
+           </select>
+         </div>
+         <div class="form-group col-md-2">
+           <label for="audience">Audience</label>
+           <select class="form-control" id="audience">
+             <option>none(default)</option>
+             <option>gen</option>
+             <option>pre</option>
+             <option>elm</option>
+             <option>mid</option>
+             <option>scl</option>
+           </select>
+         </div>
+         <div class="form-group col-md-2">
+           <label for="detail">Detail</label>
+           <select class="form-control" id="detail">
+             <option>none(default)</option>
+             <option>1</option>
+             <option>2</option>
+             <option>3</option>
+             <option>4</option>
+             <option>5</option>
+           </select>
+         </div>
+         <div class="form-group col-md-2">
+           <label for="language">Language</label>
+           <select  class="form-control" id="language">
+             <option>none(default)</option>
+             <option>italiano</option>
+             <option>english</option>
+           </select>
+         </div>
+         <div class="form-group col-md-2">
+           <label for="purpose">Purpose</label>
+           <select class="form-control" id="purpose">
+             <option>none(default)</option>
+             <option>why</option>
+             <option>how</option>
+             <option>what</option>
+           </select>
+         </div>
+         <div class="form-group col-md-3">
+           <label for="descrizione">Descrizione</label>
+           <textarea class="form-control"id="descrizione"placeholder="aggiungi una descrizione"rows="1"></textarea>
+
+         </div>
+
+        <div class="container centro" id="registraVideo">
+
+         <video id="gum" playsinline autoplay muted></video>
+          <video id="recorded" playsinline></video>
+
+        <div>
+              <button id="start" class="btn btn-primary coloreBottone">Start camera</button>
+              <button id="record" class="btn btn-primary coloreBottone" disabled>Start Recording</button>
+              <button id="play" class="btn btn-primary coloreBottone" disabled>Play</button>
+              <button id="upload" class="btn btn-primary coloreBottone" disabled>Upload</button>
           </div>
+
+          <div>
+              <span id="errorMsg"></span>
+          </div>
+
         </div>
-      </br>
-
-      <!-- Scopo -->
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label class="portfolio-hover" for="purpose">Scopo</label>
-              <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
-              <select id="purpose" class="border-white shadow custom-select custom-select-lg" aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
-              </select>
-              <small id="purposeHelpBlock" class="form-text text-muted">
-            Scopo della clip
-              </small>
-            </div>
-          </div>
-
-      <!-- Lingua -->
-
-          <div class="col">
-            <div class="form-group"><label for="language">Lingua&nbsp;</label>
-              <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
-              </select>
-              <small id="languageHelpBlock" class="form-text text-muted">
-              Linguaggio utilizzato nella clip
-              </small>
-            </div>
-          </div>
+</div>
 
 
-      <!-- Categoria -->
-
-          <div class="col">
-            <div class="form-group">
-              <label for="public">Pubblico&nbsp;</label>
-              <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
-              </select>
-              <small id="publicHelpBlock" class="form-text text-muted">
-               Pubblico adatto alla clip
-              </small>
-            </div>
-          </div>
-        </div>
-      <!-- Categoria -->
-        <div class="row">
-          <div class="col">
-            <div class="form-group"><label for="category">Category&nbsp;</label>
-              <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
-              </select>
-              <small id="cateogyHelpBlock" class="form-text text-muted">
-              Categoria della clip
-              </small>
-            </div>
-          </div>
-
-
-      <!--Livello -->
-
-          <div class="col">
-            <div class="form-group"><label for="category">Level&nbsp;</label>
-            <select id="detailLevel" class="border-white shadow custom-select custom-select-lg"  aria-describedby="detailHelpBlock" v-model="selected"><optgroup label="Select Detail level">
-            <option v-for="option in options" v-bind:value="option.value">
-            {{ option.text }}
-            </option>
-            </select>
-            <small id="cateogyHelpBlock" class="form-text text-muted">
-            Livello della clip
-            </small>
-          </div>
-          </div>
-        </div>
-
-      <!-- SIXT ROW FOR CLIPS... -->
-        <div class="row">
-          <div id="buttonSelection"  class="col-xl-2 offset-xl-5 text-center" style="margin-top: 2%;">
-          <!-- RECORDING -->
-            <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
-            <!-- STOP -->
-            <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
-          </div>
-        </div>
-    </div>
-    </div> <!-- End: div data -->
+<div style="float:left"id="scegliVideo">
+<div class="input-group">
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01"
+      aria-describedby="inputGroupFileAddon01" onChange="scegliFile()" accept="video/*">
+      <label class="custom-file-label lead" for="inputGroupFile01" style="text-align:left;">carica video</label>
+</div>
+</div>
 </div>
 
 </section>
@@ -281,6 +271,23 @@
         </div>
     </div>
 </footer>
+
+
+<script type="text/javascript">
+function scegliFile() {
+  var file    = document.querySelector('input[type=file]').files[0];
+  var reader  = new FileReader();
+  file instanceof Blob; // true
+
+  console.log(file);
+
+  uploadVideo(file);
+
+}
+
+</script>
+
+
 
 <!-- Plugin JavaSctipt -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
