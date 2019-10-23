@@ -4,6 +4,7 @@ const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ
 const DEFAULT_COORDS = [44.493671, 11.343035];
 /** Client ID per le API di Google */
 const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
+// tom const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
 ];
@@ -52,6 +53,39 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 /** Ottiene la posizione corrente dal browser */
 navigator.geolocation.getCurrentPosition(displayLocation);
 
+
+/** Mostra sulla mappa la posizione ricevuta dal browser */
+function displayLocation(position) {
+  // console.log('position', position);
+   var lat = position.coords.latitude;
+   var lng = position.coords.longitude;
+   // aggiorna la posizione corrente
+   currentPosition = [lat, lng];
+   // ottiene l'OLC della posizione corrente
+   currentOlc = OpenLocationCode.encode(lat, lng);
+   // apre la mappa sulla posizione ricevuta dal browser
+   map.setView([lat, lng], 18);
+   //console.log(currentOlc);
+   // crea marker per la posizione attuale con popup
+   markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+
+   markerPosizioneAttuale.addTo(map);
+}
+
+function onMapClick(e) {
+    if (markerPosizioneAttuale) {
+        map.removeLayer(markerPosizioneAttuale);
+    }
+    markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'false'});
+
+    markerPosizioneAttuale.addTo(map);
+	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
+    console.log(currentOlc);
+}
+
+map.on('click', onMapClick);
+
+/**autenticazione google*/
 function handleAuthClick() {
   gapi.auth2.getAuthInstance().signIn();
   console.log(gapi.auth2.getAuthInstance().signIn());
@@ -77,7 +111,9 @@ function initClient(callback) {
 
 function updateSigninStatus(status) {
   if (status) {
+
     console.log('in');
+
   } else {
     alert("Devi prima effettuare il log in.");
   }
@@ -97,131 +133,228 @@ function signOut() {
   };
 }
 
-/**
- * SEZIONE METODI DELLA MAPPA
- */
-// Se sono presenti video vengono mostrati dei markers
-function loadYTVideos() {
-  gapi.client.setApiKey("AIzaSyCfAGcL91p3JSJIbohytN94hsRgnyz-jJs");
-  // Crea query string x YouTube
-  var queryString = currentOlc.substring(0, 8);
-  console.log(queryString);
-  // ricerca video 
-  gapi.client.load("youtube", "v3", function() {
-    console.log("YT Api ready");
-    var req = gapi.client.youtube.search.list({
-      part: "snippet",
-      type: "video",
-      q: queryString,
-      maxResults: 50
-    });
-    // execute the request
-    req.execute(function(response) {
-      console.log(response); //just for debug purpose
-      var videosIDString = ''; // for all videos ids
-      response.result.items.forEach(function(item) {
-        var currentVideo = new Object();
-        currentVideo.idV = item.id.videoId;
-        let title = item.snippet.title;
-        let olc = item.snippet.description.split('#')[0].split(":")[0];
-        // calcola le coordinate relative all'olc del video
-        let coords = OpenLocationCode.decode(olc);
-        // aggiunge nuovo marker alla mappa alle coordinate del video
-        var m = new L.marker([coords.latitudeCenter, coords.longitudeCenter])
-          .bindPopup(title)
-          .addTo(map);
-        // Setta callback per evento di click su marker
-        m.on('click', onMarkerClick);
-      });
-    });
-  });
-};
+// GESTIONE REGISTRAZIONE E FUNZIONI
 
-/** Mostra sulla mappa la posizione ricevuta dal browser */
-function displayLocation(position) {
-  // console.log('position', position);
-   var lat = position.coords.latitude;
-   var lng = position.coords.longitude;
-   // aggiorna la posizione corrente
-   currentPosition = [lat, lng];
-   // ottiene l'OLC della posizione corrente
-   currentOlc = OpenLocationCode.encode(lat, lng);
-   // apre la mappa sulla posizione ricevuta dal browser
-   map.setView([lat, lng], 18);
-   // crea marker per la posizione attuale con popup
-   markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-   markerPosizioneAttuale.setIcon(greenIcon);
-   markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
-   <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-   <hr align="center">If location is incorrect, drag the marker</a>
-   <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
-    class="btn btn-success">Search clips</button>
-   </div>`).openPopup();
-   markerPosizioneAttuale.addTo(map);
-};
 
-//prende in input lo stream dati e la lunghezza in millisecondi
-function startRecording(stream, lengthInMS) {
+'use strict';
 
-  //inizializza un array vuoto
-  let data = [];
+var MediaRecorder;
 
-  //fa partire lo stram dati
-  recorder = new MediaRecorder(stream);
-  recorder.ondataavailable = event => data.push(event.data);
-  recorder.start();
-  //identifica ogni registrazione con un Id diverso, imposta una nuova traccia ogni volta
-  recorderId = setTimeout(function () { recorder.state == "registratore"; recorder.stop(); stream.getTracks().forEach(track => track.stop()); }, lengthInMS);
-  //promessa che indica se è stata rispettata o no.
-  //se si allora ok, se no ritorna un errore
-  return new Promise((resolve, reject) => {
-    recorder.onstop = resolve;
-    recorder.onerror = event => reject(event.name);
-  })
-    .then(() => data);
-};
+const mediaSource = new MediaSource();
+mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
+let mediaRecorder;
+let recordedBlobs;
+let sourceBuffer;
 
-/** Stop the recording and each track */
-function stop(stream) {
-  //resetta il tempo di timeout, ferma il recorder
-  clearTimeout(recorderId);
-  recorder.stop();
-  stream.getTracks().forEach(track => track.stop());
-};
 
-startButton.addEventListener("click", function () {
-  //ask the browser for permission
-  navigator.mediaDevices.getUserMedia({
+if(typeof MediaRecorder.isTypeSupported !== "function"){
+  document.getElementById("registraVideo").style.display="none";
+}
 
-    //permette di registrare sia audio che video
-    video: true,
-    audio: true
-  }).then(stream => {
+const errorMsgElement = document.querySelector('span#errorMsg');
+const recordedVideo = document.querySelector('video#recorded');
+const recordButton = document.querySelector('button#record');
 
-    //lo stream serve sia per l' anteprima in diretta, sia per l' anteprima successiva che per il dowload del .webm
-    preview.srcObject = stream;
-    downloadButton.href = stream;
-    preview.captureStream = preview.captureStream || preview.mozCaptureStream || preview.webkitCaptureStream;
+recordButton.addEventListener('click', () => {
+  if (recordButton.textContent === 'Start Recording') {
 
-    //promesssa con concatenazione di funzioni
-    return new Promise(resolve => preview.onplaying = resolve);
-  }).then(() => startRecording(preview.captureStream(), maxAllowedRegistrationLenght))
-    .then(recordedChunks => {
-      //registra in formato blob, inserendo il tipo video/webm, il registrato poi si può scaricare grazie al bottone dowload
-      recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
-      registratore.src = URL.createObjectURL(recordedBlob);
-      downloadButton.href = registratore.src;
-      downloadButton.download = "clip.webm";
-
-    })
-
-    //log se errore
-    .catch(log);
-}, false);
-
-//ferma la preview
-stopButton.addEventListener("click", function () {
-  if (recorder.state == "registratore") {
-    stop(preview.srcObject);
+    startRecording();
+  } else {
+    stopRecording();
+    recordButton.textContent = 'Start Recording';
+    playButton.disabled = false;
+    uploadButton.disabled = false;
   }
-}, false);
+});
+
+const playButton = document.querySelector('button#play');
+playButton.addEventListener('click', () => {
+  const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
+  recordedVideo.src = null;
+  recordedVideo.srcObject = null;
+  recordedVideo.src = window.URL.createObjectURL(superBuffer);
+  recordedVideo.controls = true;
+  recordedVideo.play();
+});
+
+const uploadButton = document.querySelector('button#upload');
+uploadButton.addEventListener('click', () => {
+  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
+  const url = window.URL.createObjectURL(blob);
+
+  uploadVideo(blob);
+});
+
+function handleSourceOpen(event) {
+  console.log('MediaSource opened');
+  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
+  console.log('Source buffer: ', sourceBuffer);
+}
+
+function handleDataAvailable(event) {
+  if (event.data && event.data.size > 0) {
+    recordedBlobs.push(event.data);
+  }
+}
+
+function startRecording() {
+  recordedBlobs = [];
+  let options = {mimeType: 'video/webm;codecs=vp9'};
+  if(typeof MediaRecorder.isTypeSupported === "function"){
+
+  if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    console.error(`${options.mimeType} is not Supported`);
+    errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+    options = {mimeType: 'video/webm;codecs=vp8'};
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+      console.error(`${options.mimeType} is not Supported`);
+      errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+      options = {mimeType: 'video/webm'};
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        console.error(`${options.mimeType} is not Supported`);
+        errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+        options = {mimeType: ''};
+      }
+    }
+  }
+} else {
+        document.getElementById("registraVideo").style.display="none";
+        alert("Il tuo browser non supporta il registratore. Carica il video");
+}
+
+  try {
+    mediaRecorder = new MediaRecorder(window.stream, options);
+  } catch (e) {
+    console.error('Exception while creating MediaRecorder:', e);
+    errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
+    return;
+  }
+
+  console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
+  recordButton.textContent = 'Stop Recording';
+  playButton.disabled = true;
+  uploadButton.disabled = true;
+  mediaRecorder.onstop = (event) => {
+    console.log('Recorder stopped: ', event);
+  };
+  mediaRecorder.ondataavailable = handleDataAvailable;
+  mediaRecorder.start(10); // collect 10ms of data
+  console.log('MediaRecorder started', mediaRecorder);
+}
+
+function stopRecording() {
+  mediaRecorder.stop();
+  console.log('Recorded Blobs: ', recordedBlobs);
+}
+
+function handleSuccess(stream) {
+  recordButton.disabled = false;
+  console.log('getUserMedia() got stream:', stream);
+  window.stream = stream;
+
+  const gumVideo = document.querySelector('video#gum');
+  gumVideo.srcObject = stream;
+}
+
+async function init(constraints) {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    console.error('navigator.getUserMedia error:', e);
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+document.querySelector('button#start').addEventListener('click', async () => {
+  const constraints = {
+    audio: true,
+    video: {
+      width: {
+        exact:1280
+      },
+      height: {
+        exact:720
+    }
+  }
+  };
+  console.log('Using media constraints:', constraints);
+  await init(constraints);
+});
+
+
+
+
+// composizione descrizione video
+function creaMetadata(){
+   var purpose=document.getElementById("purpose").value;
+   var language=document.getElementById("language").value;
+   var content=document.getElementById("content").value;
+   var detail=document.getElementById("detail").value;
+   var audience=document.getElementById("audience").value;
+   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail;
+   console.log(metadata);
+   return metadata;
+}
+
+//caricamento video
+  function uploadVideo(blob){
+    //passiamo il blob dallo sccript di crezione del video
+    //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
+    var descrizione = creaMetadata();
+    var titolo=document.getElementById("titolo").value;
+  //  console.log(descrizione);
+    console.log(titolo);
+    var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
+    console.log(token);
+    console.log(blob);
+
+
+    metadata = {
+      kind: 'youtube#video',
+      snippet: {
+        title: titolo,
+        description: descrizione,
+      },
+      status: {
+        privacyStatus: 'public',
+        embeddable: true
+      }
+    };
+
+    var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+    var form = new FormData();
+    //Blob per il metadata
+    form.append('video', meta);
+    //Blob del video
+    form.append('mediaBody', blob);
+
+    //document.getElementById("registraVideo").style.display="none";
+  //  document.getElementById("scegliVideo").style.display="none";
+  //  document.getElementById("loading").style.display="block";
+
+    //chiamata ajax
+    $.ajax({
+      url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
+        + encodeURIComponent(token) + '&part=snippet,status',
+      data: form,
+      cache: false,
+      contentType: false,
+      processData: false,
+      method: 'POST',
+      success:function(data) {
+        alert("Video caricato");
+      //  document.getElementById("registraVideo").style.display="block";
+    	  //document.getElementById("scegliVideo").style.display="block";
+    	  //document.getElementById("loading").style.display="none";
+       mediaRecorder.stop();
+
+    },
+// ed una per il caso di fallimento
+error: function(request, status, error) {
+        alert(request.responseText);
+}
+
+    });
+
+  }
