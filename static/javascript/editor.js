@@ -111,7 +111,8 @@ function initClient(callback) {
 
 function updateSigninStatus(status) {
   if (status) {
-
+    document.getElementById("gbutton").style.visibility="hidden";
+    document.getElementById("logOut").style.visibility="visible";
     console.log('in');
 
   } else {
@@ -131,6 +132,8 @@ function signOut() {
     $('#data').hide();
     $('#recordingSection').hide();
   };
+  document.getElementById("gbutton").style.visibility="visible";
+  document.getElementById("logOut").style.visibility="hidden";
 }
 
 // GESTIONE REGISTRAZIONE E FUNZIONI
