@@ -2,6 +2,14 @@
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
 /** Coordinate di Default per la mappa */
 const DEFAULT_COORDS = [44.493671, 11.343035];
+/** Codice per il popup del marker */
+const POPUP = `<div style="text-align: center;">
+<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
+<hr align="center">
+If location is incorrect, drag the marker or use search control on left side of the map
+<hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
+class="btn btn-success">Search clips</button>
+</div>`;
 
 var markerPosizioneAttuale;
 var circlePosizioneAttuale;
@@ -39,17 +47,38 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: MAPBOX_TOKEN
 }).addTo(map);
 
+/** Aggiunge alla mappa casella di ricerca per gli indirizzi */
+var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+
+/** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
+var results = L.layerGroup().addTo(map);
+searchControl.on('results', function (data) {
+    // rimuove marker del risultato precedente
+    results.clearLayers();
+    // rimuove il marker della posizione attuale se presente
+    if (markerPosizioneAttuale) {
+        map.removeLayer(markerPosizioneAttuale);
+    }
+    for (let i = data.results.length - 1; i >= 0; i--) {
+        results.addLayer(L.marker(data.results[i].latlng, { draggable: 'true' })
+        .setIcon(greenIcon)
+        .bindPopup(POPUP)
+        .openPopup());
+    }
+})
+
 /** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
 navigator.geolocation.getCurrentPosition(displayLocation);
+
 //Controllo su posizione non trovata
 //TODO:aggiungere popup per inserire manualmente la posizione
 if(!navigator.geolocation){
     alert("Inserisci posizione manualmente");
 }
+
 /** Mostra sulla mappa la posizione ricevuta dal browser */
 function displayLocation(position) {
-
-   // console.log('position', position);
+    // coordinate della posizione attuale
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
     // aggiorna la posizione corrente
@@ -60,13 +89,10 @@ function displayLocation(position) {
     map.setView([lat, lng], 18);
     // crea marker per la posizione attuale con popup
     markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-
-    markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
-		<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-        <hr align="center">If location is incorrect, drag the marker
-        <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
-        class="btn btn-success">Search clips</button>
-        </div>`).openPopup();
+    markerPosizioneAttuale.setIcon(greenIcon);
+    // popup associato il nuovo marker
+    markerPosizioneAttuale.bindPopup(POPUP).openPopup();
+    // aggiunge il marker alla mappa
     markerPosizioneAttuale.addTo(map);
 }
 
@@ -77,12 +103,7 @@ function onMapClick(e) {
         map.removeLayer(markerPosizioneAttuale);
     }
     markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'true'});
-    markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
-    <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-    <hr align="center">If location is incorrect, drag the marker
-    <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
-    class="btn btn-success">Search clips</button>
-    </div>`).openPopup();
+    markerPosizioneAttuale.bindPopup(POPUP).openPopup();
     markerPosizioneAttuale.addTo(map);
 	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
     console.log(currentOlc);

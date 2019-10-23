@@ -20,6 +20,15 @@ var circleDraggable;
 var currentPosition;
 var currentOlc;
 
+// per il momento lunghezza massima 30 secondi, poi sarà da gestire meglio
+var maxLenght = 30000;
+var recordedBlob;
+
+recorder = document.getElementById('recorder');
+let preview = document.getElementById('preview');
+let startButton = document.getElementById('record');
+let stopButton = document.getElementById('stopRecord');
+
 /** Marker verde */
 var greenIcon = new L.Icon({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -141,6 +150,7 @@ function displayLocation(position) {
    map.setView([lat, lng], 18);
    // crea marker per la posizione attuale con popup
    markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+   markerPosizioneAttuale.setIcon(greenIcon);
    markerPosizioneAttuale.bindPopup(`<div style="text-align: center;">
    <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
    <hr align="center">If location is incorrect, drag the marker</a>
@@ -148,375 +158,70 @@ function displayLocation(position) {
     class="btn btn-success">Search clips</button>
    </div>`).openPopup();
    markerPosizioneAttuale.addTo(map);
-}
-
-// set the popup information: latlng and address
-function addPopup(marker) {
-  // OSM Nomitatim documentation: http://wiki.openstreetmap.org/wiki/Nominatim
-  var jsonQuery = "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + marker.getLatLng().lat + "&lon=" + marker.getLatLng().lng + "&zoom=18&addressdetails=1";
-
-  $.getJSON(jsonQuery).done( function (result_data) {
-    console.log(result_data);
-
-    var road;
-
-    if(result_data.address.road) {
-        road = result_data.address.road;
-    }
-    else if (result_data.address.pedestrian) {
-      road = result_data.address.pedestrian;
-    }
-    else {
-      road = "No defined";
-    }
-    var olc= OpenLocationCode.encode(marker.getLatLng().lat, marker.getLatLng().lng, 10);
-
-    var popup_text = "<b>Olc:</b> "+ olc  +
-      "</br><b>Road:</b> " + road + ", " + result_data.address.house_number +
-      "</br><b>City:</b> " + result_data.address.city +
-      "</br><b>Postal Code:</b> " + result_data.address.postcode;
-
-    marker.bindPopup(popup_text).openPopup();
-
-    map.removeLayer(markerPosizioneAttuale);
-    map.removeLayer(circlePosizioneAttuale);
-    if(markerSearch) {
-      map.removeLayer(markerSearch);
-      map.removeLayer(circleSearch);
-    }
-  });
 };
 
-// record clip
-function recordClip() {
-  //stream from getUserMedia()
-  var mediaStream; 
-  //WebAudioRecorder object
-  var recorder;
-  //MediaStreamAudioSourceNode  we'll be recording
-  var input;      
-  //holds selected encoding for resulting audio (file)
-  var encodingType;     
-  // when to encode
-  var encodeAfterRecord = true;       
+//prende in input lo stream dati e la lunghezza in millisecondi
+function startRecording(stream, lengthInMS) {
 
-  // shim for AudioContext when it's not available
-  var AudioContext = window.AudioContext || window.webkitAudioContext;
-  //new audio context to help us record
-  var audioContext;
+  //inizializza un array vuoto
+  let data = [];
 
-  $('#record').click((start) => {
+  //fa partire lo stram dati
+  recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = event => data.push(event.data);
+  recorder.start();
+  //identifica ogni registrazione con un Id diverso, imposta una nuova traccia ogni volta
+  recorderId = setTimeout(function () { recorder.state == "registratore"; recorder.stop(); stream.getTracks().forEach(track => track.stop()); }, lengthInMS);
+  //promessa che indica se è stata rispettata o no.
+  //se si allora ok, se no ritorna un errore
+  return new Promise((resolve, reject) => {
+    recorder.onstop = resolve;
+    recorder.onerror = event => reject(event.name);
+  })
+    .then(() => data);
+};
 
-    if($("#name").val().trim().length == 0) {
-      alert('Inserire titolo audio');
-      return;
-    }
-    // opzioni per il registratore
-    var recordOptions = { audio: true, video: true }
+/** Stop the recording and each track */
+function stop(stream) {
+  //resetta il tempo di timeout, ferma il recorder
+  clearTimeout(recorderId);
+  recorder.stop();
+  stream.getTracks().forEach(track => track.stop());
+};
 
-    // standard promise based getUserMedia()
-    navigator.mediaDevices.getUserMedia(recordOptions).then(function(stream) {
-      //create an audio context after getUserMedia is called
-      audioContext = new AudioContext();
-      //assign to mediaStream for later use
-      mediaStream = stream; 
-      //use the stream
-      input = audioContext.createMediaStreamSource(stream);
-      //set the encoding
-      encodingType = ENCONDING_TYPE;
+startButton.addEventListener("click", function () {
+  //ask the browser for permission
+  navigator.mediaDevices.getUserMedia({
 
-        recorder = new WebAudioRecorder(input, {
-          workerDir: "/static/WebAudioRecorder/",
-          encoding: encodingType,
-                numChannels:2, //2 is the default, mp3 encoding supports only 2
-                onEncoderLoading: function(recorder, encoding) {
-                  console.log("Loading "+encoding+" encoder...");
-                },
-                onEncoderLoaded: function(recorder, encoding) {
-                  console.log(encoding+" encoder loaded");
-                }
-              });
+    //permette di registrare sia audio che video
+    video: true,
+    audio: true
+  }).then(stream => {
 
-        recorder.onComplete = function(recorder, blob) {
-          console.log("Encoding complete");
-          createDownloadLink(blob,recorder.encoding);
+    //lo stream serve sia per l' anteprima in diretta, sia per l' anteprima successiva che per il dowload del .webm
+    preview.srcObject = stream;
+    downloadButton.href = stream;
+    preview.captureStream = preview.captureStream || preview.mozCaptureStream || preview.webkitCaptureStream;
 
-                // var reader = new FileReader();
-                // reader.onload = function () {
-                //     b64 = reader.result.replace(/^data:.+;base64,/, '');
-                //     document.getElements("video").value = b64;
-                //     console.log(b64);
-                // };
-                // reader.readAsDataURL(blob);
-              }
+    //promesssa con concatenazione di funzioni
+    return new Promise(resolve => preview.onplaying = resolve);
+  }).then(() => startRecording(preview.captureStream(), maxAllowedRegistrationLenght))
+    .then(recordedChunks => {
+      //registra in formato blob, inserendo il tipo video/webm, il registrato poi si può scaricare grazie al bottone dowload
+      recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+      registratore.src = URL.createObjectURL(recordedBlob);
+      downloadButton.href = registratore.src;
+      downloadButton.download = "clip.webm";
 
-              recorder.setOptions({
-                timeLimit:180,
-                encodeAfterRecord:encodeAfterRecord,
-                ogg: {quality: 0.5},
-                mp3: {bitRate: 160}
-              });
+    })
 
-            //start the recording process
-            recorder.startRecording();
-            console.log("Recording started");
-            // hide record button
-            $('#record').hide();
-            $('#stopButton').prop("hidden", false);
+    //log se errore
+    .catch(log);
+}, false);
 
-            //$('#stopButton').show();
-
-            // show stop button
-            //$("#buttonSelection").append('<button id = "stopButton" class="btn btn-danger btn-block btn-sm text-center"">Stop</button>');
-            //$('#recordButton').hide();
-            // $("#buttonSelection").append(`<button  id="stopButton" class="btn btn-danger btn-block btn-lg text-center
-            //  text-sm-center d-xl-flex align-items-center justify-content-xl-center align-items-xl-center">Stop
-            //  </button>`);
-
-
-            $('#stopButton').click((start)=>{
-                // stop microphone access
-                gumStream.getAudioTracks()[0].stop();
-                // tell the recorder to finish the recording (stop recording + encode the recorded audio)
-                recorder.finishRecording();
-                // show record button
-                $('#stopButton').hide();
-                $('#record').show();
-                // remove stop button
-                //$('#stopButton').remove();
-                console.log('Recording stopped');
-
-              });
-
-          }).catch(function(error) {
-            console.log(error);
-          });
-        });
+//ferma la preview
+stopButton.addEventListener("click", function () {
+  if (recorder.state == "registratore") {
+    stop(preview.srcObject);
   }
-
-// function printMetadata() {
-//  console.log(audio.metadata)
-// }
-
-// create download link for the clip (USELESS?? BOH)
-function createDownloadLink(blob,encoding) {
-
-  var url = URL.createObjectURL(blob);
-  console.log(blob);
-  let smallUrl = url.split('/');
-  smallUrl = smallUrl[smallUrl.length-1];
-  //console.log(smallUrl[smallUrl.length-1]);
-
-  // test purpose
-  //console.log(url);
-  //var audio = document.createElement('audio');
-  //var li =  document.createElement('li');
-  //var link = document.createElement('a');
-  var metadata = createMetadata();
-  var range = document.getElementById('range');
-
-
-  //add controls to the <audio> element
-  //audio.controls = true;
-  //audio.src = url;
-
-  //link the a element to the blob
-  //link.href = url;
-  //link.download = new Date().toISOString() + '.'+encoding;
-  //link.innerHTML = link.download;
-
-  $("#recs").append(
-    `<!--Start: clip -->
-    <article id="${smallUrl}card" style="margin-bottom:3%;">
-    <div class="row text-center">
-    <div class="col text-center d-flex d-xl-flex justify-content-center justify-content-xl-center">
-    <div class="text-center bg-white border rounded border-white shadow" style="width: 50%;height: 100%;">
-    <div class="row" style="margin-left: 3%;margin-right: 3%;margin-top: 3%;">
-    <div class="col text-center"><label class="text-center d-flex justify-content-center d-xl-flex justify-content-xl-center"><strong>Title</strong></label><input class="border rounded border-white text-center d-xl-flex justify-content-xl-center d-flex justify-content-center text-sm-center" type="text" readonly="" value="${$("#name").val()}" style="font-size:17px; font-weight:bold;"></div>
-    <div class="col text-center"><label class="d-xl-flex d-flex justify-content-center justify-content-xl-center">Language</label><input class="border rounded border-white text-center d-flex justify-content-center d-xl-flex justify-content-xl-center  text-sm-center" type="text" readonly="" value="${$("#language").val()}"></div>
-    <div class="col text-center"><label class="d-xl-flex d-flex justify-content-center justify-content-xl-center">Purpose&nbsp;</label><input class="border rounded border-white text-center d-xl-flex justify-content-xl-center d-flex justify-content-center  text-sm-center text-xl-center " type="text" readonly="" value="${$("#purpose").val()}"></div>
-    </div>
-    <hr>
-    <div class="row text-center" style="margin-top: 1%;margin-left: 3%;margin-right: 3%;">
-    <div class="col text-center d-xl-flex d-flex justify-content-center justify-content-xl-center"><audio preload="metadata" id="${smallUrl}audio" src="${url}" controls="true"></audio></div>
-    </div>
-    <hr>
-    <div class="row" style="margin-top: 3%;margin-bottom: 3%;margin-right: 3%;margin-left: 3%;">
-    <div class="col"><button id="${smallUrl}upload" class="btn btn-success btn-block btn-lg bg-success" type="button" style="background-color: #00563f;">UPLOAD</button></div>
-    <div class="col"><button id="${smallUrl}delete" class=" btn btn-danger btn-block btn-lg border-danger" type="button">DELETE</button>
-    </div>
-    <div class="col"><button id="${smallUrl}review" class="btn btn-warning btn-block btn-lg border-warning" type="button" style="color: #ffffff;">REVIEW</button></div>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    <script>
-    $('#${smallUrl}upload').click(function() {
-      console.log(this.id.split('upload')[0]);
-
-      console.log("dentro l'upload");
-    });
-
-    $("#${smallUrl}delete").click(function() {
-      $("#"+this.id.split('delete')[0]+"card").hide();
-    });
-
-    $("#${smallUrl}review").click(function() {
-      let url = "blob:https://site181929.tw.cs.unibo.it/"+this.id.split('review')[0];
-      $('#audioClip').attr("src", url);
-      $('#modifyClip').modal();
-
-      var vid = document.getElementById("audioClip");
-      vid.onloadedmetadata = function() {
-        var sec = Math.floor(vid.duration%60)+1;
-        var min = Math.floor(vid.duration/60);
-        if(sec<10) sec = "0"+sec;
-        var time = min + "." + sec;
-
-        noUiSlider.create(range, {
-          start: [0,time],
-          connect: true,
-          tooltips: [true, wNumb({decimals: 2})],
-          range: {
-            'min': [0],
-            'max': [parseFloat(time)]
-          }
-        });
-      }
-    });
-    </script>
-    </article>
-    <!--End: clip -->`);
-
-  $('#recordingSection').slideDown();
-
-  // ad upload video deve essere passata il risultato di cloudinary
-  //uploadVideo(blob, metadata);
-
-  //uploadVideo(player.recordedData, metadata);
-  $( "#upload" ).click(function() {
-    uploadVideo(blob, metadata);
-  });
-
-}
-
-function setVolume() {
-  $('#audioClip').prop("volume", $('#volumeClip').val());
-}
-
-function onSave() {
-
-  //save volume changes
-  let smallUrl = $('#audioClip').attr('src').split('/');
-  smallUrl = smallUrl[smallUrl.length-1];
-  $('#'+smallUrl+"audio").prop("volume", $('#volumeClip').val());
-  $("#volumeClip").val('');
-
-  //save start/end changes
-
-  range.noUiSlider.destroy();
-
-}
-
-function onCancel() {
-
-  //reset volume changes
-  $("#volumeClip").val('');
-
-  //reset start/end changes
-  range.noUiSlider.destroy();
-
-}
-
-
-// Handler for the button 'Send Clip'
-function createMetadata() {
-  // Retrieve metadata
-  var geoloc = OpenLocationCode.encode(selectedPoint.getLatLng().lat, selectedPoint.getLatLng().lng, OpenLocationCode.CODE_PRECISION_EXTRA);
-  // just for debug
-  //console.log(geoloc);
-  var purpose = $("#purpose").val();
-  var language = $("#language").val();
-  // just for debug
-  //console.log(language);
-  var content = $("#content").val();
-  var audience = 'A+';
-  audience += $("#audience").val();
-  var detail = 'P+';
-  detail += $("#audience").val();
-  var detail = 'P+';
-  detail += $("#detailLevel").val();
-  console.log(detail);
-  var description =  $("#description").val();
-
-  // name of the new point
-  var name = $("#name").val();
-
-  // Define metadata
-  var metadata = {
-    kind: 'youtube#video',
-    snippet: {
-      title: name + ":8FPHF9Q5+J4",
-      description: [[geoloc, purpose, language, content, audience, detail].join(':'),description]
-      .join('#'),
-      categoryId: 22
-
-    },
-    status: {
-      privacyStatus: 'public',
-      embeddable: true
-    }
-  };
-
-  console.log(metadata.snippet.description);
-
-  return metadata;
-}
-
-function uploadVideo(video, metadata) {
-  var file = new File([video], "abc");
-
-  var data = new FormData();
-  data.append("toUpload", file);
-
-  axios({
-    url: "http://lily.cs.unibo.it/file-upload",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    data: data
-  }).then( function(result) {
-    console.log(result);
-  }).catch( function(error) {
-    console.log(error);
-  });
-
-  var auth = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
-
-  var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-
-  var form = new FormData();
-  form.append('data', meta);
-  form.append('video', video);
-
-  console.log(metadata);
-
-  cloudinary.config({
-    cloud_name: 'do5uz0yci',
-    api_key: '286293616516234',
-    api_secret: 'YwQupMjENrxhtCxWEkBTzHllzMI'
-  });
-
-  console.log('ciao');
-};
-
-//////////////////////////////////////////////////////////////////////////
-// Handler edit clip
-function editClip() {
- // $('#start').click(function(){
-  var startTime = $('audio').get(0).currentTime;
-  console.log(cur_time);
-  var stopTime = $('audio').get(0).currentTime;
-}
+}, false);

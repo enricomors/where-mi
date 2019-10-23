@@ -30,11 +30,9 @@
     <link rel="stylesheet" href="static/css/browser.css" type="text/css">
     <link rel="stylesheet" href="static/css/style.css">
 
-    <!-- Routing conrol-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <!-- Plugin JavaSctipt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
     <!-- Load Leaflet from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -52,10 +50,14 @@
     <!-- Load Esri Leaflet Geocoder from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.1/dist/esri-leaflet-geocoder.css"
     integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
-    crossorigin=""> 
+    crossorigin="">
     <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.1/dist/esri-leaflet-geocoder.js"
     integrity="sha512-YUgyCwPXzSCFuYgNIsumhktAolzwxETPBwc+xAgJOW7B3/1r1EKf0WYpmNo+6a/9C/EAF9RxYnMynEmd+77fTA=="
     crossorigin=""></script>
+    
+    <!-- Routing conrol-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
     <!-- Google APIs (without "async defer") -->
     <script src="https://apis.google.com/js/platform.js"></script>
@@ -243,9 +245,8 @@
         </div>
     </footer>
 
-    <!-- Plugin JavaSctipt -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Leaflet GeoSearch -->
+    <script src="https://unpkg.com/browse/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -253,7 +254,7 @@
     <!-- Our JS scripts -->
     <script src="/static/javascript/Geocoder.js"></script>
     <script src="/static/javascript/config.js"></script>
-    <script src="static/javascript/browser.js"></script>
+    <script src="/static/javascript/browser.js"></script>
 
     <!-- youtube iframe api -->
     <script src="https://www.youtube.com/iframe_api"></script>

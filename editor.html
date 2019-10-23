@@ -90,7 +90,7 @@
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" href="#">log out</a></li>
-                    <button onclick="handleAuthClick()" class="fa fa-google btn btn-primary" type="button">Accedi</button>
+                    <button onclick="handleAuthClick()" class="btn btn-success" type="button">Sign-in with Google</button>
                 </ul>
             </div>
         </div>
@@ -112,7 +112,7 @@
   <!-- Fine Mappa -->
 
   <!-- METADATA for clips -->
-    <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
+  <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
    <div style="margin-right: 5%; margin-left: 5%;">
     <form>
       <!-- Name -->
@@ -148,9 +148,10 @@
               <label class="portfolio-hover" for="purpose">Scopo</label>
               <a class="portfolio-link" data-toggle="modal" href="#modalPurpose">?</a>
               <select id="purpose" class="border-white shadow custom-select custom-select-lg" aria-describedby="purposeHelpBlock" v-model="selected" onchange="showDetailLevel()"><optgroup label="Select purpose">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
+                <optgroup label="Select Language">
+                <option value="what">What</option>
+                <option value="how">How</option>
+                <option value="Why">why</option>
               </select>
               <small id="purposeHelpBlock" class="form-text text-muted">
             Scopo della clip
@@ -163,9 +164,12 @@
           <div class="col">
             <div class="form-group"><label for="language">Lingua&nbsp;</label>
               <select id="language" class="border-white shadow custom-select custom-select-lg"  aria-describedby="languageHelpBlock" v-model="selected"><optgroup label="Select language">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
+                <optgroup label="Select Language">
+                <option value="ita" selected>Italiano</option>
+                <option value="eng">Inglese</option>
+                <option value="deu">Tedesco</option>
+                <option value="fra">Francese</option>
+                <option value="esp">Spagnolo</option>
               </select>
               <small id="languageHelpBlock" class="form-text text-muted">
               Linguaggio utilizzato nella clip
@@ -174,15 +178,18 @@
           </div>
 
 
-      <!-- Categoria -->
+      <!-- Audience -->
 
           <div class="col">
             <div class="form-group">
               <label for="public">Pubblico&nbsp;</label>
               <select id="audience" class="border-white shadow custom-select custom-select-lg"  aria-describedby="publicHelpBlock" v-model="selected"><optgroup label="Select interested public">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
+                <optgroup label="Select Audience">
+                <option value="gen" selected>Generico</option>
+                <option value="pre">Pre-scolare</option>
+                <option value="elm">Elementari</option>
+                <option value="mid">Scuola media</option>
+                <option value="scl">Specializzato</option>
               </select>
               <small id="publicHelpBlock" class="form-text text-muted">
                Pubblico adatto alla clip
@@ -195,9 +202,24 @@
           <div class="col">
             <div class="form-group"><label for="category">Category&nbsp;</label>
               <select id="content" class="border-white shadow custom-select custom-select-lg"  aria-describedby="cateogyHelpBlock" v-model="selected"><optgroup label="Select category">
-              <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
-              </option>
+                <optgroup label="Select Content">
+                <option value="none">Nessuna</option>
+                <option value="nat">Natura</option>
+                <option value="art">Arte</option>
+                <option value="his">Storia</option>
+                <option value="flk">Folklore</option>
+                <option value="mod">Cultura Moderna</option>
+                <option value="rel">Religione</option>
+                <option value="cui">Cucina e drink</option>
+                <option value="spo">Sport</option>
+                <option value="mus">Musica</option>
+                <option value="mov">Film</option>
+                <option value="fas">Moda</option>
+                <option value="shp">Shopping</option>
+                <option value="tec">Tecnologia</option>
+                <option value="pop">Cultura pop e gossip</option>
+                <option value="prs">Esperienze personali</option>
+                <option value="oth">Altro</option>
               </select>
               <small id="cateogyHelpBlock" class="form-text text-muted">
               Categoria della clip
@@ -211,9 +233,11 @@
           <div class="col">
             <div class="form-group"><label for="category">Level&nbsp;</label>
             <select id="detailLevel" class="border-white shadow custom-select custom-select-lg"  aria-describedby="detailHelpBlock" v-model="selected"><optgroup label="Select Detail level">
-            <option v-for="option in options" v-bind:value="option.value">
-            {{ option.text }}
-            </option>
+              <optgroup label="Select Detail level">
+              <option value="1" selected>Essenziale(1)</option>
+              <option value="2">Breve(2)</option>
+              <option value="3">Approfondito(3)</option>
+              <option value="4">Mettiti Comodo(4)</option>
             </select>
             <small id="cateogyHelpBlock" class="form-text text-muted">
             Livello della clip
@@ -228,8 +252,13 @@
           <!-- RECORDING -->
             <button id="record" class="btn btn-primary btn-block btn-sm text-center" >REC&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
             <!-- STOP -->
-            <button id="stopButton" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
-          </div>
+            <button id="stopRecord" class="btn btn-danger js-scroll-trigger btn-block btn-sm text-center" type="submit">STOP&nbsp;<i class="fa fa-times-circle fa-fw"></i></button>
+         </div>
+        </div>
+        <div>
+          <!-- Video players -->
+          <video id="recorder" width="200" height="200" controls></video>
+          <video id="preview" width="200" height="200" autoplay muted></video>
         </div>
     </div>
     </div> <!-- End: div data -->
@@ -283,8 +312,8 @@
 </footer>
 
 <!-- Plugin JavaSctipt -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
 <!-- Leaflet Routing machine -->
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
