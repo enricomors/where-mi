@@ -113,7 +113,15 @@ function updateSigninStatus(status) {
   if (status) {
     document.getElementById("gbutton").style.visibility="hidden";
     document.getElementById("logOut").style.visibility="visible";
-    console.log('in');
+
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      var auth2 = gapi.auth2.getAuthInstance();
+      var profile = auth2.currentUser.get().getBasicProfile();
+      console.log('Email: ' + profile.getEmail());
+
+      document.getElementById('name').innerText = "Welcome: " + profile.getEmail();
+
+    };
 
   } else {
     alert("Devi prima effettuare il log in.");
@@ -274,10 +282,10 @@ document.querySelector('button#start').addEventListener('click', async () => {
     audio: true,
     video: {
       width: {
-        exact:1280
+        exact:225
       },
       height: {
-        exact:720
+        exact:180
     }
   }
   };

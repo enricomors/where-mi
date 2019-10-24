@@ -112,6 +112,7 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 
 function loadYTVideos() {
+  $("#clips").empty();
     // Crea query string x YouTube
     var queryString = currentOlc.substring(0, 8);
     console.log(queryString);
