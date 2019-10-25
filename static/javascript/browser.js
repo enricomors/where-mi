@@ -158,11 +158,16 @@ function loadYTVideos() {
             `<div id="${idVideo}popup" style="text-align: center;">
             <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
             <hr align="center">
-            <a id="${idVideo}link" class="btn" style="color: #fed136;" href="#${idVideo}card">Vai alla clip!</a>
+            <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Vai alla clip!</a>
             </div>`;
             // crea marker nelle posizioni delle clips
-            var marker = L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
+            var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                 .bindPopup(popup).addTo(map).on('click', routing);
+            // This code loads the IFrame Player API code asynchronously.
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             // aggiunge le card delle clip nella sezione #clips
             $('#clips').append(
                 `<!-- Start: Clip Cards -->
@@ -170,8 +175,9 @@ function loadYTVideos() {
                 <div class="card cards-shadown cards-hover" style="height: 35rem;">
 
                 <!-- CARD HEADER-->
-                <div class="card-header text-left" style="background-color: #fed136;width: 100%;height: 100%;"><span class="space"><a id="${idVideo}map" href="#map"><i class="fa fa-map" id="download-icon"></i></a></span>
-                <div class="cardheader-text">
+                <div class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
+                <span class="space"><a id="${idVideo}map" class="btn" href="#map" style="color: white;">Vedi sulla mappa</i></a></span>
+                <div class="cardheader-text" style="color: white;">
                 <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
                 <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
                 </div>
@@ -189,16 +195,16 @@ function loadYTVideos() {
 
                 <!-- CARD FOOTER-->
                 <div class="card-footer text-center">
-                <button class="previous btn">
+                <button class="btn-previous">
                 <i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
                 </button>
-                <button id="${idVideo}" class="btn">
+                <button id="${idVideo}" class="btn-play">
                 <i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
                 </button>
-                <button class="pause btn">
+                <button class="btn-pause">
                 <i class="fa fa-pause-circle" style="font-size: 30px;"></i>
                 </button>
-                <button class="next btn">
+                <button class="btn-next">
                 <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
                 </button>
                 </div>
@@ -219,17 +225,17 @@ function loadYTVideos() {
                     player.loadVideoById(this.id);
                 });
 
-                $(".pause").click(function(){
+                $(".btn-pause").click(function(){
                     player.pauseVideo();
                 });
 
-                $(".previous").click(function() {
+                $(".btn-previous").click(function() {
                     console.log("previous");
                     player.previousVideo();
                     player.playVideo();
                 });
 
-                $(".next").click(function() {
+                $(".btn-next").click(function() {
                     console.log("next");
                     player.nextVideo();
                     player.playVideo();
@@ -256,9 +262,8 @@ function routing() {
     routingControl = L.Routing.control({
         waypoints: [currentPosition, coordDest],
         showAlternatives: 'false',
-        router: new L.Routing.mapbox(access_token, options)
+        router: new L.Routing.mapbox(MAPBOX_TOKEN, options)
     }).addTo(map);
-
 };
 
 /** Filtra le clip di YouTube da visualizzare */
