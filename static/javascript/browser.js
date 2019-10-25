@@ -126,14 +126,33 @@ function loadYTVideos() {
     // esegue la richiesta
     req.execute((resp) => {
         console.log(resp);
+        // salva la risposta nell'array results
+        var results = resp.result.items;
+        console.log(results);
         // scorre le risorse contenute nella risposta
-        resp.result.items.forEach((item) => {
-            // estrae i dati del video
-            let name = item.snippet.title;
-            let metaDati = item.snippet.description.split("#")[0];
-            let description = item.snippet.description.split("#")[1];
-            let idVideo = item.id.videoId;
+        for (var i = 0; i < results.length; i++) {
+            // estrae i dati dell'i-esimo video
+            let name = results[i].snippet.title;
+            let metaDati = results[i].snippet.description.split("#")[0];
+            let description = results[i].snippet.description.split("#")[1];
+            let idVideo = results[i].id.videoId;
             console.log(idVideo);
+            let idPrev;
+            let idNext;
+            // ricava id del video precedente
+            if (i == 0) {
+                // per il primo video, l'id precedente è quello dell'ultimo video
+                idPrev = results[results.length - 1].id.videoId;
+            } else {
+                idPrev = results[i - 1].id.videoId;
+            }
+            // ricava id del video successivo
+            if (i == (results.length - 1)) {
+                // per ultimo video, l'id successivo è quello del primo video
+                idNext = results[0].id.videoId;
+            } else {
+                idNext = results[i + 1].id.videoId;
+            }
             // inserisce id del video in idYT
             idYT.push(idVideo);
             // estrare i uno per uno i metadati dalla stringa
@@ -161,13 +180,8 @@ function loadYTVideos() {
             <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Vai alla clip!</a>
             </div>`;
             // crea marker nelle posizioni delle clips
-            var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
+            var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { icon: greenIcon, myCustomId: idVideo + "map" })
                 .bindPopup(popup).addTo(map).on('click', routing);
-            // This code loads the IFrame Player API code asynchronously.
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             // aggiunge le card delle clip nella sezione #clips
             $('#clips').append(
                 `<!-- Start: Clip Cards -->
@@ -195,7 +209,7 @@ function loadYTVideos() {
 
                 <!-- CARD FOOTER-->
                 <div class="card-footer text-center">
-                <button class="btn-previous">
+                <button id="${idPrev}" class="btn-previous">
                 <i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
                 </button>
                 <button id="${idVideo}" class="btn-play">
@@ -204,7 +218,7 @@ function loadYTVideos() {
                 <button class="btn-pause">
                 <i class="fa fa-pause-circle" style="font-size: 30px;"></i>
                 </button>
-                <button class="btn-next">
+                <button id="${idNext}" class="btn-next">
                 <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
                 </button>
                 </div>
@@ -222,28 +236,18 @@ function loadYTVideos() {
                 });
 
                 $("#${idVideo}").click(function(){
+                    player.clearVideo();
                     player.loadVideoById(this.id);
+                    player.playVideo();
                 });
 
                 $(".btn-pause").click(function(){
                     player.pauseVideo();
                 });
-
-                $(".btn-previous").click(function() {
-                    console.log("previous");
-                    player.previousVideo();
-                    player.playVideo();
-                });
-
-                $(".btn-next").click(function() {
-                    console.log("next");
-                    player.nextVideo();
-                    player.playVideo();
-                });
                 </script>
                 </article>`
             );
-        });
+        }
     });
 };
 
