@@ -235,8 +235,7 @@ function loadYTVideos() {
                     });
                 });
 
-                $("#${idVideo}").click(function(){
-                    player.clearVideo();
+                $(".btn-play").click(function(){
                     player.loadVideoById(this.id);
                     player.playVideo();
                 });
@@ -244,6 +243,19 @@ function loadYTVideos() {
                 $(".btn-pause").click(function(){
                     player.pauseVideo();
                 });
+
+                $(".btn-next").click(function(){
+                    player.clearVideo();
+                    player.loadVideoById(this.id);
+                    player.playVideo();
+                });
+
+                $(".btn-previous").click(function(){
+                    player.clearVideo();
+                    player.loadVideoById(this.id);
+                    player.playVideo();
+                });
+
                 </script>
                 </article>`
             );
