@@ -53,17 +53,24 @@ var searchControl = L.esri.Geocoding.geosearch().addTo(map);
 /** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
 var results = L.layerGroup().addTo(map);
 searchControl.on('results', function (data) {
-    // rimuove marker del risultato precedente
-    results.clearLayers();
     // rimuove il marker della posizione attuale se presente
     if (markerPosizioneAttuale) {
         map.removeLayer(markerPosizioneAttuale);
     }
     for (let i = data.results.length - 1; i >= 0; i--) {
-        results.addLayer(L.marker(data.results[i].latlng, { draggable: 'true' })
-        .setIcon(greenIcon)
-        .bindPopup(POPUP)
-        .openPopup());
+        console.log(data.results[i].latlng);
+        // crea marker per la posizione attuale con popup
+        markerPosizioneAttuale = L.marker(data.results[i].latlng, { draggable: 'true'});
+        markerPosizioneAttuale.on('dragend', updatePosition);
+        markerPosizioneAttuale.setIcon(greenIcon);
+        // popup associato il nuovo marker
+        markerPosizioneAttuale.bindPopup(POPUP).openPopup();
+        // aggiunge il marker alla mappa
+        markerPosizioneAttuale.addTo(map);
+        // aggiorna posizione corrente
+        currentPosition = [data.results[i].latlng.lat, data.results[i].latlng.lng];
+        // aggiorna olc posizione corrente
+        currentOlc = OpenLocationCode.encode(data.results[i].latlng.lat, data.results[i].latlng.lng);
     }
 })
 
@@ -89,6 +96,7 @@ function displayLocation(position) {
     map.setView([lat, lng], 18);
     // crea marker per la posizione attuale con popup
     markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
+    markerPosizioneAttuale.on('dragend', updatePosition);
     markerPosizioneAttuale.setIcon(greenIcon);
     // popup associato il nuovo marker
     markerPosizioneAttuale.bindPopup(POPUP).openPopup();
@@ -96,19 +104,48 @@ function displayLocation(position) {
     markerPosizioneAttuale.addTo(map);
 }
 
-//* funzione per modificare la posizione attuale */
-//* rodondanza codice*/
+function updatePosition(e) {
+    // aggiorna posizione corrente
+    currentPosition = [e.latlng.lat, e.latlng.lng];
+    // aggiorna olc posizione corrente
+    currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
+    console.log(currentOlc);
+}
+
+/** Se l'utente clicca sulla mappa, rimuovi le indicazioni */
 function onMapClick(e) {
+   // se presente, rimuove la casella di controllo del routing dalla mappa
+   if (routingControl != null) {
+        map.removeControl(routingControl);
+        routingControl = null;
+    } 
+}
+
+/** Modifica la posizione attuale al doppio click sulla mappa */
+function onMapDoubleClick(e) {
+    // se presente, rimuove la casella di controllo del routing dalla mappa
+    if (routingControl != null) {
+        map.removeControl(routingControl);
+        routingControl = null;
+    }
+    // rimuove il marker della posizione attuale se già presente
     if (markerPosizioneAttuale) {
         map.removeLayer(markerPosizioneAttuale);
     }
+    // aggiunge nuovo marker alla posizione attuale
     markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'true'});
     markerPosizioneAttuale.bindPopup(POPUP).openPopup();
-    markerPosizioneAttuale.addTo(map);
+    markerPosizioneAttuale.setIcon(greenIcon).addTo(map);
+    // posizione corrente
+    currentPosition = [e.latlng.lat, e.latlng.lng];
+    // OLC della posizione corrente
 	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
     console.log(currentOlc);
 }
 
+/** Gestione del doppio click sulla mappa */
+map.on('dblclick', onMapDoubleClick);
+/** Gestione del click singolo sulla mappa */
 map.on('click', onMapClick);
 
 function loadYTVideos() {
@@ -131,8 +168,14 @@ function loadYTVideos() {
         console.log(results);
         // scorre le risorse contenute nella risposta
         for (var i = 0; i < results.length; i++) {
+            let name;
+            // titolo del video
+            if (results[i].snippet.title.indexOf(':') != -1) {
+                name = results[i].snippet.title.split(':')[0];
+            } else {
+                name = results[i].snippet.title;
+            }
             // estrae i dati dell'i-esimo video
-            let name = results[i].snippet.title;
             let metaDati = results[i].snippet.description.split("#")[0];
             let description = results[i].snippet.description.split("#")[1];
             let idVideo = results[i].id.videoId;
@@ -157,13 +200,20 @@ function loadYTVideos() {
             idYT.push(idVideo);
             // estrare i uno per uno i metadati dalla stringa
             let olc = metaDati.split(":")[0];
+            // variabile per le coordinate della clip
+            let coords;
+            try {
+                // ricava le coordinate della clip dall'olc
+                coords = OpenLocationCode.decode(olc);
+            } catch (IllegalArgumentException) {
+                coords = OpenLocationCode.decode(currentOlc);
+            }
             let purpose = metaDati.split(":")[1];
             let language = metaDati.split(":")[2];
             let category = metaDati.split(":")[3];
             let audience = metaDati.split(":")[4];
             let detail = metaDati.split(":")[5];
-            // ricava le coordinate della clip dall'olc
-            let coords = OpenLocationCode.decode(olc);
+            // dati della clip
             let dati = {
                 "purpose": purpose,
                 "language": language,
@@ -180,7 +230,7 @@ function loadYTVideos() {
             <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Vai alla clip!</a>
             </div>`;
             // crea marker nelle posizioni delle clips
-            var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { icon: greenIcon, myCustomId: idVideo + "map" })
+            var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                 .bindPopup(popup).addTo(map).on('click', routing);
             // aggiunge le card delle clip nella sezione #clips
             $('#clips').append(
@@ -189,7 +239,7 @@ function loadYTVideos() {
                 <div class="card cards-shadown cards-hover" style="height: 35rem;">
 
                 <!-- CARD HEADER-->
-                <div class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
+                <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
                 <span class="space"><a id="${idVideo}map" class="btn" href="#map" style="color: white;">Vedi sulla mappa</i></a></span>
                 <div class="cardheader-text" style="color: white;">
                 <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>

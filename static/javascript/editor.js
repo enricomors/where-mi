@@ -357,14 +357,15 @@ function creaMetadata(){
         alert("Video caricato");
       //  document.getElementById("registraVideo").style.display="block";
     	  //document.getElementById("scegliVideo").style.display="block";
-    	  //document.getElementById("loading").style.display="none";
-       mediaRecorder.stop();
-
+        //document.getElementById("loading").style.display="none";
+      if (mediaRecorder.state != 'inactive') {
+        mediaRecorder.stop();
+      }
     },
-// ed una per il caso di fallimento
-error: function(request, status, error) {
-        alert(request.responseText);
-}
+    // ed una per il caso di fallimento
+    error: function(request, status, error) {
+            alert(request.responseText);
+    }
 
     });
 
