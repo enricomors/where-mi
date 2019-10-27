@@ -130,63 +130,62 @@
            <label for="titolo">Nome</label>
            <input type="text" class="form-control" id="titolo" placeholder="inserisci nome attrazione">
          </div>
-
-
-
          <div class="form-group col-md-2">
            <label for="content">Content</label>
            <select class="form-control" id="content">
-             <option>none(default)</option>
-             <option>nat</option>
-             <option>art</option>
-             <option>his</option>
-             <option>mod</option>
-             <option>rel</option>
-             <option>cui</option>
-             <option>spo</option>
-             <option>mus</option>
-             <option>mov</option>
-             <option>fas</option>
-             <option>shop</option>
-             <option>tec</option>
-             <option>pop</option>
-             <option>prs</option>
-             <option>oth</option>
+            <optgroup label="Select Content">
+              <option value="none" selected>Nessuna</option>
+              <option value="nat">Natura</option>
+              <option value="art">Arte</option>
+              <option value="his">Storia</option>
+              <option value="flk">Folklore</option>
+              <option value="mod">Cultura Moderna</option>
+              <option value="rel">Religione</option>
+              <option value="cui">Cucina e drink</option>
+              <option value="spo">Sport</option>
+              <option value="mus">Musica</option>
+              <option value="mov">Film</option>
+              <option value="fas">Moda</option>
+              <option value="shp">Shopping</option>
+              <option value="tec">Tecnologia</option>
+              <option value="pop">Cultura pop e gossip</option>
+              <option value="prs">Esperienze personali</option>
+              <option value="oth">Altro</option>
            </select>
          </div>
          <div class="form-group col-md-2">
            <label for="audience">Audience</label>
            <select class="form-control" id="audience">
-             <option>none(default)</option>
-             <option>gen</option>
-             <option>pre</option>
-             <option>elm</option>
-             <option>mid</option>
-             <option>scl</option>
+            <optgroup label="Select Audience">
+              <option value="gen" selected>Generico</option>
+              <option value="pre">Pre-scolare</option>
+              <option value="elm">Elementari</option>
+              <option value="mid">Scuola media</option>
+              <option value="scl">Specializzato</option>
            </select>
          </div>
          <div class="form-group col-md-2">
            <label for="detail">Detail</label>
            <select class="form-control" id="detail">
-             <option>none(default)</option>
-             <option>1</option>
-             <option>2</option>
-             <option>3</option>
-             <option>4</option>
-             <option>5</option>
+            <optgroup label="Select Detail level">
+              <option value="1" selected>Essenziale(1)</option>
+              <option value="2">Breve(2)</option>
+              <option value="3">Approfondito(3)</option>
+              <option value="4">Mettiti Comodo(4)</option>
            </select>
          </div>
          <div class="form-group col-md-2">
            <label for="language">Language</label>
-           <select  class="form-control" id="language">
-             <option>none(default)</option>
-             <option>italiano</option>
-             <option>english</option>
+           <select class="form-control" id="language">
+            <optgroup label="Select Language">
+              <option value="ita" selected>Italiano</option>
+              <option value="eng">Inglese</option>
            </select>
          </div>
          <div class="form-group col-md-2">
            <label for="purpose">Purpose</label>
            <select class="form-control" id="purpose">
+            <optgroup label="Select Purpose">
              <option>none(default)</option>
              <option>why</option>
              <option>how</option>

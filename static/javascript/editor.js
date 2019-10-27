@@ -293,9 +293,6 @@ document.querySelector('button#start').addEventListener('click', async () => {
   await init(constraints);
 });
 
-
-
-
 // composizione descrizione video
 function creaMetadata(){
    var purpose=document.getElementById("purpose").value;
@@ -320,7 +317,6 @@ function creaMetadata(){
     console.log(token);
     console.log(blob);
 
-
     metadata = {
       kind: 'youtube#video',
       snippet: {
@@ -339,10 +335,6 @@ function creaMetadata(){
     form.append('video', meta);
     //Blob del video
     form.append('mediaBody', blob);
-
-    //document.getElementById("registraVideo").style.display="none";
-  //  document.getElementById("scegliVideo").style.display="none";
-  //  document.getElementById("loading").style.display="block";
 
     //chiamata ajax
     $.ajax({

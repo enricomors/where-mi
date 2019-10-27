@@ -273,7 +273,7 @@ function loadYTVideos() {
                 </button>
                 </div>
                 </div>
-                <!-- End: Animation Cards -->
+                <!-- End: Clip Cards -->
 
                 <script>
                 $("#${idVideo}map").click(function(){
