@@ -3,8 +3,8 @@ const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ
 /** Coordinate di Default per la mappa */
 const DEFAULT_COORDS = [44.493671, 11.343035];
 /** Client ID per le API di Google */
-const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
-// tom const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
+//const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
+  const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
 ];
@@ -300,7 +300,8 @@ function creaMetadata(){
    var content=document.getElementById("content").value;
    var detail=document.getElementById("detail").value;
    var audience=document.getElementById("audience").value;
-   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail;
+   var description = document.getElementById("description").value
+   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
    console.log(metadata);
    return metadata;
 }
