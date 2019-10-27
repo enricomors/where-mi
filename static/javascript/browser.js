@@ -287,7 +287,11 @@ function loadYTVideos() {
 
                 $(".btn-play").click(function(){
                     player.loadVideoById(this.id);
+                    console.log(this.id);
                     player.playVideo();
+                    // aggiornamento UI
+                    console.log("#"+this.id+"header");
+                    $("#"+this.id+"header").css("background-color","#006633");
                 });
 
                 $(".btn-pause").click(function(){
@@ -298,12 +302,16 @@ function loadYTVideos() {
                     player.clearVideo();
                     player.loadVideoById(this.id);
                     player.playVideo();
+                    // aggiornamento UI
+                    $("#"+this.id+"header").css("background-color","#006633");
                 });
 
                 $(".btn-previous").click(function(){
                     player.clearVideo();
                     player.loadVideoById(this.id);
                     player.playVideo();
+                    // aggiornamento UI
+                    $("#"+this.id+"header").css("background-color","#006633");
                 });
 
                 </script>
@@ -353,10 +361,10 @@ function filterClips() {
     if ($('#filterTrigger').is(':checked')) {
         // disabilita gli elementi select
         $('.custom-select').prop('disabled', true);
-        $('#filterTitle').text('Enable filters');
+        $('.custom-control-label').text('Enable filters');
     } else {
         $('.custom-select').prop('disabled', false);
-        $('#filterTitle').text('Disable filters');
+        $('.custom-control-label').text('Disable filters');
     }
     filter();
 };
