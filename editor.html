@@ -202,31 +202,44 @@
            <textarea class="form-control"id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
 
          </div>
+       </div>
 
-        <div class="container centro" id="registraVideo">
 
-         <video id="gum" playsinline autoplay muted></video>
-          <video id="recorded" playsinline></video>
 
-        <div>
+         <form>
+ 					<button type="button" class="btn btn-primary" id="local" > caricamento da locale</button>
+          <button type="button" class="btn btn-primary" id="camera" > registra la clip</button>
+ 				</form>
+
+
+        <div id="registra" style="display:none">
           <p>Registra la clip </p>
               <button id="start" class="btn btn-primary coloreBottone">Start camera</button>
               <button id="record" class="btn btn-primary coloreBottone" disabled>Start Recording</button>
               <button id="play" class="btn btn-primary coloreBottone" disabled>Play</button>
               <button id="upload" class="btn btn-primary coloreBottone" disabled>Upload</button>
+              <div>
+                  <span id="errorMsg"></span>
+              </div>
+
+              <div class="container centro" id="registraVideo">
+
+               <video id="gum" playsinline autoplay muted></video>
+                <video id="recorded" playsinline></video>
+      </div>
           </div>
-          <div></br>
+
+          <div id="locale" style="display:none">
             <p>Carica la clip </p>
-            <span class="btn btn-primary btn-file">  Browse...<input type="file"  onChange="scegliFile()" accept="video/*"></span>
+            <span class="btn btn-primary btn-file">  Browse...<input type="file" accept="video/*"></span>
+            <button class="btn btn-primary" id="uploadfile" onclick="scegliFile()">upload</button>
           </div>
 
-          <div>
-              <span id="errorMsg"></span>
-          </div>
 
-        </div>
+
+
 </div>
-</div>
+
 
 
 
@@ -290,6 +303,18 @@ function scegliFile() {
   uploadVideo(file);
 
 }
+
+$(function(){
+  $('#local').on('click', function(){
+    $('#registra').hide();
+    $('#locale').show();
+  });
+  $('#camera').on('click', function(){
+    $('#locale').hide();
+    $('#registra').show();
+  });
+});
+
 
 </script>
 
