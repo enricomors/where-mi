@@ -367,6 +367,7 @@ function creaMetadata(){
       method: 'POST',
       success:function(data) {
         alert("Video caricato");
+        window.location.href='editor.html';
       //  document.getElementById("registraVideo").style.display="block";
     	  //document.getElementById("scegliVideo").style.display="block";
         //document.getElementById("loading").style.display="none";
