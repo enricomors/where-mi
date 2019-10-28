@@ -119,7 +119,7 @@ function updateSigninStatus(status) {
       var profile = auth2.currentUser.get().getBasicProfile();
       console.log('Email: ' + profile.getEmail());
 
-      document.getElementById('name').innerText = "Welcome: " + profile.getEmail();
+      document.getElementById('profile').innerText = profile.getEmail();
 
     };
 
@@ -142,6 +142,8 @@ function signOut() {
   };
   document.getElementById("gbutton").style.visibility="visible";
   document.getElementById("logOut").style.visibility="hidden";
+  document.getElementById('profile').innerText = '';
+
 }
 
 // GESTIONE REGISTRAZIONE E FUNZIONI
@@ -317,7 +319,7 @@ function creaMetadata(){
    var content=document.getElementById("content").value;
    var detail=document.getElementById("detail").value;
    var audience=document.getElementById("audience").value;
-   var description = document.getElementById("description").value
+   var description = document.getElementById("description").value;
    var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
    console.log(metadata);
    return metadata;
