@@ -118,7 +118,7 @@ function onMapClick(e) {
    if (routingControl != null) {
         map.removeControl(routingControl);
         routingControl = null;
-    } 
+    }
 }
 
 /** Modifica la posizione attuale al doppio click sulla mappa */
@@ -213,13 +213,15 @@ function loadYTVideos() {
             let category = metaDati.split(":")[3];
             let audience = metaDati.split(":")[4];
             let detail = metaDati.split(":")[5];
+            let descrizione= metaDati.split(":")[6];
             // dati della clip
             let dati = {
                 "purpose": purpose,
                 "language": language,
                 "category": category,
                 "audience": audience,
-                "detail": detail
+                "detail": detail,
+                "descrizione": descrizione
             };
             datiVideo[idVideo] = dati;
             // crea popup per il marker della clip
@@ -253,7 +255,7 @@ function loadYTVideos() {
                 <li class="list-group-item"><span><i><b>Language:&nbsp</b></i> ${language}</span></li>
                 <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
                 <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
-                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${description}</span></li>
+                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${descrizione}</span></li>
                 </ul>
                 </div>
 
@@ -349,7 +351,7 @@ function filter() {
             || datiVideo[item].category != $('#category').val()
             || datiVideo[item].detail != $('#detailLevel').val()
         )) {
-            $('#'+item+'card').hide();   
+            $('#'+item+'card').hide();
         } else {
             $('#'+item+'card').show();
         }
