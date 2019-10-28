@@ -32,12 +32,11 @@
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-  <!-- Agency CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/css/agency.min.css" rel="stylesheet">
-
+  
   <!-- Custom CSS -->
   <link rel="stylesheet" href="static/css/editor.css" type="text/css">
   <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/agency.css">
 
   <!-- Routing conrol-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
@@ -90,11 +89,11 @@
        <!-- Navbar -->
      <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
         <div class="container">
-          <a class="navbar-brand text-success" href="/">Where M I?</a>
+          <a href="/" class="navbar-brand text-success js-scroll-trigger">Where Am I?</a>
           <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="nav navbar-nav ml-auto text-uppercase">
+              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+              <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="nav navbar-nav ml-auto text-uppercase">
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" style="visibility:hidden" href="#">log out</a></li>
@@ -105,8 +104,8 @@
         </div>
     </nav>
 
-    
-    
+
+
     <!--paragrafo mail utente loggato -->
     <h2 id="name" class="lead" style="text-align:center"></h2>
     <!-- Mappa -->
@@ -116,17 +115,17 @@
       </div>
     </div>
     <!-- Fine Mappa -->
-    
+
     <!-- Inizio Intestazione -->
       <div class="intro">
-  
+
         <h2 class="text-center">Crea una nuova clip<br></h2>
         <p class="text-center">Seleziona un marker e completa i seguenti campi per creare una nuova clip<br></p>
       </div>
     <!-- Fine Intestazione -->
-    
+
   <!-- METADATA for clips -->
-    <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
+    <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);margin-right: 5%; margin-left: 5%; ">
       <div style="margin-right: 5%; margin-left: 5%;">
 
       <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
@@ -134,12 +133,12 @@
 
          <div class="form-group col-md-6">
            <label for="titolo">Nome</label>
-           <input type="text" class="form-control" id="titolo" placeholder="inserisci nome attrazione">
+           <input type="text" class="border-white shadow custom-select custom-select-lg" id="titolo" placeholder="inserisci nome attrazione">
          </div>
 
          <div class="form-group col-md-6">
            <label for="content">Content</label>
-           <select class="form-control" id="content">
+           <select class="border-white shadow custom-select custom-select-lg " id="content">
             <optgroup label="Select Content">
               <option value="none" selected>Nessuna</option>
               <option value="nat">Natura</option>
@@ -162,7 +161,7 @@
          </div>
          <div class="form-group col-md-6">
            <label for="audience">Audience</label>
-           <select class="form-control" id="audience">
+           <select class="border-white shadow custom-select custom-select-lg" id="audience">
             <optgroup label="Select Audience">
               <option value="gen" selected>Generico</option>
               <option value="pre">Pre-scolare</option>
@@ -173,7 +172,7 @@
          </div>
          <div class="form-group col-md-6">
            <label for="detail">Detail</label>
-           <select class="form-control" id="detail">
+           <select class="border-white shadow custom-select custom-select-lg" id="detail">
             <optgroup label="Select Detail level">
               <option value="1" selected>Essenziale(1)</option>
               <option value="2">Breve(2)</option>
@@ -183,7 +182,7 @@
          </div>
          <div class="form-group col-md-6">
            <label for="language">Language</label>
-           <select class="form-control" id="language">
+           <select class="border-white shadow custom-select custom-select-lg" id="language">
             <optgroup label="Select Language">
               <option value="ita" selected>Italiano</option>
               <option value="eng">Inglese</option>
@@ -191,7 +190,7 @@
          </div>
          <div class="form-group col-md-6">
            <label for="purpose">Purpose</label>
-           <select class="form-control" id="purpose">
+           <select class="border-white shadow custom-select custom-select-lg" id="purpose">
             <optgroup label="Select Purpose">
              <option>none(default)</option>
              <option>why</option>
@@ -201,7 +200,7 @@
          </div>
          <div class="form-group col-md-6">
            <label for="descrizione">Descrizione</label>
-           <textarea class="form-control"id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
+           <textarea class="border-white shadow custom-select custom-select-lg "id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
 
          </div>
        </div>
@@ -326,6 +325,10 @@ $(function(){
 <!-- Plugin JavaSctipt -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/js/agency.min.js"></script>
+
 
 <!-- Leaflet Routing machine -->
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>

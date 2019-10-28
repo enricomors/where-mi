@@ -54,4 +54,6 @@ video#gumVideo {
       margin: 100px 5px;
       height: 75vh;
   }
+section{
+  padding: 38.156px 0 !important;
 }
