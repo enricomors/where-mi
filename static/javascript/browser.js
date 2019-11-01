@@ -59,18 +59,8 @@ searchControl.on('results', function (data) {
     }
     for (let i = data.results.length - 1; i >= 0; i--) {
         console.log(data.results[i].latlng);
-        // crea marker per la posizione attuale con popup
-        markerPosizioneAttuale = L.marker(data.results[i].latlng, { draggable: 'true'});
-        markerPosizioneAttuale.on('dragend', updatePosition);
-        markerPosizioneAttuale.setIcon(greenIcon);
-        // popup associato il nuovo marker
-        markerPosizioneAttuale.bindPopup(POPUP).openPopup();
-        // aggiunge il marker alla mappa
-        markerPosizioneAttuale.addTo(map);
-        // aggiorna posizione corrente
-        currentPosition = [data.results[i].latlng.lat, data.results[i].latlng.lng];
-        // aggiorna olc posizione corrente
-        currentOlc = OpenLocationCode.encode(data.results[i].latlng.lat, data.results[i].latlng.lng);
+        updateMarker(data.results[i].latlng.lat, data.results[i].latlng.lng);
+        updatePosition(data.results[i].latlng.lat, data.results[i].latlng.lng);
     }
 })
 
@@ -85,18 +75,21 @@ if(!navigator.geolocation){
 
 /** Mostra sulla mappa la posizione ricevuta dal browser */
 function displayLocation(position) {
-    // coordinate della posizione attuale
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    // aggiorna la posizione corrente
-    currentPosition = [lat, lng];
-    // ottiene l'OLC della posizione corrente
-    currentOlc = OpenLocationCode.encode(lat, lng);
     // apre la mappa sulla posizione ricevuta dal browser
     map.setView([lat, lng], 18);
+    // aggiorna marker
+    updateMarker(position.coords.latitude, position.coords.longitude);
+    //aggiorna posizione
+    updatePosition(position.coords.latitude, position.coords.longitude);
+}
+
+/** Aggiorna la posizione del marker sulla mappa in base alle coordinate */
+function updateMarker(lat, lng) {
     // crea marker per la posizione attuale con popup
     markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-    markerPosizioneAttuale.on('dragend', updatePosition);
+    markerPosizioneAttuale.on('dragend', function (e) {
+        updatePosition(e.latlng.lat, e.latlng.lng);
+    });
     markerPosizioneAttuale.setIcon(greenIcon);
     // popup associato il nuovo marker
     markerPosizioneAttuale.bindPopup(POPUP).openPopup();
@@ -104,11 +97,12 @@ function displayLocation(position) {
     markerPosizioneAttuale.addTo(map);
 }
 
-function updatePosition(e) {
+/** Aggiorna posizione attuale e calcola OLC */
+function updatePosition(lat, lng) {
     // aggiorna posizione corrente
-    currentPosition = [e.latlng.lat, e.latlng.lng];
+    currentPosition = [lat, lng];
     // aggiorna olc posizione corrente
-    currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
+    currentOlc = OpenLocationCode.encode(lat, lng);
     console.log(currentOlc);
 }
 
@@ -132,15 +126,8 @@ function onMapDoubleClick(e) {
     if (markerPosizioneAttuale) {
         map.removeLayer(markerPosizioneAttuale);
     }
-    // aggiunge nuovo marker alla posizione attuale
-    markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'true'});
-    markerPosizioneAttuale.bindPopup(POPUP).openPopup();
-    markerPosizioneAttuale.setIcon(greenIcon).addTo(map);
-    // posizione corrente
-    currentPosition = [e.latlng.lat, e.latlng.lng];
-    // OLC della posizione corrente
-	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
-    console.log(currentOlc);
+    updateMarker(e.latlng.lat, e.latlng.lng);
+    updatePosition(e.latlng.lat, e.latlng.lng);
 }
 
 /** Gestione del doppio click sulla mappa */
