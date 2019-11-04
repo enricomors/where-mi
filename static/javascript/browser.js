@@ -207,6 +207,7 @@ function loadYTVideos() {
                 let detail = metaDati.split(":")[5];
                 let descrizione = metaDati.split(":")[6];
                 let openingHour = metaDati.split(":")[7];
+                let closingHour = metaDati.split(":")[8];
                 // dati della clip
                 let dati = {
                     "purpose": purpose,
@@ -215,7 +216,8 @@ function loadYTVideos() {
                     "audience": audience,
                     "detail": detail,
                     "descrizione": descrizione,
-                    "openingHour": openingHour
+                    "openingHour": openingHour,
+                    "closingHour": closingHour
                 };
                 datiVideo[idVideo] = dati;
                 // crea popup per il marker della clip
