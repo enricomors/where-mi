@@ -159,7 +159,6 @@ let mediaRecorder;
 let recordedBlobs;
 let sourceBuffer;
 
-
 if(typeof MediaRecorder.isTypeSupported !== "function"){
   document.getElementById("registraVideo").style.display="none";
 }
@@ -168,9 +167,9 @@ const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
 
+/** Listener per evento click su pulsante Start recording */
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
-
     startRecording();
   } else {
     stopRecording();
@@ -230,8 +229,7 @@ function handleDataAvailable(event) {
 function startRecording() {
   recordedBlobs = [];
   let options = {mimeType: 'video/webm;codecs=vp9'};
-  if(typeof MediaRecorder.isTypeSupported === "function"){
-
+  if(typeof MediaRecorder.isTypeSupported === "function") {
   if (!MediaRecorder.isTypeSupported(options.mimeType)) {
     console.error(`${options.mimeType} is not Supported`);
     errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
@@ -248,8 +246,8 @@ function startRecording() {
     }
   }
 } else {
-        document.getElementById("registraVideo").style.display="none";
-        alert("Il tuo browser non supporta il registratore. Carica il video");
+  document.getElementById("registraVideo").style.display="none";
+  alert("Il tuo browser non supporta il registratore. Carica il video");
 }
 
   try {
@@ -314,13 +312,13 @@ document.querySelector('button#start').addEventListener('click', async () => {
 
 // composizione descrizione video
 function creaMetadata(){
-   var purpose=document.getElementById("purpose").value;
-   var language=document.getElementById("language").value;
-   var content=document.getElementById("content").value;
-   var detail=document.getElementById("detail").value;
-   var audience=document.getElementById("audience").value;
+   var purpose = document.getElementById("purpose").value;
+   var language = document.getElementById("language").value;
+   var content = document.getElementById("content").value;
+   var detail = document.getElementById("detail").value;
+   var audience = document.getElementById("audience").value;
    var description = document.getElementById("description").value;
-   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
+   var metadata = currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
    console.log(metadata);
    return metadata;
 }
@@ -330,7 +328,7 @@ function creaMetadata(){
     //passiamo il blob dallo sccript di crezione del video
     //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
     var descrizione = creaMetadata();
-    var titolo=document.getElementById("titolo").value;
+    var titolo = document.getElementById("titolo").value;
   //  console.log(descrizione);
     console.log(titolo);
     var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
