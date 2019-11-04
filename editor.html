@@ -135,7 +135,7 @@
            <label for="titolo">Nome</label>
            <input type="text" class="border-white shadow custom-select custom-select-lg" id="titolo" placeholder="inserisci nome attrazione">
          </div>
-
+         <!--Content Section-->
          <div class="form-group col-md-6">
            <label for="content">Content</label>
            <select class="border-white shadow custom-select custom-select-lg " id="content">
@@ -159,6 +159,7 @@
               <option value="oth">Altro</option>
            </select>
          </div>
+         <!--Audience type section-->
          <div class="form-group col-md-6">
            <label for="audience">Audience</label>
            <select class="border-white shadow custom-select custom-select-lg" id="audience">
@@ -170,6 +171,7 @@
               <option value="scl">Specializzato</option>
            </select>
          </div>
+         <!-- Detail level section -->
          <div class="form-group col-md-6">
            <label for="detail">Detail</label>
            <select class="border-white shadow custom-select custom-select-lg" id="detail">
@@ -180,6 +182,7 @@
               <option value="4">Mettiti Comodo(4)</option>
            </select>
          </div>
+         <!-- Language section -->
          <div class="form-group col-md-6">
            <label for="language">Language</label>
            <select class="border-white shadow custom-select custom-select-lg" id="language">
@@ -188,6 +191,7 @@
               <option value="eng">Inglese</option>
            </select>
          </div>
+         <!-- Purpose section -->
          <div class="form-group col-md-6">
            <label for="purpose">Purpose</label>
            <select class="border-white shadow custom-select custom-select-lg" id="purpose">
@@ -198,19 +202,34 @@
              <option>what</option>
            </select>
          </div>
+         <!-- opening hour section -->
          <div class="form-group col-md-6">
-           <label for="descrizione">Descrizione</label>
-           <textarea class="border-white shadow custom-select custom-select-lg "id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
-
+           <label for="schedule">Orario di apertura</label>
+           <input type="time" class="border-white shadow custom-select custom-select-lg "id="openingHour"rows="1" max="15:00" ></input>
+          </div>
+          <!-- closing hour section -->
+          <div class="form-group col-md-6">
+            <label for="schedule">Orario di chiusura</label>
+            <input type="time" class="border-white shadow custom-select custom-select-lg "id="closingHour"rows="1" min="15:00"></input>
+          </div>
+          <!-- description section -->
+         <div class="form-group col-md-6">
+             <label for="descrizione">Descrizione</label>
+             <textarea class="border-white shadow custom-select custom-select-lg "id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
          </div>
-       </div>
+      </div>
+    </div>
 
 
+    <div class="form-group col-md-6">
 
          <form>
  					<button type="button" class="btn btn-primary" id="local" > caricamento da locale</button>
           <button type="button" class="btn btn-primary" id="camera" > registra la clip</button>
- 				</form>
+         </form>
+      
+    <div class="form-group col-md-6">
+
 
 
         <div id="registra" style="display:none">
