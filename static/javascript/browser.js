@@ -38,7 +38,7 @@ var greenIcon = new L.Icon({
 });
 
 /** Inizializza la mappa Leaflet */
-var map = L.map('map').setView(DEFAULT_COORDS, 15);
+var map = L.map('map', { zoomControl: false });
 
 /** Tile layer per la mappa */
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -48,7 +48,10 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 /** Aggiunge alla mappa casella di ricerca per gli indirizzi */
-var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+var searchControl = L.esri.Geocoding.geosearch({ 
+    useMapBounds: 'false',
+    placeholder: 'Cerca un indirizzo' 
+}).addTo(map);
 
 /** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
 var results = L.layerGroup().addTo(map);
@@ -57,12 +60,12 @@ searchControl.on('results', function (data) {
     if (markerPosizioneAttuale) {
         map.removeLayer(markerPosizioneAttuale);
     }
-    for (let i = data.results.length - 1; i >= 0; i--) {
-        console.log(data.results[i].latlng);
+    results.clearLayers();
+    for (var i = data.results.length - 1; i >= 0; i--) {
         updateMarker(data.results[i].latlng.lat, data.results[i].latlng.lng);
         updatePosition(data.results[i].latlng.lat, data.results[i].latlng.lng);
     }
-})
+});
 
 /** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
 navigator.geolocation.getCurrentPosition(displayLocation);
@@ -152,9 +155,9 @@ function loadYTVideos() {
         console.log(resp);
         // salva la risposta nell'array results
         var results = resp.result.items;
-        console.log(results);
+        console.log(results.length);
         // se la ricerca produce risultati
-        if (results.length != 0) {
+        if (results.length > 0) {
             // scorre le risorse contenute nella risposta
             for (var i = 0; i < results.length; i++) {
                 let name;
@@ -311,11 +314,6 @@ function loadYTVideos() {
             }
         } else {
             alert("Nella zona non sono presenti clip");
-            $('#clips').append(
-                `<div class="text-center">
-                    <p>Non sono presenti clip nella zona</p>
-                </div>`
-            );
         }
     });
 };
