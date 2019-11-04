@@ -318,7 +318,9 @@ function creaMetadata(){
    var detail = document.getElementById("detail").value;
    var audience = document.getElementById("audience").value;
    var description = document.getElementById("description").value;
-   var metadata = currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
+   var openingHour = document.getElementById("openingHour").value;
+   var closingHour = document.getElementById("closingHour").value;
+   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description+":"+openingHour+":"+closingHour;
    console.log(metadata);
    return metadata;
 }

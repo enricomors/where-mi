@@ -206,6 +206,7 @@ function loadYTVideos() {
                 let audience = metaDati.split(":")[4];
                 let detail = metaDati.split(":")[5];
                 let descrizione = metaDati.split(":")[6];
+                let openingHour = metaDati.split(":")[7];
                 // dati della clip
                 let dati = {
                     "purpose": purpose,
@@ -213,7 +214,8 @@ function loadYTVideos() {
                     "category": category,
                     "audience": audience,
                     "detail": detail,
-                    "descrizione": descrizione
+                    "descrizione": descrizione,
+                    "openingHour": openingHour
                 };
                 datiVideo[idVideo] = dati;
                 // crea popup per il marker della clip
@@ -248,6 +250,10 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
                     <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${descrizione}</span></li>
+                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i> ${openingHour}</span></li>
+                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i> ${closingHour}</span></li>
+
+
                     </ul>
                     </div>
 
