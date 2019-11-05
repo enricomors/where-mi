@@ -79,7 +79,7 @@ if(!navigator.geolocation){
 /** Mostra sulla mappa la posizione ricevuta dal browser */
 function displayLocation(position) {
     // apre la mappa sulla posizione ricevuta dal browser
-    map.setView([position.coords.latitude, position.coords.longitude], 18);
+    map.setView([position.coords.latitude, position.coords.longitude], 15);
     // aggiorna marker
     updateMarker(position.coords.latitude, position.coords.longitude);
     //aggiorna posizione
@@ -207,6 +207,7 @@ function loadYTVideos() {
                 let detail = metaDati.split(":")[5];
                 let descrizione = metaDati.split(":")[6];
                 let openingHour = metaDati.split(":")[7];
+                let closingHour = metaDati.split(":")[8];
                 // dati della clip
                 let dati = {
                     "purpose": purpose,
@@ -215,7 +216,8 @@ function loadYTVideos() {
                     "audience": audience,
                     "detail": detail,
                     "descrizione": descrizione,
-                    "openingHour": openingHour
+                    "openingHour": openingHour,
+                    "closingHour": closingHour
                 };
                 datiVideo[idVideo] = dati;
                 // crea popup per il marker della clip

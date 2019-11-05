@@ -64,7 +64,7 @@ function displayLocation(position) {
    // ottiene l'OLC della posizione corrente
    currentOlc = OpenLocationCode.encode(lat, lng);
    // apre la mappa sulla posizione ricevuta dal browser
-   map.setView([lat, lng], 18);
+   map.setView([lat, lng], 15);
    //console.log(currentOlc);
    // crea marker per la posizione attuale con popup
    markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
@@ -118,9 +118,7 @@ function updateSigninStatus(status) {
       var auth2 = gapi.auth2.getAuthInstance();
       var profile = auth2.currentUser.get().getBasicProfile();
       console.log('Email: ' + profile.getEmail());
-
       document.getElementById('profile').innerText = profile.getEmail();
-
     };
 
   } else {
@@ -282,6 +280,7 @@ function handleSuccess(stream) {
 
   const gumVideo = document.querySelector('video#gum');
   gumVideo.srcObject = stream;
+  document.querySelector('button#start').disable();
 }
 
 async function init(constraints) {
@@ -294,92 +293,122 @@ async function init(constraints) {
   }
 }
 
-document.querySelector('button#start').addEventListener('click', async () => {
+/** Pulsante per avviare la registrazione */
+const startRec = document.querySelector('button#start')
+startRec.addEventListener('click', async () => {
   const constraints = {
     audio: true,
-    video: {
-      width: {
-        exact:225
-      },
-      height: {
-        exact:180
-    }
-  }
+    video: true
   };
-  console.log('Using media constraints:', constraints);
-  await init(constraints);
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    console.log('Using media constraints:', constraints);
+    await init(constraints);
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
 });
+
+/** Pulsante per caricamento locale del file */
+const localButton = document.querySelector('button#local');
+localButton.addEventListener('click', () => {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    $('#registra').hide();
+    $('#registraVideo').hide();  
+    $('#locale').show();
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
+});
+
+/** Pulsante per avviare la fotocamera */
+const cameraButton = document.querySelector('button#camera');
+cameraButton.addEventListener('click', () => {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    $('#locale').hide();
+    $('#registra').show();
+    $('#registraVideo').show();
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
+});
+
+/** Funzione per aprire file picker */
+function scegliFile() {
+  var file = document.querySelector('input[type=file]').files[0];
+  var reader = new FileReader();
+  file instanceof Blob; // true
+  console.log(file);
+  uploadVideo(file);
+}
 
 // composizione descrizione video
 function creaMetadata(){
-   var purpose = document.getElementById("purpose").value;
-   var language = document.getElementById("language").value;
-   var content = document.getElementById("content").value;
-   var detail = document.getElementById("detail").value;
-   var audience = document.getElementById("audience").value;
-   var description = document.getElementById("description").value;
-   var openingHour = document.getElementById("openingHour").value;
-   var closingHour = document.getElementById("closingHour").value;
-   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description+":"+openingHour+":"+closingHour;
-   console.log(metadata);
-   return metadata;
+  var purpose = document.getElementById("purpose").value;
+  var language = document.getElementById("language").value;
+  var content = document.getElementById("content").value;
+  var detail = document.getElementById("detail").value;
+  var audience = document.getElementById("audience").value;
+  var description = document.getElementById("description").value;
+  var openingHour = document.getElementById("openingHour").value;
+  var closingHour = document.getElementById("closingHour").value;
+  var metadata = currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description+":"+openingHour+":"+closingHour;
+  console.log(metadata);
+  return metadata;
 }
 
 //caricamento video
-  function uploadVideo(blob){
-    //passiamo il blob dallo sccript di crezione del video
-    //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
-    var descrizione = creaMetadata();
-    var titolo = document.getElementById("titolo").value;
-  //  console.log(descrizione);
-    console.log(titolo);
-    var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
-    console.log(token);
-    console.log(blob);
+function uploadVideo(blob){
+  //passiamo il blob dallo sccript di crezione del video
+  //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
+  var descrizione = creaMetadata();
+  var titolo = document.getElementById("titolo").value;
+//  console.log(descrizione);
+  console.log(titolo);
+  var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
+  console.log(token);
+  console.log(blob);
 
-    metadata = {
-      kind: 'youtube#video',
-      snippet: {
-        title: titolo,
-        description: descrizione,
-      },
-      status: {
-        privacyStatus: 'public',
-        embeddable: true
-      }
-    };
-
-    var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-    var form = new FormData();
-    //Blob per il metadata
-    form.append('video', meta);
-    //Blob del video
-    form.append('mediaBody', blob);
-
-    //chiamata ajax
-    $.ajax({
-      url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
-        + encodeURIComponent(token) + '&part=snippet,status',
-      data: form,
-      cache: false,
-      contentType: false,
-      processData: false,
-      method: 'POST',
-      success:function(data) {
-        alert("Video caricato");
-        window.location.href='editor.html';
-      //  document.getElementById("registraVideo").style.display="block";
-    	  //document.getElementById("scegliVideo").style.display="block";
-        //document.getElementById("loading").style.display="none";
-      if (mediaRecorder.state != 'inactive') {
-        mediaRecorder.stop();
-      }
+  metadata = {
+    kind: 'youtube#video',
+    snippet: {
+      title: titolo,
+      description: descrizione,
     },
-    // ed una per il caso di fallimento
-    error: function(request, status, error) {
-            alert(request.responseText);
+    status: {
+      privacyStatus: 'public',
+      embeddable: true
     }
+  };
 
-    });
+  var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+  var form = new FormData();
+  //Blob per il metadata
+  form.append('video', meta);
+  //Blob del video
+  form.append('mediaBody', blob);
 
+  //chiamata ajax
+  $.ajax({
+    url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
+      + encodeURIComponent(token) + '&part=snippet,status',
+    data: form,
+    cache: false,
+    contentType: false,
+    processData: false,
+    method: 'POST',
+    success:function(data) {
+      alert("Video caricato");
+      window.location.href='editor.html';
+    //  document.getElementById("registraVideo").style.display="block";
+      //document.getElementById("scegliVideo").style.display="block";
+      //document.getElementById("loading").style.display="none";
+    if (mediaRecorder.state != 'inactive') {
+      mediaRecorder.stop();
+    }
+  },
+  // ed una per il caso di fallimento
+  error: function(request, status, error) {
+    alert(request.responseText);
   }
+  });
+}

@@ -83,25 +83,23 @@
 </head>
 
 <body>
-       <!-- Navbar -->
-     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
-        <div class="container">
-          <a href="/" class="navbar-brand text-success js-scroll-trigger">Where Am I?</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark" id="mainNav">
+      <div class="container">
+        <a href="/" class="navbar-brand text-success js-scroll-trigger">Where Am I?</a>
           <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse"
-              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-              <div class="collapse navbar-collapse" id="navbarResponsive">
-              <ul class="nav navbar-nav ml-auto text-uppercase">
-                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" style="visibility:hidden" href="#">log out</a></li>
-                    <button onclick="handleAuthClick()" class="btn btn-success" id="gbutton" type="button">Sign-in with Google</button>
-                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "profile" ></a></li>
-                </ul>
-            </div>
-        </div>
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="nav navbar-nav ml-auto text-uppercase">
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/">home</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="browser.html">browser</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "logOut" onclick="signOut()" style="visibility:hidden" href="#">log out</a></li>
+              <button onclick="handleAuthClick()" class="btn btn-success" id="gbutton" type="button">Sign-in with Google</button>
+              <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" id = "profile" ></a></li>
+            </ul>
+          </div>
+      </div>
     </nav>
-
-
 
     <!--paragrafo mail utente loggato -->
     <h2 id="name" class="lead" style="text-align:center"></h2>
@@ -121,222 +119,182 @@
       </div>
     <!-- Fine Intestazione -->
 
-  <!-- METADATA for clips -->
-    <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);margin-right: 5%; margin-left: 5%; ">
-      <div style="margin-right: 5%; margin-left: 5%;">
-
+  <!-- Start: METADATA for clips -->
+  <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);margin-right: 5%; margin-left: 5%; ">
+    <div style="margin-right: 5%; margin-left: 5%;">
       <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
-
-         <div class="form-group col-md-6">
-           <label for="titolo">Nome</label>
-           <input type="text" class="border-white shadow custom-select custom-select-lg" id="titolo" placeholder="inserisci nome attrazione">
-         </div>
-         <!--Content Section-->
-         <div class="form-group col-md-6">
-           <label for="content">Content</label>
-           <select class="border-white shadow custom-select custom-select-lg " id="content">
-            <optgroup label="Select Content">
-              <option value="none" selected>Nessuna</option>
-              <option value="nat">Natura</option>
-              <option value="art">Arte</option>
-              <option value="his">Storia</option>
-              <option value="flk">Folklore</option>
-              <option value="mod">Cultura Moderna</option>
-              <option value="rel">Religione</option>
-              <option value="cui">Cucina e drink</option>
-              <option value="spo">Sport</option>
-              <option value="mus">Musica</option>
-              <option value="mov">Film</option>
-              <option value="fas">Moda</option>
-              <option value="shp">Shopping</option>
-              <option value="tec">Tecnologia</option>
-              <option value="pop">Cultura pop e gossip</option>
-              <option value="prs">Esperienze personali</option>
-              <option value="oth">Altro</option>
-           </select>
-         </div>
-         <!--Audience type section-->
-         <div class="form-group col-md-6">
-           <label for="audience">Audience</label>
-           <select class="border-white shadow custom-select custom-select-lg" id="audience">
-            <optgroup label="Select Audience">
-              <option value="gen" selected>Generico</option>
-              <option value="pre">Pre-scolare</option>
-              <option value="elm">Elementari</option>
-              <option value="mid">Scuola media</option>
-              <option value="scl">Specializzato</option>
-           </select>
-         </div>
-         <!-- Detail level section -->
-         <div class="form-group col-md-6">
-           <label for="detail">Detail</label>
-           <select class="border-white shadow custom-select custom-select-lg" id="detail">
-            <optgroup label="Select Detail level">
-              <option value="1" selected>Essenziale(1)</option>
-              <option value="2">Breve(2)</option>
-              <option value="3">Approfondito(3)</option>
-              <option value="4">Mettiti Comodo(4)</option>
-           </select>
-         </div>
-         <!-- Language section -->
-         <div class="form-group col-md-6">
-           <label for="language">Language</label>
-           <select class="border-white shadow custom-select custom-select-lg" id="language">
-            <optgroup label="Select Language">
-              <option value="ita" selected>Italiano</option>
-              <option value="eng">Inglese</option>
-           </select>
-         </div>
-         <!-- Purpose section -->
-         <div class="form-group col-md-6">
-           <label for="purpose">Purpose</label>
-           <select class="border-white shadow custom-select custom-select-lg" id="purpose">
-            <optgroup label="Select Purpose">
-             <option>none(default)</option>
-             <option>why</option>
-             <option>how</option>
-             <option>what</option>
-           </select>
-         </div>
-         <!-- opening hour section -->
-         <div class="form-group col-md-6">
-           <label for="schedule">Orario di apertura</label>
-           <input type="time" class="border-white shadow custom-select custom-select-lg "id="openingHour"rows="1" max="15:00" ></input>
+      <div class="form-group col-md-6">
+        <label for="titolo">Nome</label>
+        <input type="text" class="form-control border-white shadow" id="titolo" placeholder="inserisci nome attrazione">
+      </div>
+      <!--Content Section-->
+      <div class="form-group col-md-6">
+        <label for="content">Content</label>
+        <select class="form-control border-white" id="content">
+          <optgroup label="Select Content">
+            <option value="none" selected>Nessuna</option>
+            <option value="nat">Natura</option>
+            <option value="art">Arte</option>
+            <option value="his">Storia</option>
+            <option value="flk">Folklore</option>
+            <option value="mod">Cultura Moderna</option>
+            <option value="rel">Religione</option>
+            <option value="cui">Cucina e drink</option>
+            <option value="spo">Sport</option>
+            <option value="mus">Musica</option>
+            <option value="mov">Film</option>
+            <option value="fas">Moda</option>
+            <option value="shp">Shopping</option>
+            <option value="tec">Tecnologia</option>
+            <option value="pop">Cultura pop e gossip</option>
+            <option value="prs">Esperienze personali</option>
+            <option value="oth">Altro</option>
+        </select>
+      </div>
+      <!--Audience type section-->
+      <div class="form-group col-md-6">
+        <label for="audience">Audience</label>
+        <select class="form-control border-white" id="audience">
+          <optgroup label="Select Audience">
+            <option value="gen" selected>Generico</option>
+            <option value="pre">Pre-scolare</option>
+            <option value="elm">Elementari</option>
+            <option value="mid">Scuola media</option>
+            <option value="scl">Specializzato</option>
+        </select>
+      </div>
+      <!-- Detail level section -->
+      <div class="form-group col-md-6">
+        <label for="detail">Detail</label>
+        <select class="form-control border-white" id="detail">
+          <optgroup label="Select Detail level">
+            <option value="1" selected>Essenziale(1)</option>
+            <option value="2">Breve(2)</option>
+            <option value="3">Approfondito(3)</option>
+            <option value="4">Mettiti Comodo(4)</option>
+        </select>
+      </div>
+      <!-- Language section -->
+      <div class="form-group col-md-6">
+        <label for="language">Language</label>
+        <select class="form-control border-white" id="language">
+          <optgroup label="Select Language">
+            <option value="ita" selected>Italiano</option>
+            <option value="eng">Inglese</option>
+        </select>
+      </div>
+      <!-- Purpose section -->
+      <div class="form-group col-md-6">
+        <label for="purpose">Purpose</label>
+        <select class="form-control border-white" id="purpose">
+          <optgroup label="Select Purpose">
+          <option>none(default)</option>
+          <option>why</option>
+          <option>how</option>
+          <option>what</option>
+        </select>
+      </div>
+      <!-- opening hour section -->
+      <div class="form-group col-md-6">
+        <label for="schedule">Orario di apertura</label>
+        <input type="time" class="form-control border-white" id="openingHour" rows="1" max="15:00" ></input>
+        </div>
+        <!-- closing hour section -->
+        <div class="form-group col-md-6">
+          <label for="schedule">Orario di chiusura</label>
+          <input type="time" class="form-control border-white" id="closingHour" rows="1" min="15:00"></input>
+        </div>
+        <!-- description section -->
+        <div class="form-group col-md-6">
+            <label for="descrizione">Descrizione</label>
+            <textarea class="form-control border-white" id="description" placeholder="aggiungi una descrizione" rows="5"></textarea>
+        </div>
+      </div>
+      <!-- End: METADATA for clips -->
+      <!-- Start: Sezione registrazione-->
+      <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px">
+        <div class="form-group col-md-12">
+          <label>Fonte della clip</label>
+          <div>
+            <button type="button" class="btn btn-success" id="local">Caricamento da locale</button>
+            <button type="button" class="btn btn-success" id="camera">Registra la clip</button>
           </div>
-          <!-- closing hour section -->
-          <div class="form-group col-md-6">
-            <label for="schedule">Orario di chiusura</label>
-            <input type="time" class="border-white shadow custom-select custom-select-lg "id="closingHour"rows="1" min="15:00"></input>
+        </div>
+      </div>
+      <!-- Controlli per la registrazione -->
+      <div id="registra" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
+        <div class="form-group col-lg-12">
+          <p>Registra la clip</p>
+          <button id="start" class="btn btn-success">Start camera</button>
+          <button id="record" class="btn btn-success" disabled>Start Recording</button>
+          <button id="play" class="btn btn-success" disabled>Play</button>
+          <button id="upload" class="btn btn-success" disabled>Upload</button>
+          <button id="download" class="btn btn-info" disabled >Download</button>
+          <!-- messaggio di errore -->
+          <div>
+            <span id="errorMsg" style="display: none;"></span>
           </div>
-          <!-- description section -->
-         <div class="form-group col-md-6">
-             <label for="descrizione">Descrizione</label>
-             <textarea class="border-white shadow custom-select custom-select-lg "id="description"placeholder="aggiungi una descrizione"rows="1"></textarea>
-         </div>
+        </div>
+      </div>
+      <div class="form-row" id="registraVideo" style="display: none;">
+        <div class="col-md-6 align-items-center">
+          <video id="gum" style="width: 80%; height: 90%;" autoplay muted></video>
+        </div>
+        <div class="col-md-6 align-items-center">
+          <video id="recorded" style="width: 80%; height: 90%;" playsinline></video>
+        </div>
+      </div>
+      <div id="locale" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
+        <div class="form-group col-lg-12">
+          <p>Carica la clip</p>
+          <span class="btn btn-success btn-file">Browse...<input type="file" accept="video/*"></span>
+          <button class="btn btn-success" id="uploadfile" onclick="scegliFile()">Upload</button>
+        </div>
       </div>
     </div>
-
-
-    <div class="form-group col-md-6">
-
-         <form>
- 					<button type="button" class="btn btn-primary" id="local" > caricamento da locale</button>
-          <button type="button" class="btn btn-primary" id="camera" > registra la clip</button>
-         </form>
-      
-    <div class="form-group col-md-6">
-
-
-
-        <div id="registra" style="display:none">
-          <p>Registra la clip </p>
-              <button id="start" class="btn btn-primary coloreBottone">Start camera</button>
-              <button id="record" class="btn btn-primary coloreBottone" disabled>Start Recording</button>
-              <button id="play" class="btn btn-primary coloreBottone" disabled>Play</button>
-              <button id="upload" class="btn btn-primary coloreBottone" disabled>Upload</button>
-              <button id="download" class="btn btn-primary coloreBottone" disabled >Download</button>
-              <div>
-                  <span id="errorMsg"></span>
-              </div>
-
-              <div class="container centro" id="registraVideo">
-
-               <video id="gum" playsinline autoplay muted></video>
-                <video id="recorded" playsinline></video>
-      </div>
-          </div>
-
-          <div id="locale" style="display:none">
-            <p>Carica la clip </p>
-            <span class="btn btn-primary btn-file">  Browse...<input type="file" accept="video/*"></span>
-            <button class="btn btn-primary" id="uploadfile" onclick="scegliFile()">upload</button>
-          </div>
-
-
-
-
-</div>
-
-
-
-
-
-</section>
-
-<!-- </form> -->
-
-<!-- End: Metadata -->
-
-
- <!-- Footer -->
+    <!-- End: sezione registrazione-->
+  </section>
+<!-- End: Clips Section -->
+<!-- Start: Footer -->
  <footer class="footer" style="background-color: #495057;">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-4">
-                <span class="copyright" style="color: #FFFFFF">Copyright &copy; Where M I 2019</span>
-            </div>
-            <div class="col-md-4">
-                <ul class="list-inline social-buttons">
-                    <li class="list-inline-item">
-                        <a href="#">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li class="list-inline-item">
-                        <a class="text-success" href="#">Privacy Policy</a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="text-success" href="#">Terms of Use</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+      <div class="row align-items-center">
+          <div class="col-md-4">
+            <span class="copyright" style="color: #FFFFFF">Copyright &copy; Where M I 2019</span>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline social-buttons">
+              <li class="list-inline-item">
+                <a href="#">
+                    <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline quicklinks">
+              <li class="list-inline-item">
+                <a class="text-success" href="#">Privacy Policy</a>
+              </li>
+              <li class="list-inline-item">
+                <a class="text-success" href="#">Terms of Use</a>
+              </li>
+            </ul>
+          </div>
+      </div>
     </div>
 </footer>
-
-
-<script type="text/javascript">
-function scegliFile() {
-  var file    = document.querySelector('input[type=file]').files[0];
-  var reader  = new FileReader();
-  file instanceof Blob; // true
-
-  console.log(file);
-
-  uploadVideo(file);
-
-}
-
-$(function(){
-  $('#local').on('click', function(){
-    $('#registra').hide();
-    $('#locale').show();
-  });
-  $('#camera').on('click', function(){
-    $('#locale').hide();
-    $('#registra').show();
-  });
-});
-
-
-</script>
-
-
-
+<!-- End: Footer -->
 <!-- Plugin JavaSctipt -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
@@ -344,20 +302,20 @@ $(function(){
 <!-- Custom scripts for this template -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/js/agency.min.js"></script>
 
-
 <!-- Leaflet Routing machine -->
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+<!-- Google API -->
+<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <!-- Our JS scripts -->
 <script src="/static/javascript/Geocoder.js"></script>
 <script src="/static/javascript/config.js"></script>
 <script src="/static/javascript/editor.js"></script>
 
-<!-- Google API -->
-<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
- <!-- Bootstrap core JavaScript -->
- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
