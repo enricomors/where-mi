@@ -312,7 +312,16 @@
 <!-- Our JS scripts -->
 <script src="/static/javascript/Geocoder.js"></script>
 <script src="/static/javascript/config.js"></script>
+<script src="/static/javascript/map.js"></script>
 <script src="/static/javascript/editor.js"></script>
+<script>
+  /** Popup del marker per la mappa dell'editor */
+  const POPUP = `<div style="text-align: center;">
+  <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
+  <hr align="center">
+  If location is incorrect, drag the marker or use search control on left side of the map
+  </div>`;
+</script>
 
 <!-- Bootstrap core JavaScript -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

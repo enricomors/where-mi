@@ -1,13 +1,3 @@
-/** Token per l'accesso alle API di Mapbox (indicazioni) */
-const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-/** Coordinate di Default per la mappa */
-const DEFAULT_COORDS = [44.493671, 11.343035];
-/** Popup del marker */
-const POPUP = `<div style="text-align: center;">
-<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-<hr align="center">
-If location is incorrect, drag the marker or use search control on left side of the map
-</div>`;
 /** Client ID per le API di Google */
 // const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
 const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
@@ -17,16 +7,6 @@ const DISCOVERY_DOCS = [
 /** Scopes per l'accesso all'API di YouTube */
 const SCOPES = 'https://www.googleapis.com/auth/youtube';
 
-var markerPosizioneAttuale;
-var circlePosizioneAttuale;
-var markerSearch;
-var circleSearch;
-
-var markerDraggable;
-var circleDraggable;
-var currentPosition;
-var currentOlc;
-
 // per il momento lunghezza massima 30 secondi, poi sarà da gestire meglio
 var maxLenght = 30000;
 var recordedBlob;
@@ -35,95 +15,6 @@ recorder = document.getElementById('recorder');
 let preview = document.getElementById('preview');
 let startButton = document.getElementById('record');
 let stopButton = document.getElementById('stopRecord');
-
-/** Marker verde */
-var greenIcon = new L.Icon({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-/** Inizializza la mappa Leaflet */
-var map = L.map('map').setView(DEFAULT_COORDS, 15);
-
-/** Tile layer per la mappa */
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  maxZoom: 18,
-  id: 'mapbox.streets',
-  accessToken: MAPBOX_TOKEN
-}).addTo(map);
-
-/** Aggiunge alla mappa casella di ricerca per gli indirizzi */
-var searchControl = L.esri.Geocoding.geosearch({ 
-  useMapBounds: 'false',
-  placeholder: 'Cerca un indirizzo' 
-}).addTo(map);
-
-/** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
-var results = L.layerGroup().addTo(map);
-searchControl.on('results', function (data) {
-  // rimuove il marker della posizione attuale se presente
-  if (markerPosizioneAttuale) {
-      map.removeLayer(markerPosizioneAttuale);
-  }
-  results.clearLayers();
-  for (var i = data.results.length - 1; i >= 0; i--) {
-      updateMarker(data.results[i].latlng.lat, data.results[i].latlng.lng);
-      updatePosition(data.results[i].latlng.lat, data.results[i].latlng.lng);
-  }
-});
-
-/** Ottiene la posizione corrente dal browser */
-navigator.geolocation.getCurrentPosition(displayLocation);
-
-/** Mostra sulla mappa la posizione ricevuta dal browser */
-function displayLocation(position) {
-  // apre la mappa sulla posizione ricevuta dal browser
-  map.setView([position.coords.latitude, position.coords.longitude], 15);
-  // aggiorna marker
-  updateMarker(position.coords.latitude, position.coords.longitude);
-  //aggiorna posizione
-  updatePosition(position.coords.latitude, position.coords.longitude);
-}
-
-/** Aggiorna la posizione del marker sulla mappa in base alle coordinate */
-function updateMarker(lat, lng) {
-  // crea marker per la posizione attuale con popup
-  markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-  markerPosizioneAttuale.on('dragend', function (e) {
-      updatePosition(e.latlng.lat, e.latlng.lng);
-  });
-  markerPosizioneAttuale.setIcon(greenIcon);
-  // popup associato il nuovo marker
-  markerPosizioneAttuale.bindPopup(POPUP).openPopup();
-  // aggiunge il marker alla mappa
-  markerPosizioneAttuale.addTo(map);
-}
-
-/** Aggiorna posizione attuale e calcola OLC */
-function updatePosition(lat, lng) {
-  // aggiorna posizione corrente
-  currentPosition = [lat, lng];
-  // aggiorna olc posizione corrente
-  currentOlc = OpenLocationCode.encode(lat, lng);
-  console.log(currentOlc);
-}
-
-/** Modifica la posizione attuale al doppio click sulla mappa */
-function onMapDoubleClick(e) {
-  // rimuove il marker della posizione attuale se già presente
-  if (markerPosizioneAttuale) {
-      map.removeLayer(markerPosizioneAttuale);
-  }
-  updateMarker(e.latlng.lat, e.latlng.lng);
-  updatePosition(e.latlng.lat, e.latlng.lng);
-}
-
-/** Gestione del doppio click sulla mappa */
-map.on('dblclick', onMapDoubleClick);
 
 /**autenticazione google*/
 function handleAuthClick() {
