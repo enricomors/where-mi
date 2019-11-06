@@ -168,8 +168,7 @@ function loadYTVideos() {
                     name = results[i].snippet.title;
                 }
                 // estrae i dati dell'i-esimo video
-                let metaDati = results[i].snippet.description.split("#")[0];
-                let description = results[i].snippet.description.split("#")[1];
+                let metaDati = results[i].snippet.description;
                 let idVideo = results[i].id.videoId;
                 console.log(idVideo);
                 let idPrev;
@@ -205,9 +204,10 @@ function loadYTVideos() {
                 let category = metaDati.split(":")[3];
                 let audience = metaDati.split(":")[4];
                 let detail = metaDati.split(":")[5];
-                let descrizione = metaDati.split(":")[6];
-                let openingHour = metaDati.split(":")[7];
-                let closingHour = metaDati.split(":")[8];
+                // metadati aggiuntivi
+                let descrizione = metaDati.split("#")[1];
+                let openingHour = metaDati.split("#")[2];
+                let closingHour = metaDati.split("#")[3];
                 // dati della clip
                 let dati = {
                     "purpose": purpose,
@@ -248,14 +248,12 @@ function loadYTVideos() {
                     <!-- CARD BODY-->
                     <div class="card-body" style="color:black;">
                     <ul class="list-group text-left">
-                    <li class="list-group-item"><span><i><b>Language:&nbsp</b></i> ${language}</span></li>
-                    <li class="list-group-item"><span><i><b>Category:&nbsp</b></i> ${category}</span></li>
-                    <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i> ${audience}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i> ${descrizione}</span></li>
-                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i> ${openingHour}</span></li>
-                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i> ${closingHour}</span></li>
-
-
+                    <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
+                    <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
+                    <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i>${openingHour}</span></li>
+                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i>${closingHour}</span></li>
                     </ul>
                     </div>
 
