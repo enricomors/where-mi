@@ -213,7 +213,7 @@
       <!-- End: METADATA for clips -->
       <!-- Start: Sezione registrazione-->
       <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px">
-        <div class="form-group col-md-12">
+        <div class="form-group col-lg-12">
           <label>Fonte della clip</label>
           <div>
             <button type="button" class="btn btn-success" id="local">Caricamento da locale</button>
@@ -224,7 +224,7 @@
       <!-- Controlli per la registrazione -->
       <div id="registra" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
         <div class="form-group col-lg-12">
-          <p>Registra la clip</p>
+          <label style="display: block;">Registra clip</label>
           <button id="start" class="btn btn-success">Start camera</button>
           <button id="record" class="btn btn-success" disabled>Start Recording</button>
           <button id="play" class="btn btn-success" disabled>Play</button>
@@ -246,8 +246,11 @@
       </div>
       <div id="locale" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
         <div class="form-group col-lg-12">
-          <p>Carica la clip</p>
-          <span class="btn btn-success btn-file">Browse...<input type="file" accept="video/*"></span>
+          <label style="display: block;">Carica la clip</label>
+          <div class="custom-file col-md-6">
+            <input type="file" class="custom-file-input" accept="video/*" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+          </div>
           <button class="btn btn-success" id="uploadfile" onclick="scegliFile()">Upload</button>
         </div>
       </div>
