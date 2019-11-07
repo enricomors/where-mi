@@ -30,10 +30,20 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 /** Aggiunge alla mappa casella di ricerca per gli indirizzi */
-var searchControl = L.esri.Geocoding.geosearch({ 
+var searchControl = L.esri.Geocoding.geosearch({
     useMapBounds: 'false',
-    placeholder: 'Cerca un indirizzo' 
+    placeholder: 'Cerca un indirizzo'
 }).addTo(map);
+
+// aggiunge alla mappa la selezione del livello di distanza
+var legend = L.control({position: 'topright'});
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel" ><option value="6">MIN</option><option value="7">MEDIUM</option><option value="8">MAX</option></select>';
+    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+    return div;
+};
+legend.addTo(map);
 
 /** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
 var results = L.layerGroup().addTo(map);
