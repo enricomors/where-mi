@@ -24,14 +24,14 @@
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+
   <!-- Fonts e icone -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-  
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="static/css/editor.css" type="text/css">
   <link rel="stylesheet" href="static/css/style.css">
@@ -166,9 +166,10 @@
       <!-- Detail level section -->
       <div class="form-group col-md-6">
         <label for="detail">Detail</label>
-        <select class="form-control border-white" id="detail">
+        <select class="form-control border-white" id="detail" disabled>
           <optgroup label="Select Detail level">
-            <option value="1" selected>Essenziale(1)</option>
+            <option value="default"> none(default)</option>
+            <option value="1" >Essenziale(1)</option>
             <option value="2">Breve(2)</option>
             <option value="3">Approfondito(3)</option>
             <option value="4">Mettiti Comodo(4)</option>

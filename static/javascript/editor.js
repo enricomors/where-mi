@@ -109,6 +109,14 @@ recordButton.addEventListener('click', () => {
   }
 });
 
+function stopREcordTime(){
+  stopRecording();
+  recordButton.textContent = 'Start Recording';
+  playButton.disabled = false;
+  uploadButton.disabled = false;
+  downloadButton.disabled= false;
+};
+
 const playButton = document.querySelector('button#play');
 playButton.addEventListener('click', () => {
   const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
@@ -118,6 +126,7 @@ playButton.addEventListener('click', () => {
   recordedVideo.controls = true;
   recordedVideo.play();
 });
+
 
 const uploadButton = document.querySelector('button#upload');
 uploadButton.addEventListener('click', () => {
@@ -155,7 +164,49 @@ function handleDataAvailable(event) {
   }
 }
 
+
+//ascoltatore del select purpose che abilita o disabilita il select detail
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="why"){
+      document.getElementById("detail").disabled = false;
+      document.getElementById("detail").selectedIndex = 1;
+    }else {
+      document.getElementById("detail").disabled = true;
+      document.getElementById("detail").selectedIndex = 0;
+    }
+});
+
 function startRecording() {
+
+  //gestione delle restrizioni di tempo per le registrazioni
+
+  if(document.getElementById("purpose").value=="what"){
+    var recordingTime=15000;
+  }else{
+
+  if(document.getElementById("purpose").value=="why"){
+    switch (document.getElementById("detail").value) {
+      case "1":
+      var recordingTime=30000;
+        break;
+      case "2":
+      var recordingTime=40000;
+      break;
+      case "3":
+      var recordingTime=50000;
+      break;
+      case "4":
+      var recordingTime=60000;
+      break;
+    }
+
+  }else{
+      var recordingTime=30000;
+    }
+  }
+
   recordedBlobs = [];
   let options = {mimeType: 'video/webm;codecs=vp9'};
   if(typeof MediaRecorder.isTypeSupported === "function") {
@@ -197,6 +248,9 @@ function startRecording() {
   mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.start(10); // collect 10ms of data
   console.log('MediaRecorder started', mediaRecorder);
+
+  //funzione che attiva il timer della registrazione quando scade il tempo
+  setTimeout(stopREcordTime, recordingTime);
 }
 
 function stopRecording() {
@@ -244,7 +298,7 @@ const localButton = document.querySelector('button#local');
 localButton.addEventListener('click', () => {
   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
     $('#registra').hide();
-    $('#registraVideo').hide();  
+    $('#registraVideo').hide();
     $('#locale').show();
   } else {
     alert('Devi prima effettuare il log in.');
