@@ -4,8 +4,11 @@ var datiVideo = {};
 
 function loadYTVideos() {
   $("#clips").empty();
+    //Acquisisce il livello di distanza scelto tra i filtri
+    var zoom = document.getElementById('distanceLevel').value;
+    console.log("this is the zoom value" + " " + zoom);
     // Crea query string x YouTube
-    var queryString = currentOlc.substring(0, 8);
+    var queryString = currentOlc.substring(0, zoom);
     console.log(queryString);
     /** Ricerca i video di YouTube in base all'API key */
     var req = gapi.client.youtube.search.list({
