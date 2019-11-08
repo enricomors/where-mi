@@ -1,5 +1,6 @@
 /** Carica l'api key dalle variabili d'ambiente */
-const API_KEY = process.env.MY_API_KEY;
+const API_KEY = 'AIzaSyAFrXgyA4uIMddd3xxiipVvNEcDL2MM4Lw';
+// const API_KEY = 'AIzaSyB4Jh2e86uK5pBGSXCT-I6K__jmHpjEvw8';
 
 /** Carica l'API di YouTube */
 function onClientLoad() {

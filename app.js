@@ -1,5 +1,5 @@
 /** La costante port indica la porta su cui il server deve restare in ascolto (8000 perché richiesta da Gocker) */
-const port = process.env.PORT || 8000;
+const port = 8000;
 
 /** Modulo express */
 const express = require('express');
@@ -14,7 +14,7 @@ const path = require('path');
  * into process.env. Storing configuration in the environment separate from code is based 
  * on The Twelve-Factor App methodology.
  */
-require('dotenv').config();
+// require('dotenv').config();
 
 /** Chiama la funzione "express()" per creare una nuova applicazione Express, assegnata alla variabile "app" */
 const app = express();
