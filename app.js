@@ -10,6 +10,10 @@ const bodyParser = require('body-parser');
 /** Modulo path, fornisce utilities per lavorare con percorsi di file e cartelle */
 const path = require('path');
 
+/** Carica contenuto del file .env nelle variabili d'ambiente */
+require('dotenv').config();
+console.log(process.env);
+
 /** Chiama la funzione "express()" per creare una nuova applicazione Express, assegnata alla variabile "app" */
 const app = express();
 

@@ -1,25 +1,11 @@
-/** Token per l'accesso alle API di Mapbox (indicazioni) */
-const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
-/** Coordinate di Default per la mappa */
-const DEFAULT_COORDS = [44.493671, 11.343035];
 /** Client ID per le API di Google */
-// const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
-const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
+const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'
+//const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
 ];
 /** Scopes per l'accesso all'API di YouTube */
 const SCOPES = 'https://www.googleapis.com/auth/youtube';
-
-var markerPosizioneAttuale;
-var circlePosizioneAttuale;
-var markerSearch;
-var circleSearch;
-
-var markerDraggable;
-var circleDraggable;
-var currentPosition;
-var currentOlc;
 
 // per il momento lunghezza massima 30 secondi, poi sarà da gestire meglio
 var maxLenght = 30000;
@@ -29,61 +15,6 @@ recorder = document.getElementById('recorder');
 let preview = document.getElementById('preview');
 let startButton = document.getElementById('record');
 let stopButton = document.getElementById('stopRecord');
-
-/** Marker verde */
-var greenIcon = new L.Icon({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-/** Inizializza la mappa Leaflet */
-var map = L.map('map').setView(DEFAULT_COORDS, 15);
-
-/** Tile layer per la mappa */
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  maxZoom: 18,
-  id: 'mapbox.streets',
-  accessToken: MAPBOX_TOKEN
-}).addTo(map);
-
-/** Ottiene la posizione corrente dal browser */
-navigator.geolocation.getCurrentPosition(displayLocation);
-
-
-/** Mostra sulla mappa la posizione ricevuta dal browser */
-function displayLocation(position) {
-  // console.log('position', position);
-   var lat = position.coords.latitude;
-   var lng = position.coords.longitude;
-   // aggiorna la posizione corrente
-   currentPosition = [lat, lng];
-   // ottiene l'OLC della posizione corrente
-   currentOlc = OpenLocationCode.encode(lat, lng);
-   // apre la mappa sulla posizione ricevuta dal browser
-   map.setView([lat, lng], 18);
-   //console.log(currentOlc);
-   // crea marker per la posizione attuale con popup
-   markerPosizioneAttuale = L.marker([lat, lng], { draggable: 'true'});
-
-   markerPosizioneAttuale.addTo(map);
-}
-
-function onMapClick(e) {
-    if (markerPosizioneAttuale) {
-        map.removeLayer(markerPosizioneAttuale);
-    }
-    markerPosizioneAttuale = L.marker([e.latlng.lat, e.latlng.lng], { draggable: 'false'});
-
-    markerPosizioneAttuale.addTo(map);
-	currentOlc = OpenLocationCode.encode(e.latlng.lat, e.latlng.lng);
-    console.log(currentOlc);
-}
-
-map.on('click', onMapClick);
 
 /**autenticazione google*/
 function handleAuthClick() {
@@ -118,9 +49,7 @@ function updateSigninStatus(status) {
       var auth2 = gapi.auth2.getAuthInstance();
       var profile = auth2.currentUser.get().getBasicProfile();
       console.log('Email: ' + profile.getEmail());
-
       document.getElementById('profile').innerText = profile.getEmail();
-
     };
 
   } else {
@@ -159,7 +88,6 @@ let mediaRecorder;
 let recordedBlobs;
 let sourceBuffer;
 
-
 if(typeof MediaRecorder.isTypeSupported !== "function"){
   document.getElementById("registraVideo").style.display="none";
 }
@@ -168,9 +96,9 @@ const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
 
+/** Listener per evento click su pulsante Start recording */
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
-
     startRecording();
   } else {
     stopRecording();
@@ -181,6 +109,14 @@ recordButton.addEventListener('click', () => {
   }
 });
 
+function stopREcordTime(){
+  stopRecording();
+  recordButton.textContent = 'Start Recording';
+  playButton.disabled = false;
+  uploadButton.disabled = false;
+  downloadButton.disabled= false;
+};
+
 const playButton = document.querySelector('button#play');
 playButton.addEventListener('click', () => {
   const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
@@ -190,6 +126,7 @@ playButton.addEventListener('click', () => {
   recordedVideo.controls = true;
   recordedVideo.play();
 });
+
 
 const uploadButton = document.querySelector('button#upload');
 uploadButton.addEventListener('click', () => {
@@ -227,11 +164,52 @@ function handleDataAvailable(event) {
   }
 }
 
+
+//ascoltatore del select purpose che abilita o disabilita il select detail
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="why"){
+      document.getElementById("detail").disabled = false;
+      document.getElementById("detail").selectedIndex = 1;
+    }else {
+      document.getElementById("detail").disabled = true;
+      document.getElementById("detail").selectedIndex = 0;
+    }
+});
+
 function startRecording() {
+
+  //gestione delle restrizioni di tempo per le registrazioni
+
+  if(document.getElementById("purpose").value=="what"){
+    var recordingTime=15000;
+  }else{
+
+  if(document.getElementById("purpose").value=="why"){
+    switch (document.getElementById("detail").value) {
+      case "1":
+      var recordingTime=30000;
+        break;
+      case "2":
+      var recordingTime=40000;
+      break;
+      case "3":
+      var recordingTime=50000;
+      break;
+      case "4":
+      var recordingTime=60000;
+      break;
+    }
+
+  }else{
+      var recordingTime=30000;
+    }
+  }
+
   recordedBlobs = [];
   let options = {mimeType: 'video/webm;codecs=vp9'};
-  if(typeof MediaRecorder.isTypeSupported === "function"){
-
+  if(typeof MediaRecorder.isTypeSupported === "function") {
   if (!MediaRecorder.isTypeSupported(options.mimeType)) {
     console.error(`${options.mimeType} is not Supported`);
     errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
@@ -248,8 +226,8 @@ function startRecording() {
     }
   }
 } else {
-        document.getElementById("registraVideo").style.display="none";
-        alert("Il tuo browser non supporta il registratore. Carica il video");
+  document.getElementById("registraVideo").style.display="none";
+  alert("Il tuo browser non supporta il registratore. Carica il video");
 }
 
   try {
@@ -270,6 +248,9 @@ function startRecording() {
   mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.start(10); // collect 10ms of data
   console.log('MediaRecorder started', mediaRecorder);
+
+  //funzione che attiva il timer della registrazione quando scade il tempo
+  setTimeout(stopREcordTime, recordingTime);
 }
 
 function stopRecording() {
@@ -284,6 +265,7 @@ function handleSuccess(stream) {
 
   const gumVideo = document.querySelector('video#gum');
   gumVideo.srcObject = stream;
+  startRec.setAttribute('disabled', '');
 }
 
 async function init(constraints) {
@@ -296,90 +278,122 @@ async function init(constraints) {
   }
 }
 
-document.querySelector('button#start').addEventListener('click', async () => {
+/** Pulsante per avviare la registrazione */
+const startRec = document.querySelector('button#start')
+startRec.addEventListener('click', async () => {
   const constraints = {
     audio: true,
-    video: {
-      width: {
-        exact:225
-      },
-      height: {
-        exact:180
-    }
-  }
+    video: true
   };
-  console.log('Using media constraints:', constraints);
-  await init(constraints);
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    console.log('Using media constraints:', constraints);
+    await init(constraints);
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
 });
+
+/** Pulsante per caricamento locale del file */
+const localButton = document.querySelector('button#local');
+localButton.addEventListener('click', () => {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    $('#registra').hide();
+    $('#registraVideo').hide();
+    $('#locale').show();
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
+});
+
+/** Pulsante per avviare la fotocamera */
+const cameraButton = document.querySelector('button#camera');
+cameraButton.addEventListener('click', () => {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    $('#locale').hide();
+    $('#registra').show();
+    $('#registraVideo').show();
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
+});
+
+/** Funzione per aprire file picker */
+function scegliFile() {
+  var file = document.querySelector('input[type=file]').files[0];
+  var reader = new FileReader();
+  file instanceof Blob; // true
+  console.log(file);
+  uploadVideo(file);
+}
 
 // composizione descrizione video
 function creaMetadata(){
-   var purpose=document.getElementById("purpose").value;
-   var language=document.getElementById("language").value;
-   var content=document.getElementById("content").value;
-   var detail=document.getElementById("detail").value;
-   var audience=document.getElementById("audience").value;
-   var description = document.getElementById("description").value;
-   var metadata=currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+":"+description;
-   console.log(metadata);
-   return metadata;
+  var purpose = document.getElementById("purpose").value;
+  var language = document.getElementById("language").value;
+  var content = document.getElementById("content").value;
+  var detail = document.getElementById("detail").value;
+  var audience = document.getElementById("audience").value;
+  var description = document.getElementById("description").value;
+  var openingHour = document.getElementById("openingHour").value;
+  var closingHour = document.getElementById("closingHour").value;
+  var metadata = currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+"#"+description+"#"+openingHour+"#"+closingHour;
+  console.log(metadata);
+  return metadata;
 }
 
 //caricamento video
-  function uploadVideo(blob){
-    //passiamo il blob dallo sccript di crezione del video
-    //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
-    var descrizione = creaMetadata();
-    var titolo=document.getElementById("titolo").value;
-  //  console.log(descrizione);
-    console.log(titolo);
-    var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
-    console.log(token);
-    console.log(blob);
+function uploadVideo(blob){
+  //passiamo il blob dallo sccript di crezione del video
+  //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
+  var descrizione = creaMetadata();
+  var titolo = document.getElementById("titolo").value;
+//  console.log(descrizione);
+  console.log(titolo);
+  var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
+  console.log(token);
+  console.log(blob);
 
-    metadata = {
-      kind: 'youtube#video',
-      snippet: {
-        title: titolo,
-        description: descrizione,
-      },
-      status: {
-        privacyStatus: 'public',
-        embeddable: true
-      }
-    };
-
-    var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-    var form = new FormData();
-    //Blob per il metadata
-    form.append('video', meta);
-    //Blob del video
-    form.append('mediaBody', blob);
-
-    //chiamata ajax
-    $.ajax({
-      url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
-        + encodeURIComponent(token) + '&part=snippet,status',
-      data: form,
-      cache: false,
-      contentType: false,
-      processData: false,
-      method: 'POST',
-      success:function(data) {
-        alert("Video caricato");
-        window.location.href='editor.html';
-      //  document.getElementById("registraVideo").style.display="block";
-    	  //document.getElementById("scegliVideo").style.display="block";
-        //document.getElementById("loading").style.display="none";
-      if (mediaRecorder.state != 'inactive') {
-        mediaRecorder.stop();
-      }
+  metadata = {
+    kind: 'youtube#video',
+    snippet: {
+      title: titolo,
+      description: descrizione,
     },
-    // ed una per il caso di fallimento
-    error: function(request, status, error) {
-            alert(request.responseText);
+    status: {
+      privacyStatus: 'public',
+      embeddable: true
     }
+  };
 
-    });
+  var meta = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+  var form = new FormData();
+  //Blob per il metadata
+  form.append('video', meta);
+  //Blob del video
+  form.append('mediaBody', blob);
 
+  //chiamata ajax
+  $.ajax({
+    url: 'https://www.googleapis.com/upload/youtube/v3/videos?access_token='
+      + encodeURIComponent(token) + '&part=snippet,status',
+    data: form,
+    cache: false,
+    contentType: false,
+    processData: false,
+    method: 'POST',
+    success:function(data) {
+      alert("Video caricato");
+      window.location.href='editor.html';
+    //  document.getElementById("registraVideo").style.display="block";
+      //document.getElementById("scegliVideo").style.display="block";
+      //document.getElementById("loading").style.display="none";
+    if (mediaRecorder.state != 'inactive') {
+      mediaRecorder.stop();
+    }
+  },
+  // ed una per il caso di fallimento
+  error: function(request, status, error) {
+    alert(request.responseText);
   }
+  });
+}
