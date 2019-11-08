@@ -1,5 +1,5 @@
 /** Token per l'accesso alle API di Mapbox (indicazioni) */
-const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
+const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
 /** Coordinate di Default per la mappa */
 const DEFAULT_COORDS = [44.493671, 11.343035];
 

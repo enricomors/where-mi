@@ -1,5 +1,5 @@
 /** La costante port indica la porta su cui il server deve restare in ascolto (8000 perché richiesta da Gocker) */
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 /** Modulo express */
 const express = require('express');
@@ -10,7 +10,10 @@ const bodyParser = require('body-parser');
 /** Modulo path, fornisce utilities per lavorare con percorsi di file e cartelle */
 const path = require('path');
 
-/** Carica contenuto del file .env nelle variabili d'ambiente */
+/** Dotenv is a zero-dependency module that loads environment variables from a .env file 
+ * into process.env. Storing configuration in the environment separate from code is based 
+ * on The Twelve-Factor App methodology.
+ */
 require('dotenv').config();
 console.log(process.env);
 
