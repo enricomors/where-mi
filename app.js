@@ -10,12 +10,6 @@ const bodyParser = require('body-parser');
 /** Modulo path, fornisce utilities per lavorare con percorsi di file e cartelle */
 const path = require('path');
 
-/** Dotenv is a zero-dependency module that loads environment variables from a .env file 
- * into process.env. Storing configuration in the environment separate from code is based 
- * on The Twelve-Factor App methodology.
- */
-// require('dotenv').config();
-
 /** Chiama la funzione "express()" per creare una nuova applicazione Express, assegnata alla variabile "app" */
 const app = express();
 
