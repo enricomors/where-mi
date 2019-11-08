@@ -15,7 +15,6 @@ const path = require('path');
  * on The Twelve-Factor App methodology.
  */
 require('dotenv').config();
-console.log(process.env);
 
 /** Chiama la funzione "express()" per creare una nuova applicazione Express, assegnata alla variabile "app" */
 const app = express();
