@@ -39,7 +39,7 @@ var searchControl = L.esri.Geocoding.geosearch({
 var legend = L.control({position: 'topright'});
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel" ><option value="6">MIN</option><option value="7">MEDIUM</option><option value="8">MAX</option></select>';
+    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel" ><option value="sm">Small</option><option value="wd">Wide</option></select>';
     div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
     return div;
 };
