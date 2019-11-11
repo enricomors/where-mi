@@ -105,10 +105,10 @@ function loadYTVideos() {
 
                     <!-- CARD HEADER-->
                     <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
-                    <span class="space"><a id="${idVideo}map" class="btn" href="#map" style="color: white;">Vedi sulla mappa</i></a></span>
+                    <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">Find on the map</i></a></span>
                     <div class="cardheader-text" style="color: white;">
-                    <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
-                    <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
+                    <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
+                    <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
                     </div>
                     </div>
 
@@ -118,9 +118,9 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
                     <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i>${openingHour}</span></li>
                     <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i>${closingHour}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
                     </ul>
                     </div>
 
