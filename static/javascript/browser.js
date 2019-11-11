@@ -118,11 +118,8 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i>${openingHour}</span></li>
-                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i>${closingHour}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}<p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
                     </ul>
-                    </div>
 
                     <!-- CARD FOOTER-->
                     <div class="card-footer text-center">
