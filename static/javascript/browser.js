@@ -120,11 +120,8 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i>${openingHour}</span></li>
-                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i>${closingHour}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}<p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
                     </ul>
-                    </div>
 
                     <!-- CARD FOOTER-->
                     <div class="card-footer text-center">
@@ -209,14 +206,25 @@ function filter() {
     });
 };
 
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="Why"){
+      document.getElementById("detailLevel").disabled = false;
+
+    }else {
+      document.getElementById("detailLevel").disabled = true;
+    }
+});
+
 /** Abilita/Disabilita i filtri delle clip */
 function filterClips() {
     if ($('#filterTrigger').is(':checked')) {
         // disabilita gli elementi select
-        $('.custom-select').prop('disabled', true);
+        $('.disabled').prop('disabled', true);
         $('.custom-control-label').text('Enable filters');
     } else {
-        $('.custom-select').prop('disabled', false);
+        $('.disabled').prop('disabled', false);
         $('.custom-control-label').text('Disable filters');
     }
     filter();
