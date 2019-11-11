@@ -4,6 +4,7 @@ var datiVideo = {};
 
 function loadYTVideos() {
   $("#clips").empty();
+    var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
     console.log("this is the zoom value" + " " + zoom);
