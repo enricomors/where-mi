@@ -189,21 +189,21 @@ function startRecording() {
   if(document.getElementById("purpose").value=="why"){
     switch (document.getElementById("detail").value) {
       case "1":
-      var recordingTime=30000;
+      var recordingTime=31000;
         break;
       case "2":
-      var recordingTime=40000;
+      var recordingTime=41000;
       break;
       case "3":
-      var recordingTime=50000;
+      var recordingTime=51000;
       break;
       case "4":
-      var recordingTime=60000;
+      var recordingTime=61000;
       break;
     }
 
   }else{
-      var recordingTime=30000;
+      var recordingTime=31000;
     }
   }
 

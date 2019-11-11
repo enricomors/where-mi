@@ -204,14 +204,25 @@ function filter() {
     });
 };
 
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="Why"){
+      document.getElementById("detailLevel").disabled = false;
+
+    }else {
+      document.getElementById("detailLevel").disabled = true;
+    }
+});
+
 /** Abilita/Disabilita i filtri delle clip */
 function filterClips() {
     if ($('#filterTrigger').is(':checked')) {
         // disabilita gli elementi select
-        $('.custom-select').prop('disabled', true);
+        $('.disabled').prop('disabled', true);
         $('.custom-control-label').text('Enable filters');
     } else {
-        $('.custom-select').prop('disabled', false);
+        $('.disabled').prop('disabled', false);
         $('.custom-control-label').text('Disable filters');
     }
     filter();
