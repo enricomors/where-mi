@@ -4,9 +4,11 @@ var datiVideo = {};
 
 function loadYTVideos() {
   $("#clips").empty();
+    var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
     console.log("this is the zoom value" + " " + zoom);
+    
     // Crea query string x YouTube
     var queryString = currentOlc.substring(0, zoom);
     console.log(queryString);
@@ -105,10 +107,10 @@ function loadYTVideos() {
 
                     <!-- CARD HEADER-->
                     <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
-                    <span class="space"><a id="${idVideo}map" class="btn" href="#map" style="color: white;">Vedi sulla mappa</i></a></span>
+                    <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">Find on the map</i></a></span>
                     <div class="cardheader-text" style="color: white;">
-                    <h4 id="heading-card" style="font-size: 26px;margin-top: 7%;">${name}</h4>
-                    <p id="cardheader-subtext"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
+                    <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
+                    <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
                     </div>
                     </div>
 
@@ -118,9 +120,8 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}<p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
                     </ul>
-                    </div>
 
                     <!-- CARD FOOTER-->
                     <div class="card-footer text-center">
@@ -205,14 +206,25 @@ function filter() {
     });
 };
 
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="Why"){
+      document.getElementById("detailLevel").disabled = false;
+
+    }else {
+      document.getElementById("detailLevel").disabled = true;
+    }
+});
+
 /** Abilita/Disabilita i filtri delle clip */
 function filterClips() {
     if ($('#filterTrigger').is(':checked')) {
         // disabilita gli elementi select
-        $('.custom-select').prop('disabled', true);
+        $('.disabled').prop('disabled', true);
         $('.custom-control-label').text('Enable filters');
     } else {
-        $('.custom-select').prop('disabled', false);
+        $('.disabled').prop('disabled', false);
         $('.custom-control-label').text('Disable filters');
     }
     filter();
