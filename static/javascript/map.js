@@ -36,10 +36,10 @@ var searchControl = L.esri.Geocoding.geosearch({
 }).addTo(map);
 
 // aggiunge alla mappa la selezione del livello di distanza
-var legend = L.control({position: 'topright'});
+var legend = L.control({ position: 'topright' });
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel" ><option value="sm">Small</option><option value="wd">Wide</option></select>';
+    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel"><option value="sm">Small</option><option value="wd">Wide</option></select>';
     div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
     return div;
 };

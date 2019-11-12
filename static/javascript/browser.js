@@ -8,9 +8,12 @@ function loadYTVideos() {
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
     console.log("this is the zoom value" + " " + zoom);
-    
     // Crea query string x YouTube
-    var queryString = currentOlc.substring(0, zoom);
+    if (zoom == 'sm') {
+        queryString = currentOlc.substring(0, 8);
+    } else if (zoom == 'wd') {
+        queryString = currentOlc.substring(0, 6) + '00';
+    }
     console.log(queryString);
     /** Ricerca i video di YouTube in base all'API key */
     var req = gapi.client.youtube.search.list({
@@ -39,7 +42,6 @@ function loadYTVideos() {
                 // estrae i dati dell'i-esimo video
                 let metaDati = results[i].snippet.description;
                 let idVideo = results[i].id.videoId;
-                console.log(idVideo);
                 let idPrev;
                 let idNext;
                 // ricava id del video precedente
@@ -58,9 +60,10 @@ function loadYTVideos() {
                 }
                 // inserisce id del video in idYT
                 idYT.push(idVideo);
-                // estrare i uno per uno i metadati dalla stringa
-                let olc = metaDati.split(":")[0];
-                // variabile per le coordinate della clip
+                // estrae gli OLC nei metadati del video
+                let olcString = metaDati.split(":")[0];
+                // estrae l'OLC esatto per posizionare il marker
+                let olc = olcString.split('-')[2];                
                 let coords;
                 try {
                     // ricava le coordinate della clip dall'olc
