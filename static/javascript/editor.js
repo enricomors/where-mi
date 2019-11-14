@@ -189,21 +189,21 @@ function startRecording() {
   if(document.getElementById("purpose").value=="why"){
     switch (document.getElementById("detail").value) {
       case "1":
-      var recordingTime=30000;
+      var recordingTime=31000;
         break;
       case "2":
-      var recordingTime=40000;
+      var recordingTime=41000;
       break;
       case "3":
-      var recordingTime=50000;
+      var recordingTime=51000;
       break;
       case "4":
-      var recordingTime=60000;
+      var recordingTime=61000;
       break;
     }
 
   }else{
-      var recordingTime=30000;
+      var recordingTime=31000;
     }
   }
 
@@ -336,7 +336,10 @@ function creaMetadata(){
   var description = document.getElementById("description").value;
   var openingHour = document.getElementById("openingHour").value;
   var closingHour = document.getElementById("closingHour").value;
-  var metadata = currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+"#"+description+"#"+openingHour+"#"+closingHour;
+  var mediumOlc = currentOlc.substring(0, 9);
+  var wideOlc = currentOlc.substring(0, 6) + '00+';
+  // 8FPHF800+-8FPHF8VV+-8FPHF8VV+57:
+  var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+"#"+description+"#"+openingHour+"#"+closingHour;
   console.log(metadata);
   return metadata;
 }
@@ -347,7 +350,6 @@ function uploadVideo(blob){
   //attraverso funzione ajax (grazie a access token "auth" richiediamo upload su youtube)
   var descrizione = creaMetadata();
   var titolo = document.getElementById("titolo").value;
-//  console.log(descrizione);
   console.log(titolo);
   var token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
   console.log(token);

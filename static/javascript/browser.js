@@ -4,11 +4,16 @@ var datiVideo = {};
 
 function loadYTVideos() {
   $("#clips").empty();
+    var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
     console.log("this is the zoom value" + " " + zoom);
     // Crea query string x YouTube
-    var queryString = currentOlc.substring(0, zoom);
+    if (zoom == 'sm') {
+        queryString = currentOlc.substring(0, 8);
+    } else if (zoom == 'wd') {
+        queryString = currentOlc.substring(0, 6) + '00';
+    }
     console.log(queryString);
     /** Ricerca i video di YouTube in base all'API key */
     var req = gapi.client.youtube.search.list({
@@ -37,7 +42,6 @@ function loadYTVideos() {
                 // estrae i dati dell'i-esimo video
                 let metaDati = results[i].snippet.description;
                 let idVideo = results[i].id.videoId;
-                console.log(idVideo);
                 let idPrev;
                 let idNext;
                 // ricava id del video precedente
@@ -56,9 +60,10 @@ function loadYTVideos() {
                 }
                 // inserisce id del video in idYT
                 idYT.push(idVideo);
-                // estrare i uno per uno i metadati dalla stringa
-                let olc = metaDati.split(":")[0];
-                // variabile per le coordinate della clip
+                // estrae gli OLC nei metadati del video
+                let olcString = metaDati.split(":")[0];
+                // estrae l'OLC esatto per posizionare il marker
+                let olc = olcString.split('-')[2];                
                 let coords;
                 try {
                     // ricava le coordinate della clip dall'olc
@@ -118,11 +123,8 @@ function loadYTVideos() {
                     <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                     <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                     <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                    <li class="list-group-item"><span><i><b>OpeningHour:&nbsp</b></i>${openingHour}</span></li>
-                    <li class="list-group-item"><span><i><b>ClosingHour:&nbsp</b></i>${closingHour}</span></li>
-                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+                    <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}<p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
                     </ul>
-                    </div>
 
                     <!-- CARD FOOTER-->
                     <div class="card-footer text-center">
@@ -207,14 +209,25 @@ function filter() {
     });
 };
 
+//utile solo per l'opzione why
+purpose.addEventListener('click',() => {
+
+  if(document.getElementById('purpose').value=="Why"){
+      document.getElementById("detailLevel").disabled = false;
+
+    }else {
+      document.getElementById("detailLevel").disabled = true;
+    }
+});
+
 /** Abilita/Disabilita i filtri delle clip */
 function filterClips() {
     if ($('#filterTrigger').is(':checked')) {
         // disabilita gli elementi select
-        $('.custom-select').prop('disabled', true);
+        $('.disabled').prop('disabled', true);
         $('.custom-control-label').text('Enable filters');
     } else {
-        $('.custom-select').prop('disabled', false);
+        $('.disabled').prop('disabled', false);
         $('.custom-control-label').text('Disable filters');
     }
     filter();
