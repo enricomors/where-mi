@@ -114,8 +114,8 @@
     <!-- Inizio Intestazione -->
       <div class="intro">
 
-        <h2 class="text-center">Crea una nuova clip<br></h2>
-        <p class="text-center">Seleziona un marker e completa i seguenti campi per creare una nuova clip<br></p>
+        <h2 class="text-center">Let's create a new clip<br></h2>
+        <p class="text-center">Select a marker and complete the form below<br></p>
       </div>
     <!-- Fine Intestazione -->
 
@@ -124,7 +124,7 @@
     <div style="margin-right: 5%; margin-left: 5%;">
       <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
       <div class="form-group col-md-6">
-        <label for="titolo">Nome</label>
+        <label for="titolo">Name</label>
         <input type="text" class="form-control border-white shadow" id="titolo" placeholder="inserisci nome attrazione">
       </div>
       <!--Content Section-->
@@ -132,23 +132,23 @@
         <label for="content">Content</label>
         <select class="form-control border-white" id="content">
           <optgroup label="Select Content">
-            <option value="none" selected>Nessuna</option>
-            <option value="nat">Natura</option>
-            <option value="art">Arte</option>
-            <option value="his">Storia</option>
+            <option value="none" selected>Nothing</option>
+            <option value="nat">Nature</option>
+            <option value="art">Art</option>
+            <option value="his">History</option>
             <option value="flk">Folklore</option>
-            <option value="mod">Cultura Moderna</option>
-            <option value="rel">Religione</option>
-            <option value="cui">Cucina e drink</option>
+            <option value="mod">Modern culture</option>
+            <option value="rel">Religion</option>
+            <option value="cui">Cook and drink</option>
             <option value="spo">Sport</option>
-            <option value="mus">Musica</option>
+            <option value="mus">Music</option>
             <option value="mov">Film</option>
-            <option value="fas">Moda</option>
+            <option value="fas">Fashion</option>
             <option value="shp">Shopping</option>
-            <option value="tec">Tecnologia</option>
-            <option value="pop">Cultura pop e gossip</option>
-            <option value="prs">Esperienze personali</option>
-            <option value="oth">Altro</option>
+            <option value="tec">Tecnology</option>
+            <option value="pop">Pop culture and gossip</option>
+            <option value="prs">Personal experience</option>
+            <option value="oth">Other</option>
         </select>
       </div>
       <!--Audience type section-->
@@ -156,11 +156,11 @@
         <label for="audience">Audience</label>
         <select class="form-control border-white" id="audience">
           <optgroup label="Select Audience">
-            <option value="gen" selected>Generico</option>
-            <option value="pre">Pre-scolare</option>
-            <option value="elm">Elementari</option>
-            <option value="mid">Scuola media</option>
-            <option value="scl">Specializzato</option>
+            <option value="gen" selected>Generical</option>
+            <option value="pre">Pre-school</option>
+            <option value="elm">Elementary school</option>
+            <option value="mid">Middle school</option>
+            <option value="scl">Expert</option>
         </select>
       </div>
       <!-- Detail level section -->
@@ -169,10 +169,10 @@
         <select class="form-control border-white" id="detail" disabled>
           <optgroup label="Select Detail level">
             <option value="default"> none(default)</option>
-            <option value="1" >Essenziale(1)</option>
-            <option value="2">Breve(2)</option>
-            <option value="3">Approfondito(3)</option>
-            <option value="4">Mettiti Comodo(4)</option>
+            <option value="1" >Basic(1)</option>
+            <option value="2">Brief(2)</option>
+            <option value="3">Deepened(3)</option>
+            <option value="4">Extendend(4)</option>
         </select>
       </div>
       <!-- Language section -->
@@ -180,8 +180,10 @@
         <label for="language">Language</label>
         <select class="form-control border-white" id="language">
           <optgroup label="Select Language">
-            <option value="ita" selected>Italiano</option>
-            <option value="eng">Inglese</option>
+            <option value="ita" selected>Italian</option>
+            <option value="eng">English</option>
+            <option value="deu">German</option>
+
         </select>
       </div>
       <!-- Purpose section -->
@@ -197,17 +199,17 @@
       </div>
       <!-- opening hour section -->
       <div class="form-group col-md-6">
-        <label for="schedule">Orario di apertura</label>
+        <label for="schedule">Opening Hour</label>
         <input type="time" class="form-control border-white" id="openingHour" rows="1" max="15:00" ></input>
         </div>
         <!-- closing hour section -->
         <div class="form-group col-md-6">
-          <label for="schedule">Orario di chiusura</label>
+          <label for="schedule">Closing hour</label>
           <input type="time" class="form-control border-white" id="closingHour" rows="1" min="15:00"></input>
         </div>
         <!-- description section -->
         <div class="form-group col-md-6">
-            <label for="descrizione">Descrizione</label>
+            <label for="descrizione">Description</label>
             <textarea class="form-control border-white" id="description" placeholder="aggiungi una descrizione" rows="5"></textarea>
         </div>
       </div>
@@ -215,17 +217,17 @@
       <!-- Start: Sezione registrazione-->
       <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px">
         <div class="form-group col-lg-12">
-          <label>Fonte della clip</label>
+          <label>Clip source</label>
           <div>
-            <button type="button" class="btn btn-success" id="local">Caricamento da locale</button>
-            <button type="button" class="btn btn-success" id="camera">Registra la clip</button>
+            <button type="button" class="btn btn-success" id="local">Local upload</button>
+            <button type="button" class="btn btn-success" id="camera">Record the clip</button>
           </div>
         </div>
       </div>
       <!-- Controlli per la registrazione -->
       <div id="registra" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
         <div class="form-group col-lg-12">
-          <label style="display: block;">Registra clip</label>
+          <label style="display: block;">Record the clip</label>
           <button id="start" class="btn btn-success">Start camera</button>
           <button id="record" class="btn btn-success" disabled>Start Recording</button>
           <button id="play" class="btn btn-success" disabled>Play</button>
@@ -247,7 +249,7 @@
       </div>
       <div id="locale" class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:10px; display: none;">
         <div class="form-group col-lg-12">
-          <label style="display: block;">Carica la clip</label>
+          <label style="display: block;">Upload the clip</label>
           <div class="custom-file col-md-6">
             <input type="file" class="custom-file-input" accept="video/*" id="customFile">
             <label class="custom-file-label" for="customFile">Choose file</label>
