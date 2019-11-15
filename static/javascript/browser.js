@@ -36,8 +36,8 @@ function loadYTVideos() {
                 // titolo del video
                 if (results[i].snippet.title.indexOf(':') != -1) {
                     name = results[i].snippet.title.split(':')[0];
-                } else {
-                    name = results[i].snippet.title;
+                } else if (results[i].snippet.title.indexOf('#') != -1) {
+                    name = results[i].snippet.title.split('#')[0];
                 }
                 // estrae i dati dell'i-esimo video
                 let metaDati = results[i].snippet.description;

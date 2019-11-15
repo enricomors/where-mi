@@ -358,7 +358,7 @@ function uploadVideo(blob){
   metadata = {
     kind: 'youtube#video',
     snippet: {
-      title: titolo,
+      title: titolo + '#wheremi-guide',
       description: descrizione,
     },
     status: {
