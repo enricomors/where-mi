@@ -19,7 +19,7 @@ function loadYTVideos() {
     var req = gapi.client.youtube.search.list({
         part: 'snippet',
         type: 'video',
-        q: queryString,
+        q: queryString +"#wheremi-guide",
         maxResults: 50
     });
     // esegue la richiesta
@@ -60,7 +60,7 @@ function loadYTVideos() {
                     // estrae gli OLC nei metadati del video
                     let olcString = metaDati.split(":")[0];
                     // estrae l'OLC esatto per posizionare il marker
-                    let olc = olcString.split('-')[2];                
+                    let olc = olcString.split('-')[2];
                     let coords;
                     try {
                         // ricava le coordinate della clip dall'olc
