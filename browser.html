@@ -121,19 +121,16 @@
                         <div style="margin-right: 5%; margin-left: 5%;">
                             <div class="row text-center" style="margin-bottom: 2%">
                                 <div class="col-xl-4 offset-xl-0 m-auto" style="margin-top: 0%">
-                                    <div
-                                        class="custom-control custom-control-inline text-break text-center custom-switch d-xl-flex justify-content-xl-center align-items-xl-center">
-                                        <input type="checkbox" class="custom-control-input" id="filterTrigger" 
-                                            checked="true" class="custom-comtrol-input">
-                                        <label class="custom-control-label" for="filterTrigger" onclick="filterClips()">Enable filter</label>
-                                    </div>
+                                    <div class="wrapper" id="filterButton">
+                                        <button class="btn btn-primary" onclick="filter()">Filtra</button>
+                                </div>
                                 </div>
                             </div>
                             <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
                 <!-- Lingua -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Language</label>
-                    <select name="languageList" id="language" disabled="true" 
+                    <select name="languageList" id="language"  
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Language">
                             <option value="ita" selected>Italiano</option>
@@ -143,7 +140,7 @@
                 <!-- Pubblico -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Audience</label>
-                    <select name="audienceList" id="audience" disabled="true"
+                    <select name="audienceList" id="audience" 
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Audience">
                             <option value="gen" selected>Generico</option>
@@ -157,7 +154,7 @@
                 <!-- Scopo -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Purpose</label>
-                    <select name="purposeList" id="purpose" disabled="true" 
+                    <select name="purposeList" id="purpose"  
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Purpose">
                             <option value="what">What</option>
@@ -183,7 +180,7 @@
                 <!-- Contenuto -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Content</label>
-                    <select name="contentist" id="content" disabled="true" 
+                    <select name="contentist" id="content"  
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Content">
                             <option value="none">Nessuna</option>
@@ -209,9 +206,7 @@
             
         </div>
 
-        <div class="wrapper" id="filterButton">
-                <button class="btn btn-primary" onclick="filter()">Filtra</button>
-        </div>
+       
         <!-- Elenco delle clip-->
         <div style="margin-top: 10%; margin-bottom: 5%;">
             <h2 id="clipList" class="text-center" style="margin-top: 2%; margin-bottom: 2%; color: #495057" ></h2>
