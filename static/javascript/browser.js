@@ -100,6 +100,7 @@ function loadYTVideos() {
                     var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                         .bindPopup(popup).addTo(map).on('click', routing);
                     // aggiunge le card delle clip nella sezione #clips
+                    document.getElementById("clipList").innerHTML = "Clip List";
                     $('#clips').append(
                         `<!-- Start: Clip Cards -->
                         <article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
@@ -120,7 +121,8 @@ function loadYTVideos() {
                                 <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                                 <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                                 <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}<p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
+                                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}
+                                <p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
                             </ul>
                             <!-- CARD FOOTER-->
                             <div class="card-footer text-center">

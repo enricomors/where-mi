@@ -165,18 +165,6 @@
             <option value="scl">Specializzato</option>
         </select>
       </div>
-      <!-- Detail level section -->
-      <div class="form-group col-md-6">
-        <label for="detail">Detail</label>
-        <select class="form-control border-white" id="detail" disabled>
-          <optgroup label="Select Detail level">
-            <option value="default"> none(default)</option>
-            <option value="1" >Essenziale(1)</option>
-            <option value="2">Breve(2)</option>
-            <option value="3">Approfondito(3)</option>
-            <option value="4">Mettiti Comodo(4)</option>
-        </select>
-      </div>
       <!-- Language section -->
       <div class="form-group col-md-6">
         <label for="language">Language</label>
@@ -184,20 +172,32 @@
           <optgroup label="Select Language">
             <option value="ita" selected>Italiano</option>
             <option value="eng">Inglese</option>
-        </select>
-      </div>
-      <!-- Purpose section -->
-      <div class="form-group col-md-6">
-        <label for="purpose">Purpose</label>
-        <select class="form-control border-white" id="purpose">
-          <optgroup label="Select Purpose">
-          <option>none(default)</option>
-          <option>why</option>
-          <option>how</option>
-          <option>what</option>
-        </select>
-      </div>
-      <!-- opening hour section -->
+          </select>
+        </div>
+        <!-- Purpose section -->
+        <div class="form-group col-md-6">
+          <label for="purpose">Purpose</label>
+          <select class="form-control border-white" id="purpose">
+            <optgroup label="Select Purpose">
+              <option>none(default)</option>
+              <option>why</option>
+              <option>how</option>
+              <option>what</option>
+            </select>
+          </div>
+          <!-- Detail level section -->
+          <div class="form-group col-md-6">
+            <label for="detail">Detail</label>
+            <select class="form-control border-white" id="detail" disabled>
+              <optgroup label="Select Detail level">
+                <option value="default"> none(default)</option>
+                <option value="1" >Essenziale(1)</option>
+                <option value="2">Breve(2)</option>
+                <option value="3">Approfondito(3)</option>
+                <option value="4">Mettiti Comodo(4)</option>
+            </select>
+          </div>
+          <!-- opening hour section -->
       <div class="form-group col-md-6">
         <label for="schedule">Orario di apertura</label>
         <input type="time" class="form-control border-white" id="openingHour" rows="1" max="15:00" ></input>
