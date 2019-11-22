@@ -45,4 +45,7 @@ footer.page-footer {
   overflow-y: scroll;
 }
 
+#filterButton {
+  text-align: center;
+}
 

@@ -123,9 +123,9 @@
                                 <div class="col-xl-4 offset-xl-0 m-auto" style="margin-top: 0%">
                                     <div
                                         class="custom-control custom-control-inline text-break text-center custom-switch d-xl-flex justify-content-xl-center align-items-xl-center">
-                                        <input type="checkbox" class="custom-control-input" id="filterTrigger" onchange="filterClips()"
+                                        <input type="checkbox" class="custom-control-input" id="filterTrigger" 
                                             checked="true" class="custom-comtrol-input">
-                                        <label class="custom-control-label" for="filterTrigger">Enable filter</label>
+                                        <label class="custom-control-label" for="filterTrigger" onclick="filterClips()">Enable filter</label>
                                     </div>
                                 </div>
                             </div>
@@ -133,20 +133,17 @@
                 <!-- Lingua -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Language</label>
-                    <select name="languageList" id="language" disabled="true" onchange="filter()"
+                    <select name="languageList" id="language" disabled="true" 
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Language">
                             <option value="ita" selected>Italiano</option>
                             <option value="eng">Inglese</option>
-                            <option value="deu">Tedesco</option>
-                            <option value="fra">Francese</option>
-                            <option value="esp">Spagnolo</option>
                     </select>
                 </div>
                 <!-- Pubblico -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Audience</label>
-                    <select name="audienceList" id="audience" disabled="true" onchange="filter()"
+                    <select name="audienceList" id="audience" disabled="true"
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Audience">
                             <option value="gen" selected>Generico</option>
@@ -160,7 +157,7 @@
                 <!-- Scopo -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Purpose</label>
-                    <select name="purposeList" id="purpose" disabled="true" onchange="filter()"
+                    <select name="purposeList" id="purpose" disabled="true" 
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Purpose">
                             <option value="what">What</option>
@@ -173,7 +170,7 @@
                 <div class="form-group col-md-6">
                     <div class="form-group">
                         <label style="color: #495057;">Detail level</label>
-                        <select name="detailList" id="detailLevel" disabled="true" onchange="filter()"
+                        <select name="detailList" id="detailLevel" disabled="true"
                             class="border-white shadow custom-select custom-select-lg ">
                             <optgroup label="Select Detail level">
                                 <option value="1">Essenziale(1)</option>
@@ -186,7 +183,7 @@
                 <!-- Contenuto -->
                 <div class="form-group col-md-6">
                     <label style="color: #495057;">Content</label>
-                    <select name="contentist" id="content" disabled="true" onchange="filter()"
+                    <select name="contentist" id="content" disabled="true" 
                         class="border-white shadow custom-select custom-select-lg disabled">
                         <optgroup label="Select Content">
                             <option value="none">Nessuna</option>
@@ -209,6 +206,11 @@
                     </select>
                 </div>
             </div>
+            
+        </div>
+
+        <div class="wrapper" id="filterButton">
+                <button class="btn btn-primary" onclick="filter()">Filtra</button>
         </div>
         <!-- Elenco delle clip-->
         <div style="margin-top: 10%; margin-bottom: 5%;">

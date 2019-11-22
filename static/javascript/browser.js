@@ -197,13 +197,15 @@ function loadYTVideos() {
 /** Filtra le clip di YouTube da visualizzare */
 function filter() {
     idYT.forEach((item) => {
-        if (!$('#filterTrigger').is(':checked') && (datiVideo[item].purpose != $('#purpose').val()
-            || datiVideo[item].language != $('#language').val()
-            || datiVideo[item].audience != $('#audience').val()
-            || datiVideo[item].category != $('#category').val()
-            || datiVideo[item].detail != $('#detailLevel').val()
+        if (//!$('#filterTrigger').is(':checked') && 
+            (datiVideo[item].purpose != $('#purpose').val()
+           || datiVideo[item].language != $('#language').val()
+           || datiVideo[item].audience != $('#audience').val()
+          // || datiVideo[item].detail != $('#detailLevel').val()
         )) {
             $('#'+item+'card').hide();
+            console.log("eliminato");
+
         } else {
             $('#'+item+'card').show();
         }
@@ -231,5 +233,4 @@ function filterClips() {
         $('.disabled').prop('disabled', false);
         $('.custom-control-label').text('Disable filters');
     }
-    filter();
 };
