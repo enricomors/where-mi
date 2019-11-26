@@ -4,7 +4,9 @@ var datiVideo = {};
 var markerClip = {};
 
 function loadYTVideos() {
+    // Remove all the clip elements
   $("#clips").empty();
+    // Inizializzo tale variabile per creare le sottostringhe di olc per le distanze
     var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
@@ -25,15 +27,16 @@ function loadYTVideos() {
     });
     // esegue la richiesta
     req.execute((resp) => {
-        console.log(resp);
         // salva la risposta nell'array results
         var results = resp.result.items;
+        console.log("This is the resp " + results);
         console.log(results.length);
         // se la ricerca produce risultati
         if (results.length > 0) {
             // scorre le risorse contenute nella risposta
             for (var i = 0; i < results.length; i++) {
                 let name;
+                // Controllo che lo snippet (ovvero la descrizione del video)
                 if (results[i].snippet.title.indexOf('#') != -1) {
                     // titolo del video
                     name = results[i].snippet.title.split('#')[0];
@@ -70,6 +73,7 @@ function loadYTVideos() {
                         coords = OpenLocationCode.decode(currentOlc);
                     }
                     let purpose = metaDati.split(":")[1];
+                    console.log(purpose);
                     let language = metaDati.split(":")[2];
                     let category = metaDati.split(":")[3];
                     let audience = metaDati.split(":")[4];
@@ -89,13 +93,14 @@ function loadYTVideos() {
                         "openingHour": openingHour,
                         "closingHour": closingHour
                     };
+                    
                     datiVideo[idVideo] = dati;
                     // crea popup per il marker della clip
                     let popup =
                     `<div id="${idVideo}popup" style="text-align: center;">
                     <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
                     <hr align="center">
-                    <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Vai alla clip!</a>
+                    <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Listen to audio clip!</a>
                     </div>`;
                     // crea marker nelle posizioni delle clips
                     var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
@@ -111,7 +116,7 @@ function loadYTVideos() {
 
                         <!-- CARD HEADER-->
                         <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
-                            <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">Find on the map</i></a></span>
+                            <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
                             <div class="cardheader-text" style="color: white;">
                                 <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
                                 <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
