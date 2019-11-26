@@ -1,7 +1,13 @@
 /** Token per l'accesso alle API di Mapbox (indicazioni) */
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ0bG4ifQ.ijWf_bZClD4nTcL91sBueg';
+
 /** Coordinate di Default per la mappa */
-const DEFAULT_COORDS = [44.493671, 11.343035];
+const DEFAULT_COORDS = {
+  coords: {
+    latitude: 44.493671, 
+    longitude: 11.343035
+  }
+};
 
 /** variabile per la posiziona attuale ricevuta dal browser */
 var currentPosition;
@@ -45,7 +51,7 @@ var legend = L.control({ position: 'topright' });
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
     div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel"><option value="sm">Small</option><option value="wd">Wide</option></select>';
-    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+    div.onmousedown = div.ondblclick = L.DomEvent.stopPropagation;
     return div;
 };
 legend.addTo(map);
@@ -64,8 +70,9 @@ searchControl.on('results', function (data) {
   }
 });
 
-/** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
-navigator.geolocation.getCurrentPosition(displayLocation);
+/** Richiede al browser la posizione attuale e chiama displayLocation 
+ * in caso di successo o locationError in caso di errore */
+navigator.geolocation.getCurrentPosition(displayLocation, locationError);
 
 /** Mostra sulla mappa la posizione ricevuta dal browser */
 function displayLocation(position) {
@@ -75,6 +82,11 @@ function displayLocation(position) {
   updateMarker(position.coords.latitude, position.coords.longitude);
   //aggiorna posizione
   updatePosition(position.coords.latitude, position.coords.longitude);
+}
+
+function locationError(err) {
+  console.error('ERROR('+err.code+'): '+err.message);
+  alert('Sorry, no position available');
 }
 
 /** Aggiorna la posizione del marker sulla mappa in base alle coordinate */
