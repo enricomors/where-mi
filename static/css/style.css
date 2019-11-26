@@ -5,6 +5,15 @@ ul.nav a.nav-link:hover {
 ul.nav a.nav-link.active {
     color: #04af73 !important;
 }
+
 #mainNav .navbar-toggler{
     background-color:#28a745 !important;
+}
+
+/* controllo leaflet per area di ricerca */
+.info.legend.leaflet-control {
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 5px;
+    border: 2px solid rgba(0,0,0,0.3);
 }

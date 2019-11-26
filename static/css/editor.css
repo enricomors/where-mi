@@ -35,6 +35,14 @@ footer.page-footer {
   margin-right: 5px;
 }
 
+input#titolo {
+  background: #fff !important;
+}
+
+.form-control {
+  font-size: 125%;
+}
+
 @media only screen and (max-width: 768px) {
   .navbar a{
       text-align: left;

@@ -1,6 +1,7 @@
 /** Clip di youtube */
 var idYT = [];
 var datiVideo = {};
+var markerClip = {};
 
 function loadYTVideos() {
     // Remove all the clip elements
@@ -99,11 +100,13 @@ function loadYTVideos() {
                     `<div id="${idVideo}popup" style="text-align: center;">
                     <h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
                     <hr align="center">
-                    <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Vai alla clip!</a>
+                    <a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Listen to audio clip!</a>
                     </div>`;
                     // crea marker nelle posizioni delle clips
                     var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                         .bindPopup(popup).addTo(map).on('click', routing);
+                    // aggiunge il marker alla lista dei marker
+                    markerClip[idVideo] = marker;
                     // aggiunge le card delle clip nella sezione #clips
                     document.getElementById("clipList").innerHTML = "Clip List";
                     $('#clips').append(
@@ -113,7 +116,7 @@ function loadYTVideos() {
 
                         <!-- CARD HEADER-->
                         <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
-                            <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">Find on the map</i></a></span>
+                            <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
                             <div class="cardheader-text" style="color: white;">
                                 <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
                                 <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
@@ -202,17 +205,19 @@ function loadYTVideos() {
 /** Filtra le clip di YouTube da visualizzare */
 function filter() {
     idYT.forEach((item) => {
-        if (//!$('#filterTrigger').is(':checked') && 
-            (datiVideo[item].purpose != $('#purpose').val()
+        if ((datiVideo[item].purpose != $('#purpose').val()
            || datiVideo[item].language != $('#language').val()
            || datiVideo[item].audience != $('#audience').val()
           // || datiVideo[item].detail != $('#detailLevel').val()
         )) {
+            // nasconde la card della clip
             $('#'+item+'card').hide();
-            console.log("eliminato");
-
+            map.removeLayer(markerClip[item]);
+            console.log("nascosto" + item);
         } else {
+            // mostra la card della clip
             $('#'+item+'card').show();
+            markerClip[item].addTo(map);
         }
     });
 };
