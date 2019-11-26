@@ -7,8 +7,6 @@ const DISCOVERY_DOCS = [
 /** Scopes per l'accesso all'API di YouTube */
 const SCOPES = 'https://www.googleapis.com/auth/youtube';
 
-// per il momento lunghezza massima 30 secondi, poi sarà da gestire meglio
-var maxLenght = 30000;
 var recordedBlob;
 
 recorder = document.getElementById('recorder');
@@ -75,96 +73,6 @@ function signOut() {
 
 }
 
-// GESTIONE REGISTRAZIONE E FUNZIONI
-
-
-'use strict';
-
-var MediaRecorder;
-
-const mediaSource = new MediaSource();
-mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
-let mediaRecorder;
-let recordedBlobs;
-let sourceBuffer;
-
-if(typeof MediaRecorder.isTypeSupported !== "function"){
-  document.getElementById("registraVideo").style.display="none";
-}
-
-const errorMsgElement = document.querySelector('span#errorMsg');
-const recordedVideo = document.querySelector('video#recorded');
-const recordButton = document.querySelector('button#record');
-
-/** Listener per evento click su pulsante Start recording */
-recordButton.addEventListener('click', () => {
-  if (recordButton.textContent === 'Start Recording') {
-    startRecording();
-  } else {
-    stopRecording();
-    recordButton.textContent = 'Start Recording';
-    playButton.disabled = false;
-    uploadButton.disabled = false;
-    downloadButton.disabled= false;
-  }
-});
-
-function stopREcordTime(){
-  stopRecording();
-  recordButton.textContent = 'Start Recording';
-  playButton.disabled = false;
-  uploadButton.disabled = false;
-  downloadButton.disabled= false;
-};
-
-const playButton = document.querySelector('button#play');
-playButton.addEventListener('click', () => {
-  const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
-  recordedVideo.src = null;
-  recordedVideo.srcObject = null;
-  recordedVideo.src = window.URL.createObjectURL(superBuffer);
-  recordedVideo.controls = true;
-  recordedVideo.play();
-});
-
-
-const uploadButton = document.querySelector('button#upload');
-uploadButton.addEventListener('click', () => {
-  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
-  const url = window.URL.createObjectURL(blob);
-
-  uploadVideo(blob);
-});
-
-const downloadButton = document.querySelector('button#download');
-downloadButton.addEventListener('click', () => {
-  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = document.getElementById("titolo").value;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  }, 100);
-});
-
-function handleSourceOpen(event) {
-  console.log('MediaSource opened');
-  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
-  console.log('Source buffer: ', sourceBuffer);
-}
-
-function handleDataAvailable(event) {
-  if (event.data && event.data.size > 0) {
-    recordedBlobs.push(event.data);
-  }
-}
-
-
 //ascoltatore del select purpose che abilita o disabilita il select detail
 //utile solo per l'opzione why
 purpose.addEventListener('click',() => {
@@ -178,8 +86,86 @@ purpose.addEventListener('click',() => {
     }
 });
 
-function startRecording() {
+//funzioni regiztrazione video
+var MediaRecorder;
+const mediaSource = new MediaSource();
+mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
+let mediaRecorder;
+let recordedBlobs;
+let sourceBuffer;
 
+function handleSourceOpen(event) {
+  console.log('MediaSource opened');
+  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
+  console.log('Source buffer: ', sourceBuffer);
+}
+
+const errorMsgElement = document.querySelector('span#errorMsg');
+const recordedVideo = document.querySelector('video#recorded');
+const recordButton = document.querySelector('button#record');
+var timeout;
+
+/** Pulsante per avviare la fotocamera */
+const cameraButton = document.querySelector('button#camera');
+cameraButton.addEventListener('click', () => {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    $('#locale').hide();
+    $('#registra').show();
+    $('#registraVideo').show();
+    console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
+  } else {
+    alert('Devi prima effettuare il log in.');
+  }
+});
+
+/** Pulsante per avviare la registrazione */
+const startRec = document.querySelector('button#start')
+startRec.addEventListener('click', async () => {
+  const constraints = {
+    audio: true,
+    video: true
+  };
+    console.log('Using media constraints:', constraints);
+    await init(constraints);
+});
+
+
+async function init(constraints) {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    console.error('navigator.getUserMedia error:', e);
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+function handleSuccess(stream) {
+  recordButton.disabled = false;
+  console.log('getUserMedia() got stream:', stream);
+  window.stream = stream;
+
+  const gumVideo = document.querySelector('video#gum');
+  gumVideo.srcObject = stream;
+  startRec.setAttribute('disabled', '');
+}
+
+
+//Listener per evento click su pulsante Start recording/Stop recording
+recordButton.addEventListener('click', () => {
+  if (recordButton.textContent === 'Start Recording') {
+
+    startRecording();
+  } else {
+    stopRecording();
+    recordButton.textContent = 'Start Recording';
+    playButton.disabled = false;
+    uploadButton.disabled = false;
+    downloadButton.disabled= false;
+  }
+});
+
+function startRecording() {
   //gestione delle restrizioni di tempo per le registrazioni
 
   if(document.getElementById("purpose").value=="what"){
@@ -210,14 +196,17 @@ function startRecording() {
   recordedBlobs = [];
   let options = {mimeType: 'video/webm;codecs=vp9'};
   if(typeof MediaRecorder.isTypeSupported === "function") {
+
   if (!MediaRecorder.isTypeSupported(options.mimeType)) {
     console.error(`${options.mimeType} is not Supported`);
     errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
     options = {mimeType: 'video/webm;codecs=vp8'};
+
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
       console.error(`${options.mimeType} is not Supported`);
       errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
       options = {mimeType: 'video/webm'};
+
       if (!MediaRecorder.isTypeSupported(options.mimeType)) {
         console.error(`${options.mimeType} is not Supported`);
         errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
@@ -250,48 +239,69 @@ function startRecording() {
   console.log('MediaRecorder started', mediaRecorder);
 
   //funzione che attiva il timer della registrazione quando scade il tempo
-  setTimeout(stopREcordTime, recordingTime);
+   timeout=setTimeout(stopRecordTime, recordingTime);
 }
 
+
+function handleDataAvailable(event) {
+  if (event.data && event.data.size > 0) {
+    recordedBlobs.push(event.data);
+  }
+}
+//funzione che stoppa la registrazione del video
 function stopRecording() {
   mediaRecorder.stop();
+  clearTimeout(timeout);
   console.log('Recorded Blobs: ', recordedBlobs);
 }
 
-function handleSuccess(stream) {
-  recordButton.disabled = false;
-  console.log('getUserMedia() got stream:', stream);
-  window.stream = stream;
+//funzione che viene chiamata dal timeout per interrompere la registrazione del video
+function stopRecordTime(){
+  stopRecording();
+  recordButton.textContent = 'Start Recording';
+  playButton.disabled = false;
+  uploadButton.disabled = false;
+  downloadButton.disabled= false;
+};
 
-  const gumVideo = document.querySelector('video#gum');
-  gumVideo.srcObject = stream;
-  startRec.setAttribute('disabled', '');
-}
-
-async function init(constraints) {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    handleSuccess(stream);
-  } catch (e) {
-    console.error('navigator.getUserMedia error:', e);
-    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-  }
-}
-
-/** Pulsante per avviare la registrazione */
-const startRec = document.querySelector('button#start')
-startRec.addEventListener('click', async () => {
-  const constraints = {
-    audio: true,
-    video: true
-  };
-  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-    console.log('Using media constraints:', constraints);
-    await init(constraints);
-  } else {
-    alert('Devi prima effettuare il log in.');
-  }
+//Event listener che attiva la riproduzione del video registrato
+const playButton = document.querySelector('button#play');
+playButton.addEventListener('click', () => {
+  const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
+  recordedVideo.src = null;
+  recordedVideo.srcObject = null;
+  recordedVideo.src = window.URL.createObjectURL(superBuffer);
+  recordedVideo.controls = true;
+  recordedVideo.play();
 });
+
+//Event Listener che attiva il caricamento del video sul canale youtube
+const uploadButton = document.querySelector('button#upload');
+uploadButton.addEventListener('click', () => {
+  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
+  const url = window.URL.createObjectURL(blob);
+
+  uploadVideo(blob);
+});
+
+//Event Listener del bottone per permettere il download in locale del video registrato
+const downloadButton = document.querySelector('button#download');
+downloadButton.addEventListener('click', () => {
+  const blob = new Blob(recordedBlobs, {type: 'video/webm'});
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = document.getElementById("titolo").value;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 100);
+});
+
+
 
 /** Pulsante per caricamento locale del file */
 const localButton = document.querySelector('button#local');
@@ -300,18 +310,6 @@ localButton.addEventListener('click', () => {
     $('#registra').hide();
     $('#registraVideo').hide();
     $('#locale').show();
-  } else {
-    alert('Devi prima effettuare il log in.');
-  }
-});
-
-/** Pulsante per avviare la fotocamera */
-const cameraButton = document.querySelector('button#camera');
-cameraButton.addEventListener('click', () => {
-  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-    $('#locale').hide();
-    $('#registra').show();
-    $('#registraVideo').show();
   } else {
     alert('Devi prima effettuare il log in.');
   }
@@ -338,6 +336,7 @@ function creaMetadata(){
   var closingHour = document.getElementById("closingHour").value;
   var mediumOlc = currentOlc.substring(0, 9);
   var wideOlc = currentOlc.substring(0, 6) + '00+';
+  var feedback = document.getElementById("feedback");
   // 8FPHF800+-8FPHF8VV+-8FPHF8VV+57:
   var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+"#"+description+"#"+openingHour+"#"+closingHour;
   console.log(metadata);
