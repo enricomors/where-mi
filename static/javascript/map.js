@@ -3,13 +3,18 @@ const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3VzdGF6IiwiYSI6ImNrMWphcDk1MzB4aWwzbnBjb2N5NDZ
 /** Coordinate di Default per la mappa */
 const DEFAULT_COORDS = [44.493671, 11.343035];
 
-var markerPosizioneAttuale;
+/** variabile per la posiziona attuale ricevuta dal browser */
 var currentPosition;
+
+/** variabile per marker della posizione attuale */
+var markerPosizioneAttuale;
+
+/** olc corrispondente alla posizione attuale */
 var currentOlc;
 
 var routingControl = null;
 
-/** Marker verde */
+/** Marker verde usato per indicare la posizione attuale */
 var greenIcon = new L.Icon({
   iconUrl: './static/images/marker-icon-green.png',
   shadowUrl: './static/images/marker-shadow.png',
@@ -48,15 +53,15 @@ legend.addTo(map);
 /** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
 var results = L.layerGroup().addTo(map);
 searchControl.on('results', function (data) {
-    // rimuove il marker della posizione attuale se presente
-    if (markerPosizioneAttuale) {
-        map.removeLayer(markerPosizioneAttuale);
-    }
-    results.clearLayers();
-    for (var i = data.results.length - 1; i >= 0; i--) {
-        updateMarker(data.results[i].latlng.lat, data.results[i].latlng.lng);
-        updatePosition(data.results[i].latlng.lat, data.results[i].latlng.lng);
-    }
+  // rimuove il marker della posizione attuale se presente
+  if (markerPosizioneAttuale) {
+    map.removeLayer(markerPosizioneAttuale);
+  }
+  results.clearLayers();
+  for (var i = data.results.length - 1; i >= 0; i--) {
+    updateMarker(data.results[i].latlng.lat, data.results[i].latlng.lng);
+    updatePosition(data.results[i].latlng.lat, data.results[i].latlng.lng);
+  }
 });
 
 /** Richiede al browser la posizione attuale e chiama displayLocation in caso di successo */
@@ -131,8 +136,8 @@ function routing() {
   }
   // restitusce le coordinate del marker cliccato
   coordDest = this.getLatLng();
-  // opzioni per il router leaflet: indicazioni a piedi, lingua italiana
-  let options = { profile: 'mapbox/walking', language: 'it' };
+  // opzioni per il router leaflet: indicazioni a piedi, lingua inglese
+  let options = { profile: 'mapbox/walking' };
   // inizializza nuovo routing control
   routingControl = L.Routing.control({
       waypoints: [currentPosition, coordDest],

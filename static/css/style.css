@@ -9,3 +9,11 @@ ul.nav a.nav-link.active {
 #mainNav .navbar-toggler{
     background-color:#28a745 !important;
 }
+
+/* controllo leaflet per area di ricerca */
+.info.legend.leaflet-control {
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 5px;
+    border: 2px solid rgba(0,0,0,0.3);
+}
