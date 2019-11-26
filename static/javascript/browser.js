@@ -1,6 +1,7 @@
 /** Clip di youtube */
 var idYT = [];
 var datiVideo = {};
+var markerClip = {};
 
 function loadYTVideos() {
   $("#clips").empty();
@@ -99,6 +100,8 @@ function loadYTVideos() {
                     // crea marker nelle posizioni delle clips
                     var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
                         .bindPopup(popup).addTo(map).on('click', routing);
+                    // aggiunge il marker alla lista dei marker
+                    markerClip[idVideo] = marker;
                     // aggiunge le card delle clip nella sezione #clips
                     document.getElementById("clipList").innerHTML = "Clip List";
                     $('#clips').append(
@@ -197,17 +200,19 @@ function loadYTVideos() {
 /** Filtra le clip di YouTube da visualizzare */
 function filter() {
     idYT.forEach((item) => {
-        if (//!$('#filterTrigger').is(':checked') && 
-            (datiVideo[item].purpose != $('#purpose').val()
+        if ((datiVideo[item].purpose != $('#purpose').val()
            || datiVideo[item].language != $('#language').val()
            || datiVideo[item].audience != $('#audience').val()
           // || datiVideo[item].detail != $('#detailLevel').val()
         )) {
+            // nasconde la card della clip
             $('#'+item+'card').hide();
-            console.log("eliminato");
-
+            map.removeLayer(markerClip[item]);
+            console.log("nascosto" + item);
         } else {
+            // mostra la card della clip
             $('#'+item+'card').show();
+            markerClip[item].addTo(map);
         }
     });
 };
