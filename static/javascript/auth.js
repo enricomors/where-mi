@@ -1,5 +1,5 @@
-const API_KEY = 'AIzaSyB4Jh2e86uK5pBGSXCT-I6K__jmHpjEvw8';
-//const API_KEY = 'AIzaSyAFrXgyA4uIMddd3xxiipVvNEcDL2MM4Lw';
+//const API_KEY = 'AIzaSyB4Jh2e86uK5pBGSXCT-I6K__jmHpjEvw8';
+const API_KEY = 'AIzaSyAFrXgyA4uIMddd3xxiipVvNEcDL2MM4Lw';
 
 /** Carica l'API di YouTube */
 function onClientLoad() {
