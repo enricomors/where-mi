@@ -4,7 +4,9 @@ var datiVideo = {};
 var markerClip = {};
 
 function loadYTVideos() {
+    // Remove all the clip elements
   $("#clips").empty();
+    // Inizializzo tale variabile per creare le sottostringhe di olc per le distanze
     var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
     var zoom = document.getElementById('distanceLevel').value;
@@ -25,15 +27,16 @@ function loadYTVideos() {
     });
     // esegue la richiesta
     req.execute((resp) => {
-        console.log(resp);
         // salva la risposta nell'array results
         var results = resp.result.items;
+        console.log("This is the resp " + results);
         console.log(results.length);
         // se la ricerca produce risultati
         if (results.length > 0) {
             // scorre le risorse contenute nella risposta
             for (var i = 0; i < results.length; i++) {
                 let name;
+                // Controllo che lo snippet (ovvero la descrizione del video)
                 if (results[i].snippet.title.indexOf('#') != -1) {
                     // titolo del video
                     name = results[i].snippet.title.split('#')[0];
@@ -70,6 +73,7 @@ function loadYTVideos() {
                         coords = OpenLocationCode.decode(currentOlc);
                     }
                     let purpose = metaDati.split(":")[1];
+                    console.log(purpose);
                     let language = metaDati.split(":")[2];
                     let category = metaDati.split(":")[3];
                     let audience = metaDati.split(":")[4];
@@ -85,6 +89,7 @@ function loadYTVideos() {
                         "detail": detail,
                         "descrizione": descrizione,
                     };
+                    
                     datiVideo[idVideo] = dati;
                     // crea popup per il marker della clip
                     let popup =
