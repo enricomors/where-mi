@@ -74,10 +74,8 @@ function loadYTVideos() {
                     let category = metaDati.split(":")[3];
                     let audience = metaDati.split(":")[4];
                     let detail = metaDati.split(":")[5];
-                    // metadati aggiuntivi
+                    // descrizione
                     let descrizione = metaDati.split("#")[1];
-                    let openingHour = metaDati.split("#")[2];
-                    let closingHour = metaDati.split("#")[3];
                     // dati della clip
                     let dati = {
                         "purpose": purpose,
@@ -86,8 +84,6 @@ function loadYTVideos() {
                         "audience": audience,
                         "detail": detail,
                         "descrizione": descrizione,
-                        "openingHour": openingHour,
-                        "closingHour": closingHour
                     };
                     datiVideo[idVideo] = dati;
                     // crea popup per il marker della clip
@@ -114,7 +110,7 @@ function loadYTVideos() {
                             <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
                             <div class="cardheader-text" style="color: white;">
                                 <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
-                                <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase"> ${purpose}</span></p>
+                                <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
                             </div>
                         </div>
 
@@ -124,8 +120,7 @@ function loadYTVideos() {
                                 <li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
                                 <li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
                                 <li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-                                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}
-                                <p>Opening Hour:</p>${openingHour}<p>CosingHour:</p>${closingHour}</span></li>
+                                <li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
                             </ul>
                             <!-- CARD FOOTER-->
                             <div class="card-footer text-center">

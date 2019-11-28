@@ -1,5 +1,4 @@
 /** Client ID per le API di Google */
-//const CLIENT_ID = '787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com';
 const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
@@ -334,12 +333,10 @@ function creaMetadata(){
   var detail = document.getElementById("detail").value;
   var audience = document.getElementById("audience").value;
   var description = document.getElementById("description").value;
-  var openingHour = document.getElementById("openingHour").value;
-  var closingHour = document.getElementById("closingHour").value;
   var mediumOlc = currentOlc.substring(0, 9);
   var wideOlc = currentOlc.substring(0, 6) + '00+';
   // 8FPHF800+-8FPHF8VV+-8FPHF8VV+57:
-  var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":"+audience+":"+detail+"#"+description+"#"+openingHour+"#"+closingHour;
+  var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":A+"+audience+":P+"+detail+"#"+description;
   console.log(metadata);
   return metadata;
 }
