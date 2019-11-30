@@ -15,22 +15,22 @@ function loadYTVideos() {
     if (zoom == 'sm') {
         queryString = currentOlc.substring(0, 8);
     } else if (zoom == 'wd') {
-        queryString = currentOlc.substring(0, 6) + '00';
+        queryString = currentOlc.substring(0, 6) + '00+-' + currentOlc.substring(0, 8);
     }
     console.log(queryString);
     /** Ricerca i video di YouTube in base all'API key */
     var req = gapi.client.youtube.search.list({
         part: 'snippet',
         type: 'video',
-        q: queryString +"#wheremi-guide",
+        q: queryString,
         maxResults: 50
     });
     // esegue la richiesta
     req.execute((resp) => {
         // salva la risposta nell'array results
         var results = resp.result.items;
-        console.log("This is the resp " + results);
-        console.log(results.length);
+        console.log(resp);
+        console.log(results.length + " results");
         // se la ricerca produce risultati
         if (results.length > 0) {
             // scorre le risorse contenute nella risposta
