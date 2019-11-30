@@ -22,7 +22,7 @@ function loadYTVideos() {
     var req = gapi.client.youtube.search.list({
         part: 'snippet',
         type: 'video',
-        q: queryString,
+        q: queryString + "#wheremi-guide",
         maxResults: 50
     });
     // esegue la richiesta
@@ -110,9 +110,10 @@ function loadYTVideos() {
 	        <!-- CARD HEADER-->
 	        <div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
 	            <span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
-	            <div class="cardheader-text" style="color: white;">
-	                <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
-	                <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
+				<span class="space"><button id="moreButton" onClick="moreFunction()" class="btn btn-secondary btn-sm" href="#map" style="color: white;">More</i></button></span>
+				<div class="cardheader-text" style="color: white;">
+	            <h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
+	            <p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
 	            </div>
 	        </div>
 
@@ -137,7 +138,8 @@ function loadYTVideos() {
 	                </button>
 	                <button id="${idNext}" class="btn-next">
 	                    <i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
-	                </button>
+                    </button>
+                   
 	            </div>
 	        </div>
 	        <!-- End: Clip Cards -->
@@ -151,7 +153,7 @@ function loadYTVideos() {
 	                }
 	            });
 	        });
-
+			
 	        $(".btn-play").click(function(){
 	            player.loadVideoById(this.id);
 	            console.log(this.id);
@@ -191,14 +193,12 @@ function loadYTVideos() {
     });
 };
 
-/** Filtra le clip di YouTube da visualizzare */
+/** Filtra le clip di YouTube da visualizzare per il contenuto*/
 function filter() {
     idYT.forEach((item) => {
-        if ((datiVideo[item].purpose != $('#purpose').val()
-           || datiVideo[item].language != $('#language').val()
-           || datiVideo[item].audience != $('#audience').val()
-          // || datiVideo[item].detail != $('#detailLevel').val()
-        )) {
+		if ((datiVideo[item].content != $('#content').val(),
+			 datiVideo[item].content != $('#language').val()
+            )) {
             // nasconde la card della clip
             $('#'+item+'card').hide();
             map.removeLayer(markerClip[item]);
@@ -211,14 +211,17 @@ function filter() {
     });
 };
 
-//utile solo per l'opzione why
+// Mostra il pulsante more solo per purpose Why
 purpose.addEventListener('click',() => {
 
-  if(document.getElementById('purpose').value=="Why"){
-      document.getElementById("detailLevel").disabled = false;
+  if( $('#purpose').val() =="what"){
+      document.getElementById("moreButton").disabled = true;
 
-    }else {
-      document.getElementById("detailLevel").disabled = true;
+	}else if( $('#purpose').val() =="how"){
+	  document.getElementById("moreButton").disabled = true;
+
+	}else {
+      document.getElementById("moreButton").disabled = false;
     }
 });
 
@@ -233,3 +236,8 @@ function filterClips() {
         $('.custom-control-label').text('Disable filters');
     }
 };
+
+/* Funzione che scorre il livello di complessità del why */
+function moreFunction(){
+
+}
