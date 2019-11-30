@@ -9,6 +9,21 @@ const DEFAULT_COORDS = {
   }
 };
 
+/** Popup del marker per la mappa del browser */
+const POPUP = `<div style="text-align: center;">
+<h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
+<hr align="center">
+If location is incorrect, drag the marker or use search control on left side of the map
+</div>`;
+
+/** Html per il controllo ricerca delle clip */
+const SEARCH_CONTROL = `<label for="distanceLevel">Distance level</label>
+<select class="form-control form-control" id="distanceLevel">
+<option value="sm">Small</option>
+<option value="wd">Wide</option>
+</select>
+<button id="searchButton" type="button" class="btn btn-success">Search clips</button>`;
+
 /** variabile per la posiziona attuale ricevuta dal browser */
 var currentPosition;
 
@@ -40,21 +55,21 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: MAPBOX_TOKEN
 }).addTo(map);
 
+// aggiunge alla mappa la selezione del livello di distanza
+var legend = L.control({ position: 'topright' });
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = SEARCH_CONTROL;
+    div.onmousedown = div.ondblclick = L.DomEvent.stopPropagation;
+    return div;
+};
+legend.addTo(map);
+
 /** Aggiunge alla mappa casella di ricerca per gli indirizzi */
 var searchControl = L.esri.Geocoding.geosearch({
     useMapBounds: 'false',
     placeholder: 'Cerca un indirizzo'
 }).addTo(map);
-
-// aggiunge alla mappa la selezione del livello di distanza
-var legend = L.control({ position: 'topright' });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = '<label>Distance level</label><br><select id="distanceLevel"><option value="sm">Small</option><option value="wd">Wide</option></select>';
-    div.onmousedown = div.ondblclick = L.DomEvent.stopPropagation;
-    return div;
-};
-legend.addTo(map);
 
 /** Mostra sulla mappa il risultato scelto e rimuove i marker presenti */
 var results = L.layerGroup().addTo(map);
@@ -99,10 +114,8 @@ function updateMarker(lat, lng) {
     updatePosition(newLat, newLng);
   });
   markerPosizioneAttuale.setIcon(greenIcon);
-  // popup associato il nuovo marker
-  markerPosizioneAttuale.bindPopup(POPUP).openPopup();
-  // aggiunge il marker alla mappa
-  markerPosizioneAttuale.addTo(map);
+  // aggiunge il marker alla mappa e setta il popup
+  markerPosizioneAttuale.addTo(map).bindPopup(POPUP).openPopup();
 }
 
 /** Aggiorna posizione attuale e calcola OLC */

@@ -8,6 +8,9 @@ channelTitle: "CerottoPerLaBua"
 ```
 In questo caso il problema e' che vengono usati i due punti anche per dividere i vari OLC, quindi il nostro codice prende come "purpose" il secondo OLC. Per capire quando abbiamo questa formattazione bisognerebbe controllare se `.split(':')[1]` contiene un numero.
 
+Inoltre le clip non hanno una descrizione, quindi in questo caso
+bisogna settare un testo tipo "Nessuna descrizione disponibile"
+
 ```
 channelTitle: "HoormiCC"
 description: "Here you learn when you can visit the Asinelli tower. 8FPHF8VW+MM:why:eng:pre:his:neu:15s 8FPHF8VW+MM:how:eng:26s 8FPHF8."
