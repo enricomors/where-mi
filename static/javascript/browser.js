@@ -59,6 +59,7 @@ function loadYTVideos() {
 				}
 				// inserisce id del video in idYT
 				idYT.push(idVideo);
+				// 8FPH0000+:8FPHF800+:8FPHF8VP+7R:what:ita:art:elm:2.
                 if (metaDati.split(":")[1].indexOf("+") != -1) {
 					console.log('trovato');
 					// title
@@ -75,7 +76,13 @@ function loadYTVideos() {
 					descrizione = "Descrizione non specificata";
 				} else {
 					// titolo del video
-					name = results[i].snippet.title.split('#')[0];
+					let title = results[i].snippet.title; 
+					// olc nel titolo separato da ":"
+					if (title.indexOf(":") != -1) {
+						name = title.split(":")[0];
+					} else {
+						name = title.split('#')[0]; // #wheremiguide
+					}
 					// estrae gli OLC nei metadati del video
 					let olcString = metaDati.split(":")[0];
 					// estrae l'OLC esatto per posizionare il marker
