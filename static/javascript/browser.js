@@ -73,7 +73,7 @@ function loadYTVideos() {
 					category = results[i].snippet.description.split(":")[5];
 					audience = results[i].snippet.description.split(":")[6];
 					detail = results[i].snippet.description.split(":")[7];
-					descrizione = "Descrizione non specificata";
+					descrizione = "Not specified";
 				} else {
 					// titolo del video
 					let title = results[i].snippet.title; 
@@ -96,10 +96,32 @@ function loadYTVideos() {
 					purpose = metaDati.split(":")[1];
 					language = metaDati.split(":")[2];
 					category = metaDati.split(":")[3];
+					// audience
 					audience = metaDati.split(":")[4];
+					if (!audience) {
+						audience = "Not specified";
+					} else if (audience.indexOf("A") == 0) {
+						audience = audience.substring(1);
+					} else if (audience.indexOf("+") == 1) {
+						audience = audience.substring(2);
+					}
+					// detail level
 					detail = metaDati.split(":")[5];
+					if (!detail) {
+						detail = "Not specified";
+					} else if (detail.indexOf("P") == 0) {
+						detail = detail.substring(1);
+					} else if (detail.indexOf("+") == 1) {
+						detail = detail.substring(2);
+					}
 					// descrizione
-					descrizione = metaDati.split("#")[1];
+					if (metaDati.indexOf("#") != -1) {
+						descrizione = metaDati.split("#")[1];
+					} else if (metaDati.indexOf("%%%") != -1) {
+						descrizione = metaDati.split("%%%")[1];
+					} else if (!descrizione){
+						descrizione = "Not specified";
+					}
 				}
 				// dati della clip
 				let dati = {
