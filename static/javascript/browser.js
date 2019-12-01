@@ -83,6 +83,16 @@ function loadYTVideos() {
 					} else {
 						name = title.split('#')[0]; // #wheremiguide
 					}
+					// separa la descrizione della clip dai restanti metadati
+					if (metaDati.indexOf("#") != -1) {
+						descrizione = metaDati.split("#")[1];
+						metaDati = metaDati.split("#")[0];
+					} else if (metaDati.indexOf("%%%") != -1) {
+						descrizione = metaDati.split("%%%")[1];
+						metaDati = metaDati.split("%%%")[0];
+					} else if (!descrizione){
+						descrizione = "Not specified";
+					}
 					// estrae gli OLC nei metadati del video
 					let olcString = metaDati.split(":")[0];
 					// estrae l'OLC esatto per posizionare il marker
@@ -124,17 +134,10 @@ function loadYTVideos() {
 							detail = detail.substring(1);
 						}
 					}
-					// descrizione
-					if (metaDati.indexOf("#") != -1) {
-						descrizione = metaDati.split("#")[1];
-					} else if (metaDati.indexOf("%%%") != -1) {
-						descrizione = metaDati.split("%%%")[1];
-					} else if (!descrizione){
-						descrizione = "Not specified";
-					}
 				}
 				// dati della clip
 				let dati = {
+					"name": name,
 					"purpose": purpose,
 					"language": language,
 					"category": category,
@@ -165,7 +168,6 @@ function loadYTVideos() {
 					<!-- CARD HEADER-->
 					<div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
 						<span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
-						<span class="space"><button id="moreButton" onClick="moreFunction()" class="btn btn-secondary btn-sm" href="#map" style="color: white;">More</i></button></span>
 						<div class="cardheader-text" style="color: white;">
 						<h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
 						<p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
@@ -245,7 +247,7 @@ function loadYTVideos() {
         } else {
             alert("Nella zona non sono presenti clip");
         }
-    });
+	});
 };
 
 /** Filtra le clip di YouTube da visualizzare per il contenuto*/

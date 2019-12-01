@@ -27,8 +27,15 @@ footer.page-footer {
   margin-bottom: .5rem;
 }
 
-#searchButton {
+.btn-map {
   font-size: 12px;
+}
+
+.custom-control.leaflet-control {
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 2px solid rgba(0,0,0,0.3);
 }
 
 @media only screen and (max-width: 768px) {

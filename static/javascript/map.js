@@ -16,14 +16,6 @@ const POPUP = `<div style="text-align: center;">
 If location is incorrect, drag the marker or use search control on left side of the map
 </div>`;
 
-/** Html per il controllo ricerca delle clip */
-const SEARCH_CONTROL = `<label for="distanceLevel">Distance level</label>
-<select class="form-control form-control" id="distanceLevel">
-<option value="sm">Small</option>
-<option value="wd">Wide</option>
-</select>
-<button id="searchButton" type="button" class="btn btn-success">Search clips</button>`;
-
 /** variabile per la posiziona attuale ricevuta dal browser */
 var currentPosition;
 
@@ -54,16 +46,6 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     id: 'mapbox.streets',
     accessToken: MAPBOX_TOKEN
 }).addTo(map);
-
-// aggiunge alla mappa la selezione del livello di distanza
-var legend = L.control({ position: 'topright' });
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = SEARCH_CONTROL;
-    div.onmousedown = div.ondblclick = L.DomEvent.stopPropagation;
-    return div;
-};
-legend.addTo(map);
 
 /** Aggiunge alla mappa casella di ricerca per gli indirizzi */
 var searchControl = L.esri.Geocoding.geosearch({
