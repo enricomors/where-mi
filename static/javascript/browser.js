@@ -106,19 +106,23 @@ function loadYTVideos() {
 					audience = metaDati.split(":")[4];
 					if (!audience) {
 						audience = "Not specified";
-					} else if (audience.indexOf("A") == 0) {
-						audience = audience.substring(1);
-					} else if (audience.indexOf("+") == 1) {
-						audience = audience.substring(2);
+					} else if (audience.indexOf("A") != -1) {
+						if (audience.indexOf('+') != -1) {
+							audience = audience.substring(2);	
+						} else {
+							audience = audience.substring(1);
+						}
 					}
 					// detail level
 					detail = metaDati.split(":")[5];
 					if (!detail) {
 						detail = "Not specified";
-					} else if (detail.indexOf("P") == 0) {
-						detail = detail.substring(1);
-					} else if (detail.indexOf("+") == 1) {
-						detail = detail.substring(2);
+					} else if (detail.indexOf("P") != -1) {
+						if (detail.indexOf('+') != -1) {
+							detail = detail.substring(2);
+						} else {
+							detail = detail.substring(1);
+						}
 					}
 					// descrizione
 					if (metaDati.indexOf("#") != -1) {
