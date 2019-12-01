@@ -61,7 +61,7 @@ function loadYTVideos() {
 				idYT.push(idVideo);
 				// 8FPH0000+:8FPHF800+:8FPHF8VP+7R:what:ita:art:elm:2.
                 if (metaDati.split(":")[1].indexOf("+") != -1) {
-					console.log('trovato');
+					console.log('olc multipli separati da :', results[i]);
 					// title
 					name = results[i].snippet.title;
 					// geolocation
@@ -86,11 +86,17 @@ function loadYTVideos() {
 					// estrae gli OLC nei metadati del video
 					let olcString = metaDati.split(":")[0];
 					// estrae l'OLC esatto per posizionare il marker
-					olc = olcString.split('-')[2];
+					if (olcString.indexOf('-') != -1) {
+						olc = olcString.split('-')[2];	
+					} else {
+						// caso in cui viene usato un solo OLC
+						olc = olcString;
+					}
 					try {
 						// ricava le coordinate della clip dall'olc
 						coords = OpenLocationCode.decode(olc);
 					} catch (IllegalArgumentException) {
+						console.log('using current olc ' + currentOlc + ' for ' + results[i]);
 						coords = OpenLocationCode.decode(currentOlc);
 					}
 					purpose = metaDati.split(":")[1];
