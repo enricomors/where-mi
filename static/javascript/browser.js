@@ -250,16 +250,33 @@ function loadYTVideos() {
 	});
 };
 
-/** Filtra le clip di YouTube da visualizzare per il contenuto*/
-function filter() {
+/** Filtra le clip di YouTube da visualizzare per lingua*/
+function filterLanguage(selectedItem) {
     idYT.forEach((item) => {
-		if ((datiVideo[item].content != $('#content').val(),
-			 datiVideo[item].content != $('#language').val()
+		if ((
+			 datiVideo[item].language != selectedItem.value
             )) {
             // nasconde la card della clip
             $('#'+item+'card').hide();
             map.removeLayer(markerClip[item]);
-            console.log("nascosto" + item);
+            console.log("nascosto" + item + " " + selectedItem.value);
+        } else {
+            // mostra la card della clip
+            $('#'+item+'card').show();
+            markerClip[item].addTo(map);
+        }
+    });
+};
+ /** Filtra le clip di YouTube da visualizzare per audience */
+function filterAudience(selectedItem) {
+    idYT.forEach((item) => {
+		if ((
+			 datiVideo[item].audience != selectedItem.value
+            )) {
+            // nasconde la card della clip
+            $('#'+item+'card').hide();
+            map.removeLayer(markerClip[item]);
+            console.log("nascosto" + item + " " + selectedItem.value);
         } else {
             // mostra la card della clip
             $('#'+item+'card').show();

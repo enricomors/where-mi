@@ -65,3 +65,12 @@ footer.page-footer {
   text-align: center;
 }
 
+.dropdown-toggle{
+  padding: 1.1em 1em;
+}
+
+#dropButton{
+  color: #ffffff;
+  background-color: transparent;
+  font-weight: normal;
+}
