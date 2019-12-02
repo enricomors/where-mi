@@ -1,13 +1,23 @@
 /** Clip di youtube */
 var idYT = [];
-var datiVideo = {};
-var markerClip = {};
+var datiVideo;
+var markerClip;
 
 $('#searchButton').on('click', loadYTVideos);
 
 function loadYTVideos() {
     // Remove all the clip elements
-  $("#clips").empty();
+	$("#clips").empty();
+	//
+	if (idYT.length > 0) {
+		idYT.forEach((item) => {
+			map.removeLayer(markerClip[item]);
+		});
+	}
+	markerClip = {};
+	idYT = [];
+	// inizializza datiVideo come oggetto vuoto
+	datiVideo = {};
     // Inizializzo tale variabile per creare le sottostringhe di olc per le distanze
     var queryString;
     //Acquisisce il livello di distanza scelto tra i filtri
@@ -25,7 +35,7 @@ function loadYTVideos() {
         part: 'snippet',
         type: 'video',
         q: queryString,
-        maxResults: 50
+        maxResults: 50	
     });
     // esegue la richiesta
     req.execute((resp) => {
@@ -137,7 +147,7 @@ function loadYTVideos() {
 				}
 				// dati della clip
 				let dati = {
-					"name": name,
+					"id": idVideo,
 					"purpose": purpose,
 					"language": language,
 					"category": category,
@@ -145,7 +155,7 @@ function loadYTVideos() {
 					"detail": detail,
 					"descrizione": descrizione,
 				};
-				datiVideo[idVideo] = dati;
+				datiVideo[name] = dati;
 				// crea popup per il marker della clip
 				let popup =
 				`<div id="${idVideo}popup" style="text-align: center;">
