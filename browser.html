@@ -105,6 +105,17 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link js-scroll-trigger" href="editor.html">editor</a>
                     </li>
+                    <li>
+                         <!-- Lingua -->
+                <div class="form-group col-md-6">
+                    <select name="languageList" id="language"  
+                    class="border-white shadow custom-select custom-select-lg" onchange="filter()">
+                        <optgroup label="Select Language">
+                        <option value="ita" selected>Ita</option>
+                        <option value="eng">En</option>
+                    </select>
+                </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -123,24 +134,15 @@
             <div class="row text-center" style="margin-bottom: 2%">
                 <div class="col-xl-4 offset-xl-0 m-auto" style="margin-top: 0%">
                     <div class="wrapper" id="filterButton">
-                        <button class="btn btn-success" onclick="filter()">Filtra</button>
+                        <a>Choose the content</a>
                     </div>
                 </div>
             </div>
             <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
 
-                <!-- Lingua -->
-                <div class="form-group col-md-6">
-                    <label>Language</label>
-                    <select name="languageList" id="language"  
-                    class="border-white shadow custom-select custom-select-lg">
-                        <optgroup label="Select Language">
-                        <option value="ita" selected>Italiano</option>
-                        <option value="eng">Inglese</option>
-                    </select>
-                </div>
-
-                <!-- Pubblico -->
+               
+                <!--
+                <-- Pubblico ->
                 <div class="form-group col-md-6">
                     <label>Audience</label>
                     <select name="audienceList" id="audience" 
@@ -154,7 +156,7 @@
                     </select>
                 </div>
 
-                <!-- Scopo -->
+                <-- Scopo ->
                 <div class="form-group col-md-6">
                     <label>Purpose</label>
                     <select name="purposeList" id="purpose"  
@@ -166,7 +168,7 @@
                     </select>
                 </div>
 
-                <!-- Detail level section-->
+                <-- Detail level section->
                 <div class="form-group col-md-6">
                     <div class="form-group">
                         <label>Detail level</label>
@@ -180,12 +182,12 @@
                         </select>
                     </div>
                 </div>
-
+            -->
                 <!-- Contenuto -->
                 <div class="form-group col-md-6">
                     <label>Content</label>
                     <select name="contentist" id="content"  
-                    class="border-white shadow custom-select custom-select-lg">
+                    class="border-white shadow custom-select custom-select-lg" onchange="filter()">
                         <optgroup label="Select Content">
                         <option value="none">Nessuna</option>
                         <option value="nat">Natura</option>
@@ -206,6 +208,7 @@
                         <option value="oth">Altro</option>
                     </select>
                 </div>
+                
             </div>
         </div>
 
@@ -267,6 +270,7 @@
     <!-- Our JS scripts -->
     <script src="/static/javascript/config.js"></script>
     <script src="/static/javascript/map.js"></script>
+    <script src="/static/javascript/mapControls.js"></script>
     <script src="/static/javascript/browser.js"></script>
 
     <!-- Custom scripts for this template -->
@@ -277,14 +281,6 @@
 
     <!-- Custom script for video player -->
     <script>
-        /** Popup del marker per la mappa del browser */
-        const POPUP = `<div style="text-align: center;">
-        <h6 class="text-uppercase" style="margin-top: 2%;">You are here</h6>
-        <hr align="center">
-        If location is incorrect, drag the marker or use search control on left side of the map
-        <hr align="center"><button onclick="loadYTVideos()" id="searchButton" type="button"
-        class="btn btn-success">Search clips</button>
-        </div>`;
         var player;
         // Crea un video player (riproduce solo audio)
         function onYouTubeIframeAPIReady() {

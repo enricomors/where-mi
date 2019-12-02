@@ -18,8 +18,24 @@ footer.page-footer {
 }
 
 #map {
-  margin: 80px 30px;
+  margin: 90px 30px;
   height: 88vh;
+}
+
+#distanceLevel {
+  font-size: 12px;
+  margin-bottom: .5rem;
+}
+
+.btn-map {
+  font-size: 12px;
+}
+
+.custom-control.leaflet-control {
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 2px solid rgba(0,0,0,0.3);
 }
 
 @media only screen and (max-width: 768px) {
