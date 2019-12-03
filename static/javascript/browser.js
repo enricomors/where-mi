@@ -155,7 +155,8 @@ function loadYTVideos() {
 					"detail": detail,
 					"descrizione": descrizione,
 				};
-				datiVideo[name] = dati;
+				// Questo serve per i filtri
+				datiVideo[idVideo] = dati;
 				// crea popup per il marker della clip
 				let popup =
 				`<div id="${idVideo}popup" style="text-align: center;">
