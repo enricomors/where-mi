@@ -35,11 +35,11 @@ $('#wmiButton').on('click', wheremi);
 
 function wheremi() {
   if (!isEmpty(datiVideo)) {
-    var places = [];
-    for (var key in datiVideo) {
-      places.push(key);
-    }
-    var id = datiVideo[places[1]].id;
+    var places = []; 
+    idYT.forEach((id) => {
+      places.push(datiVideo[id].name);
+    });
+    var id = idYT[1];
     console.log('PLAY', id);
     player.loadVideoById(id);
   } else {
