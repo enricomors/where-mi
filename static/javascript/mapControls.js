@@ -11,6 +11,12 @@ const USER_CONTROLS = `<button id="wmiButton" type="button" class="btn btn-succe
 <button id="moreButton" type="button" class="btn btn-success btn-map">More</button>
 <button id="nextButton" type="button" class="btn btn-success btn-map">Next</button>`;
 
+var places = [];
+var visitedPlaces = [];
+var actualId;
+var actualPlace;
+var counter;
+
 /** aggiunge alla mappa la selezione del livello di distanza */
 var searchClips = L.control({ position: 'topright' });
 searchClips.onAdd = function (map) {
@@ -31,19 +37,51 @@ userControls.onAdd = function (map) {
 };
 userControls.addTo(map);
 
+/** Listener per click su bottone wheremi */
 $('#wmiButton').on('click', wheremi);
 
+/** Riproduce la prima clip trovata sul luogo */
 function wheremi() {
-  if (!isEmpty(datiVideo)) {
-    var places = []; 
-    idYT.forEach((id) => {
-      places.push(datiVideo[id].name);
+  if (idYT.length != 0) {
+    idYT.forEach((item) => {
+      if (datiVideo[item].purpose == 'what') {
+        places.push({
+          "name": datiVideo[item].name,
+          "id": item
+        });
+      }
     });
-    var id = idYT[1];
-    console.log('PLAY', id);
-    player.loadVideoById(id);
+    counter = 1;
+    actualId = places[counter].id;
+    actualPlace = places[counter].name;
+    console.log('playng ', actualId);
+    console.log('place ', actualPlace);
+    player.loadVideoById(actualId);
+    visitedPlaces.push(actualPlace);
   } else {
     alert('Non ci sono clip da riprodurre');
+  }
+}
+
+/** listener per evento di click su pulsante next */
+$('#nextButton').on('click', nextPlace);
+
+/** Changes the location */
+function nextPlace() {
+  if ((counter + 1) < places.length) {
+    counter++;
+    while (actualPlace == places[counter].name || 
+      visitedPlaces.includes(places[counter].name)) {
+      counter++;
+    }
+    actualId = places[counter].id;
+    actualPlace = places[counter].name;
+    console.log('playng ', actualId);
+    console.log('place ', actualPlace);
+    player.loadVideoById(actualId);
+    visitedPlaces.push(actualPlace);
+  } else {
+    alert('Hai visitato tutti i luoghi della zona');
   }
 }
 

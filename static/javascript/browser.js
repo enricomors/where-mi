@@ -43,7 +43,6 @@ function loadYTVideos() {
         var results = resp.result.items;
         console.log('trovati ' + results.length + ' risultati');
 		console.log(resp.result.items);
-		var places = [];
         // se la ricerca produce risultati
         if (results.length > 0) {
             // scorre le risorse contenute nella risposta
@@ -146,6 +145,7 @@ function loadYTVideos() {
 						}
 					}
 				}
+				name = name.toUpperCase();
 				// dati della clip
 				let dati = {
 					"name": name,
@@ -157,106 +157,103 @@ function loadYTVideos() {
 					"descrizione": descrizione,
 				};
 				datiVideo[idVideo] = dati;
-				
-				if (datiVideo[idVideo].purpose == "what") {
-					// crea popup per il marker della clip
-					let popup =
-					`<div id="${idVideo}popup" style="text-align: center;">
-					<h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
-					<hr align="center">
-					<a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Listen to audio clip!</a>
-					</div>`;
-					// crea marker nelle posizioni delle clips
-					var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
-						.bindPopup(popup).addTo(map).on('click', routing);
-					// aggiunge il marker alla lista dei marker
-					markerClip[idVideo] = marker;
-					// aggiunge le card delle clip nella sezione #clips
-					document.getElementById("clipList").innerHTML = "Clip List";
-					$('#clips').append(
-						`<!-- Start: Clip Cards -->
-						<article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
-						<div class="card cards-shadown cards-hover" style="height: 35rem;">
+				// crea popup per il marker della clip
+				let popup =
+				`<div id="${idVideo}popup" style="text-align: center;">
+				<h5 class="text-uppercase" style="margin-top: 2%;">${name}</h5>
+				<hr align="center">
+				<a id="${idVideo}link" class="btn" style="color: #04af73;" href="#${idVideo}card">Listen to audio clip!</a>
+				</div>`;
+				// crea marker nelle posizioni delle clips
+				var marker = new L.marker([coords.latitudeCenter, coords.longitudeCenter], { myCustomId: idVideo + "map" })
+					.bindPopup(popup).addTo(map).on('click', routing);
+				// aggiunge il marker alla lista dei marker
+				markerClip[idVideo] = marker;
+				// aggiunge le card delle clip nella sezione #clips
+				document.getElementById("clipList").innerHTML = "Clip List";
+				$('#clips').append(
+					`<!-- Start: Clip Cards -->
+					<article id="${idVideo}card" class="col-sm-4 col-md-4 col-lg-3" style="margin-bottom: 2%;">
+					<div class="card cards-shadown cards-hover" style="height: 35rem;">
 
-						<!-- CARD HEADER-->
-						<div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
-							<span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
-							<div class="cardheader-text" style="color: white;">
-							<h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
-							<p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
-							</div>
+					<!-- CARD HEADER-->
+					<div id="${idVideo}header" class="card-header text-left" style="background-color: #04af73;width: 100%;height: 100%;">
+						<span class="space"><a id="${idVideo}map" class="btn btn-secondary btn-sm" href="#map" style="color: white;">View on the map</i></a></span>
+						<div class="cardheader-text" style="color: white;">
+						<h4 id="heading-card" style="font-size: 18px;margin-top: 7%;">${name}</h4>
+						<p id="cardheader-subtext" style="font-size: 16px"><i>Purpose:&nbsp</i><span class="text-uppercase">${purpose}</span></p>
 						</div>
+					</div>
 
-						<!-- CARD BODY-->
-						<div class="card-body" style="color:black;">
-							<ul class="list-group text-left">
-								<li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
-								<li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
-								<li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
-								<li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
-							</ul>
-							<!-- CARD FOOTER-->
-							<div class="card-footer text-center">
-								<button id="${idPrev}" class="btn-previous">
-									<i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
-								</button>
-								<button id="${idVideo}" class="btn-play">
-									<i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
-								</button>
-								<button class="btn-pause">
-									<i class="fa fa-pause-circle" style="font-size: 30px;"></i>
-								</button>
-								<button id="${idNext}" class="btn-next">
-									<i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
-								</button>
-							
-							</div>
-						</div>
-						<!-- End: Clip Cards -->
-
-						<script>
-						$("#${idVideo}map").click(function(){
-							$.each(map._layers, function(i, item){
-								if(this.options.myCustomId == "${idVideo}map"){
-									this.openPopup();
-									map.flyTo(this._latlng)
-								}
-							});
-						});
+					<!-- CARD BODY-->
+					<div class="card-body" style="color:black;">
+						<ul class="list-group text-left">
+							<li class="list-group-item"><span><i><b>Language:&nbsp</b></i>${language}</span></li>
+							<li class="list-group-item"><span><i><b>Category:&nbsp</b></i>${category}</span></li>
+							<li class="list-group-item"><span><i><b>Audience:&nbsp</b></i>${audience}</span></li>
+							<li class="list-group-item" style="height: 5rem; overflow: auto;"><span><i><b>Description:&nbsp</b></i>${descrizione}</span></li>
+						</ul>
+						<!-- CARD FOOTER-->
+						<div class="card-footer text-center">
+							<button id="${idPrev}" class="btn-previous">
+								<i class="fa fa-backward" id="previous" style="font-size: 30px;"></i>
+							</button>
+							<button id="${idVideo}" class="btn-play">
+								<i class="fa fa-play-circle" style="font-size: 30px;padding-right: 5%;"></i>
+							</button>
+							<button class="btn-pause">
+								<i class="fa fa-pause-circle" style="font-size: 30px;"></i>
+							</button>
+							<button id="${idNext}" class="btn-next">
+								<i class="fa fa-forward" id="next" style="font-size: 30px;"></i>
+							</button>
 						
-						$(".btn-play").click(function(){
-							player.loadVideoById(this.id);
-							console.log(this.id);
-							player.playVideo();
-							// aggiornamento UI
-							console.log("#"+this.id+"header");
-							$("#"+this.id+"header").css("background-color","#006633");
-						});
+						</div>
+					</div>
+					<!-- End: Clip Cards -->
 
-						$(".btn-pause").click(function(){
-							player.pauseVideo();
+					<script>
+					$("#${idVideo}map").click(function(){
+						$.each(map._layers, function(i, item){
+							if(this.options.myCustomId == "${idVideo}map"){
+								this.openPopup();
+								map.flyTo(this._latlng)
+							}
 						});
+					});
+					
+					$(".btn-play").click(function(){
+						player.loadVideoById(this.id);
+						console.log(this.id);
+						player.playVideo();
+						// aggiornamento UI
+						console.log("#"+this.id+"header");
+						$("#"+this.id+"header").css("background-color","#006633");
+					});
 
-						$(".btn-next").click(function(){
-							player.clearVideo();
-							player.loadVideoById(this.id);
-							player.playVideo();
-							// aggiornamento UI
-							$("#"+this.id+"header").css("background-color","#006633");
-						});
+					$(".btn-pause").click(function(){
+						player.pauseVideo();
+					});
 
-						$(".btn-previous").click(function(){
-							player.clearVideo();
-							player.loadVideoById(this.id);
-							player.playVideo();
-							// aggiornamento UI
-							$("#"+this.id+"header").css("background-color","#006633");
-						});
+					$(".btn-next").click(function(){
+						player.clearVideo();
+						player.loadVideoById(this.id);
+						player.playVideo();
+						// aggiornamento UI
+						$("#"+this.id+"header").css("background-color","#006633");
+					});
 
-						</script>
-						</article>`
-					);
-				}
+					$(".btn-previous").click(function(){
+						player.clearVideo();
+						player.loadVideoById(this.id);
+						player.playVideo();
+						// aggiornamento UI
+						$("#"+this.id+"header").css("background-color","#006633");
+					});
+
+					</script>
+					</article>`
+				);
             }
         } else {
             alert("Nella zona non sono presenti clip");
