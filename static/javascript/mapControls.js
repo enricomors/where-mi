@@ -7,7 +7,8 @@ const SEARCH_CONTROL = `<label for="distanceLevel">Distance level</label>
 <button id="searchButton" type="button" class="btn btn-success btn-map">Search clips</button>`;
 
 /** Html per i controlli delle clip */
-const USER_CONTROLS = `<button id="moreButton" type="button" class="btn btn-success btn-map">More</button>
+const USER_CONTROLS = `<button id="wmiButton" type="button" class="btn btn-success btn-map">WhereMI</button>
+<button id="moreButton" type="button" class="btn btn-success btn-map">More</button>
 <button id="nextButton" type="button" class="btn btn-success btn-map">Next</button>`;
 
 /** aggiunge alla mappa la selezione del livello di distanza */
@@ -29,3 +30,28 @@ userControls.onAdd = function (map) {
   return div;
 };
 userControls.addTo(map);
+
+$('#wmiButton').on('click', wheremi);
+
+function wheremi() {
+  if (!isEmpty(datiVideo)) {
+    var places = [];
+    for (var key in datiVideo) {
+      places.push(key);
+    }
+    var id = datiVideo[places[1]].id;
+    console.log('PLAY', id);
+    player.loadVideoById(id);
+  } else {
+    alert('Non ci sono clip da riprodurre');
+  }
+}
+
+/** Controlla se l'oggetto obj è vuoto */
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
