@@ -148,10 +148,10 @@
 
     <!-- Inizio: Sezione filtri clip -->
     <section id="clipsection" style="background-color: #f5f5f5;color: rgb(111,150,97);">
-        <div style="margin-right: 5%; margin-left: 5%;">
-            <div class="row text-center" style="margin-bottom: 2%">
-                <div class="col-xl-4 offset-xl-0 m-auto" style="margin-top: 0%">
-                    <div class="wrapper" id="filterButton">
+        <div style="margin-right: 5%; margin-left: 5%; position: center;">
+            <div class="row text-center" style="margin-bottom: 2%; position: center;" >
+                <div class="col-xl-4 offset-xl-0 m-auto" style="margin-top: 0%; position: center;">
+                    <div class="wrapper" id="filterButton" style=" position: center;">
                         <a>Choose the content</a>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                 <div class="form-group col-md-6">
                     <label>Content</label>
                     <select name="contentist" id="content"  
-                    class="border-white shadow custom-select custom-select-lg" onchange="filter()">
+                    class="border-white shadow custom-select custom-select-lg" onchange="filterCategory()">
                         <optgroup label="Select Content">
                         <option value="none">Nessuna</option>
                         <option value="nat">Natura</option>

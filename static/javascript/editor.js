@@ -336,7 +336,6 @@ function creaMetadata(){
   var description = document.getElementById("description").value;
   var mediumOlc = currentOlc.substring(0, 9);
   var wideOlc = currentOlc.substring(0, 6) + '00+';
-  var feedback = document.getElementById("feedback");
   // 8FPHF800+-8FPHF8VV+-8FPHF8VV+57:
   var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":A+"+audience+":P+"+detail+"#"+description;
   console.log(metadata);

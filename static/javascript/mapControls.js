@@ -7,9 +7,9 @@ const SEARCH_CONTROL = `<label for="distanceLevel">Distance level</label>
 <button id="searchButton" type="button" class="btn btn-success btn-map">Search clips</button>`;
 
 /** Html per i controlli delle clip */
-const USER_CONTROLS = `<button id="wmiButton" type="button" class="btn btn-success btn-map">WhereMI</button>
-<button id="moreButton" type="button" class="btn btn-success btn-map">More</button>
-<button id="nextButton" type="button" class="btn btn-success btn-map">Next</button>`;
+const USER_CONTROLS = `<button id="wmiButton" type="button" class="btn btn-success btn-map" disabled>WhereMI</button>
+<button id="moreButton" type="button" class="btn btn-success btn-map" disabled>More</button>
+<button id="nextButton" type="button" class="btn btn-success btn-map" disabled>Next</button>`;
 
 var places = [];
 var visitedPlaces = [];
@@ -69,6 +69,9 @@ function wheremi() {
         moreOnPlace.push(clip);
       } 
     }
+    // Abilita i pulsanti more e next solo dopo aver richiamato whereMi
+    $('#moreButton').prop('disabled',false);
+    $('#nextButton').prop ('disabled',false);
   } else {
     alert('Non ci sono clip da riprodurre');
   }
@@ -114,41 +117,14 @@ function isEmpty(obj) {
   return true;
 }
 
-/** Listener per click su bottone wheremi */
+/** Listener per click su bottone more */
 $('#moreButton').on('click', moreFunction);
 
 /** Funzionalità more */
 function moreFunction() {
   console.log("more clips: ");
   console.log(moreOnPlace);
-  /*for (const clip in datiVideo) {
-  if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "how")) {
-      moreOnPlace.push(clip);
-    }
-    
-    if (countMore == 1){ //how
-        if (datiVideo[clip].name == actualPlace && datiVideo[clip].purpose == "how"){
-          console.log(datiVideo[clip].name);
-          console.log('purpose', datiVideo[clip].purpose);
-          console.log(clip);
-          player.loadVideoById(clip);
-          countMore++;
-          break;
-        }
-      } else if (countMore >= 2) {
-        if (datiVideo[clip].name == actualPlace && datiVideo[clip].purpose == "why"){
-          console.log(datiVideo[clip].name);
-          console.log('purpose ', datiVideo[clip].purpose);
-          console.log('detail level ', datiVideo[clip].detail);
-          console.log(clip);
-          player.loadVideoById(clip);
-          countMore++;
-          break;
-        }
-      } else {
-        console.log("nessuna clip trovata");
-      }
-  }*/
+  
   if (moreOnPlace.length == 0) {
     alert('Nessuna clip trovata');
   } else {

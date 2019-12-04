@@ -8,7 +8,9 @@ $('#searchButton').on('click', loadYTVideos);
 function loadYTVideos() {
     // Remove all the clip elements
 	$("#clips").empty();
-	//
+	// Abilita wheremi
+	$('#wmiButton').prop('disabled',false);
+
 	if (idYT.length > 0) {
 		idYT.forEach((item) => {
 			map.removeLayer(markerClip[item]);
@@ -288,6 +290,24 @@ function filterAudience(selectedItem) {
             $('#'+item+'card').hide();
             map.removeLayer(markerClip[item]);
             console.log("nascosto" + item + " " + selectedItem.value);
+        } else {
+            // mostra la card della clip
+            $('#'+item+'card').show();
+            markerClip[item].addTo(map);
+        }
+    });
+};
+
+ /** Filtra le clip di YouTube da visualizzare per content */
+ function filterCategory() {
+    idYT.forEach((item) => {
+		if ((
+			 datiVideo[item].category != document.getElementById('content').value
+            )) {
+            // nasconde la card della clip
+            $('#'+item+'card').hide();
+            map.removeLayer(markerClip[item]);
+            console.log("nascosto" + item + " " + document.getElementById('content').value);
         } else {
             // mostra la card della clip
             $('#'+item+'card').show();
