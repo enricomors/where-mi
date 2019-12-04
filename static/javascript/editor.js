@@ -1,7 +1,7 @@
 /** Client ID per le API di Google */
 //const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
-//const CLIENT_ID='644760882953-iksnqaqotrcbmf3nk29r03dccqp9e67e.apps.googleusercontent.com'; // marco-aspromonte@gmail.com
-const CLIENT_ID = '852876980851-8v09vusc2vc0qbmtid9i5rejuj2ga6bd.apps.googleusercontent.com'; // e.morselli97@gmail.com
+const CLIENT_ID='644760882953-iksnqaqotrcbmf3nk29r03dccqp9e67e.apps.googleusercontent.com'; // marco-aspromonte@gmail.com
+//const CLIENT_ID = '852876980851-8v09vusc2vc0qbmtid9i5rejuj2ga6bd.apps.googleusercontent.com'; // e.morselli97@gmail.com
 
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
@@ -336,7 +336,6 @@ function creaMetadata(){
   var description = document.getElementById("description").value;
   var mediumOlc = currentOlc.substring(0, 9);
   var wideOlc = currentOlc.substring(0, 6) + '00+';
-  var feedback = document.getElementById("feedback");
   // 8FPHF800+-8FPHF8VV+-8FPHF8VV+57:
   var metadata = wideOlc+'-'+mediumOlc+'-'+currentOlc+":"+purpose+":"+language+":"+content+":A+"+audience+":P+"+detail+"#"+description;
   console.log(metadata);
