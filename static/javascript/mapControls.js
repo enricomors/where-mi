@@ -65,7 +65,7 @@ function wheremi() {
     moreOnPlace = [];
     countMore = 0;
     for (const clip in datiVideo) {
-      if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "how")) {
+      if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "why")) {
         moreOnPlace.push(clip);
       } 
     }
