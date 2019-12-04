@@ -13,9 +13,13 @@ const USER_CONTROLS = `<button id="wmiButton" type="button" class="btn btn-succe
 
 var places = [];
 var visitedPlaces = [];
+var moreOnPlace = [];
 var actualId;
 var actualPlace;
-var counter;
+var countNext;
+
+// countMore per il more
+var countMore;
 
 /** aggiunge alla mappa la selezione del livello di distanza */
 var searchClips = L.control({ position: 'topright' });
@@ -51,13 +55,20 @@ function wheremi() {
         });
       }
     });
-    counter = 1;
-    actualId = places[counter].id;
-    actualPlace = places[counter].name;
+    countNext = 0;
+    actualId = places[countNext].id;
+    actualPlace = places[countNext].name;
     console.log('playng ', actualId);
     console.log('place ', actualPlace);
     player.loadVideoById(actualId);
     visitedPlaces.push(actualPlace);
+    moreOnPlace = [];
+    countMore = 0;
+    for (const clip in datiVideo) {
+      if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "how")) {
+        moreOnPlace.push(clip);
+      } 
+    }
   } else {
     alert('Non ci sono clip da riprodurre');
   }
@@ -68,20 +79,27 @@ $('#nextButton').on('click', nextPlace);
 
 /** Changes the location */
 function nextPlace() {
-  //il contatore viene riportato a 1 per gestire la profondita del more
-  contatore=1;
-  if ((counter + 1) < places.length) {
-    counter++;
-    while (actualPlace == places[counter].name ||
-      visitedPlaces.includes(places[counter].name)) {
-      counter++;
+  
+  if ((countNext + 1) < places.length) {
+    countNext++;
+    while (actualPlace == places[countNext].name ||
+      visitedPlaces.includes(places[countNext].name)) {
+      countNext++;
     }
-    actualId = places[counter].id;
-    actualPlace = places[counter].name;
+    actualId = places[countNext].id;
+    actualPlace = places[countNext].name;
     console.log('playng ', actualId);
     console.log('place ', actualPlace);
     player.loadVideoById(actualId);
     visitedPlaces.push(actualPlace);
+    moreOnPlace = [];
+    //il countMore viene riportato a 1 per gestire la profondita del more
+    countMore = 0;
+    for (const clip in datiVideo) {
+      if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "why")) {
+        moreOnPlace.push(clip);
+      } 
+    }
   } else {
     alert('Hai visitato tutti i luoghi della zona');
   }
@@ -95,30 +113,53 @@ function isEmpty(obj) {
   }
   return true;
 }
-var contatore=1;
+
 /** Listener per click su bottone wheremi */
 $('#moreButton').on('click', moreFunction);
-function moreFunction(){
-  for (const clip in datiVideo) {
 
-    if(contatore==1){ //how
-        if (datiVideo[clip].name==actualPlace && datiVideo[clip].purpose=="how"){
-          console.log(datiVideo[clip].name);
-          console.log(clip);
-          player.loadVideoById(clip);
-          contatore++;
-          break;
-        }
-      }else if(contatore==2){
-        if(datiVideo[clip].name==actualPlace && datiVideo[clip].purpose=="why"){
-          console.log(datiVideo[clip].name);
-          console.log(clip);
-          player.loadVideoById(clip);
-          contatore++;
-          break;
-        }
-    }else{
-      console.log("nessuna clip trovata");
+/** Funzionalità more */
+function moreFunction() {
+  console.log("more clips: ");
+  console.log(moreOnPlace);
+  /*for (const clip in datiVideo) {
+  if (datiVideo[clip].name == actualPlace && (datiVideo[clip].purpose == "how" || datiVideo[clip].purpose == "how")) {
+      moreOnPlace.push(clip);
     }
-}
+    
+    if (countMore == 1){ //how
+        if (datiVideo[clip].name == actualPlace && datiVideo[clip].purpose == "how"){
+          console.log(datiVideo[clip].name);
+          console.log('purpose', datiVideo[clip].purpose);
+          console.log(clip);
+          player.loadVideoById(clip);
+          countMore++;
+          break;
+        }
+      } else if (countMore >= 2) {
+        if (datiVideo[clip].name == actualPlace && datiVideo[clip].purpose == "why"){
+          console.log(datiVideo[clip].name);
+          console.log('purpose ', datiVideo[clip].purpose);
+          console.log('detail level ', datiVideo[clip].detail);
+          console.log(clip);
+          player.loadVideoById(clip);
+          countMore++;
+          break;
+        }
+      } else {
+        console.log("nessuna clip trovata");
+      }
+  }*/
+  if (moreOnPlace.length == 0) {
+    alert('Nessuna clip trovata');
+  } else {
+    if (countMore < moreOnPlace.length) {
+      var id = moreOnPlace[countMore];
+      console.log('playng ', id);
+      console.log('place ', actualPlace);
+      player.loadVideoById(id);
+      countMore++;
+    } else {
+      alert("Non ci sono più clip per questo luogo");
+    }
+  }
 }

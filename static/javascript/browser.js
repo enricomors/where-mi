@@ -70,7 +70,7 @@ function loadYTVideos() {
 				// inserisce id del video in idYT
 				idYT.push(idVideo);
 				// 8FPH0000+:8FPHF800+:8FPHF8VP+7R:what:ita:art:elm:2.
-                if (metaDati.split(":")[1].indexOf("+") != -1) {
+                if (metaDati.split(":")[1] && metaDati.split(":")[1].indexOf("+") != -1) {
 					console.log('olc multipli separati da :', results[i]);
 					// title
 					name = results[i].snippet.title;
@@ -254,7 +254,7 @@ function loadYTVideos() {
 					</script>
 					</article>`
 				);
-            }
+			}
         } else {
             alert("Nella zona non sono presenti clip");
         }
