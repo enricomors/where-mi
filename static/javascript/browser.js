@@ -307,8 +307,3 @@ function filterClips() {
         $('.custom-control-label').text('Disable filters');
     }
 };
-
-/* Funzione che scorre il livello di complessità del why */
-function moreFunction(){
-
-}

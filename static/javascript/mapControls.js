@@ -68,9 +68,11 @@ $('#nextButton').on('click', nextPlace);
 
 /** Changes the location */
 function nextPlace() {
+  //il contatore viene riportato a 1 per gestire la profondita del more
+  contatore=1;
   if ((counter + 1) < places.length) {
     counter++;
-    while (actualPlace == places[counter].name || 
+    while (actualPlace == places[counter].name ||
       visitedPlaces.includes(places[counter].name)) {
       counter++;
     }
@@ -92,4 +94,31 @@ function isEmpty(obj) {
           return false;
   }
   return true;
+}
+var contatore=1;
+/** Listener per click su bottone wheremi */
+$('#moreButton').on('click', moreFunction);
+function moreFunction(){
+  for (const clip in datiVideo) {
+
+    if(contatore==1){ //how
+        if (datiVideo[clip].name==actualPlace && datiVideo[clip].purpose=="how"){
+          console.log(datiVideo[clip].name);
+          console.log(clip);
+          player.loadVideoById(clip);
+          contatore++;
+          break;
+        }
+      }else if(contatore==2){
+        if(datiVideo[clip].name==actualPlace && datiVideo[clip].purpose=="why"){
+          console.log(datiVideo[clip].name);
+          console.log(clip);
+          player.loadVideoById(clip);
+          contatore++;
+          break;
+        }
+    }else{
+      console.log("nessuna clip trovata");
+    }
+}
 }
