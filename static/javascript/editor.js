@@ -26,6 +26,11 @@ function handleAuthClick() {
 }
 
 function handleClientLoad() {
+  var isSecureOrigin = location.protocol === 'https:' || location.host.includes('localhost');
+  if (!isSecureOrigin) {
+      location.protocol = 'HTTPS';
+      console.log("Passo a HTTPS!");
+  }
   gapi.load('client:auth2', initClient);
 };
 
