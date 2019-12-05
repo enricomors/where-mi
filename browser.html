@@ -107,7 +107,7 @@
                     </li>
                     <li>
                        
-                        <!-- Select language section -->
+                    <!-- Select language section -->
                     <li class="nav-item">
                         <div class="btn-group">
                             <button id="dropButton" type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -116,21 +116,6 @@
                             <div class="dropdown-menu">
                             <button class="dropdown-item btn btn-sm" href="#" onclick="filterLanguage(this)" value="ita">Italian</button>
                             <button class="dropdown-item btn btn-sm" href="#" onclick="filterLanguage(this)" value="eng">English</button>
-                            </div>
-                        </div>
-                    </li>
-                       <!-- Select Audience section -->
-                    <li class="nav-item">
-                        <div class="btn-group">
-                            <button id="dropButton" type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Audience
-                            </button>
-                            <div class="dropdown-menu">
-                            <button class="dropdown-item btn btn-sm" href="#" onclick="filterAudience(this)" value="gen" >Generico</button>
-                            <button class="dropdown-item btn btn-sm" href="#" onclick="filterAudience(this)" value="pre">Pre-scolare</button>
-                            <button class="dropdown-item btn btn-sm" href="#" onclick="filterAudience(this)" value="elm">Elementari</button>
-                            <button class="dropdown-item btn btn-sm" href="#" onclick="filterAudience(this)" value="mid">Scuola Media</button>
-                            <button class="dropdown-item btn btn-sm" href="#" onclick="filterAudience(this)" value="scl">Specializzato</button>
                             </div>
                         </div>
                     </li>
@@ -158,13 +143,11 @@
             </div>
             <div class="form-row" style="margin-left: 10px; margin-right:10px; margin-top:50px">
 
-               
-                <!--
-                <-- Pubblico ->
+                <!-- Pubblico -->
                 <div class="form-group col-md-6">
                     <label>Audience</label>
                     <select name="audienceList" id="audience" 
-                    class="border-white shadow custom-select custom-select-lg">
+                    class="border-white shadow custom-select custom-select-lg" onchange="filterAudience()">
                         <optgroup label="Select Audience">
                         <option value="gen" selected>Generico</option>
                         <option value="pre">Pre-scolare</option>
@@ -174,33 +157,6 @@
                     </select>
                 </div>
 
-                <-- Scopo ->
-                <div class="form-group col-md-6">
-                    <label>Purpose</label>
-                    <select name="purposeList" id="purpose"  
-                        class="border-white shadow custom-select custom-select-lg">
-                        <optgroup label="Select Purpose">
-                        <option value="what">What</option>
-                        <option value="how">How</option>
-                        <option value="Why">why</option>
-                    </select>
-                </div>
-
-                <-- Detail level section->
-                <div class="form-group col-md-6">
-                    <div class="form-group">
-                        <label>Detail level</label>
-                        <select name="detailList" id="detailLevel" disabled="true"
-                        class="border-white shadow custom-select custom-select-lg">
-                            <optgroup label="Select Detail level">
-                            <option value="1">Essenziale(1)</option>
-                            <option value="2">Breve(2)</option>
-                            <option value="3">Approfondito(3)</option>
-                            <option value="4">Mettiti Comodo(4)</option>
-                        </select>
-                    </div>
-                </div>
-            -->
                 <!-- Contenuto -->
                 <div class="form-group col-md-6">
                     <label>Content</label>

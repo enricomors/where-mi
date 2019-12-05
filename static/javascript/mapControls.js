@@ -46,6 +46,7 @@ $('#wmiButton').on('click', wheremi);
 
 /** Riproduce la prima clip trovata sul luogo */
 function wheremi() {
+  places = [];
   if (idYT.length != 0) {
     idYT.forEach((item) => {
       if (datiVideo[item].purpose == 'what') {
@@ -55,6 +56,9 @@ function wheremi() {
         });
       }
     });
+    if (places.length == 0) {
+      alert('Non ci sono clip "what" nella zona');
+    }
     countNext = 0;
     actualId = places[countNext].id;
     actualPlace = places[countNext].name;
