@@ -317,5 +317,9 @@
         <!-- Custom scripts for this template -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-agency/5.2.2/js/agency.min.js"></script>
 
+        <script>
+            if (window.location.protocol != "https:")
+                window.location.href = window.location.href.replace('http', 'https');
+        </script>
     </body>
 </html>
