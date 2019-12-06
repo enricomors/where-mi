@@ -1,10 +1,4 @@
-/** Client ID per le API di Google */
-//const CLIENT_ID='185000965260-1dlcaidkh1h3f5g85kmvfgoeokeuu93u.apps.googleusercontent.com';
-// const CLIENT_ID='644760882953-iksnqaqotrcbmf3nk29r03dccqp9e67e.apps.googleusercontent.com'; // marco-aspromonte@gmail.com
-//const CLIENT_ID = '852876980851-8v09vusc2vc0qbmtid9i5rejuj2ga6bd.apps.googleusercontent.com'; // e.morselli97@gmail.com
-
-/** Client ID per la presentazione */
-const CLIENT_ID='787144290576-jbgo63i1vhct58loglvp6et7fsflrest.apps.googleusercontent.com'; // wheremiguide@gmail.com
+const CLIENT_ID = '[INSERT_YOUR_CLIENT_ID_HERE]';
 
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
